@@ -3,28 +3,27 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 
-describe "User Profile API -- GET /userProfile/activityStream without auth key" do
+%w(/userProfile/activityStream /userProfile/byUserId/123 /userProfile/followers /userProfile/following 
+  /userProfile/history /userProfile/history/first /userProfile/mine /userProfile/reverbs).each do |endpoint|
+  describe "User Profile API -- GET #{endpoint} with bad auth key" do
 
-  before(:all) do
-    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
-    @config = ConfigPath.new
-    @url = "https://#{@config.options['baseurl']}/userProfile/activityStream"
-  end
+    before(:all) do
+      ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+      @config = ConfigPath.new
+      @url_no_key = "https://#{@config.options['baseurl']}#{endpoint}"
+      if endpoint.match(/\?/)
+        @url_invalid_key = "https://#{@config.options['baseurl']}#{endpoint}&api_key=123"
+      else
+        @url_invalid_key = "https://#{@config.options['baseurl']}#{endpoint}?api_key=123"
+      end
+    end
 
-  it "should 401" do
-    expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
-  end
- end
-
-describe "User Profile API -- GET /userProfile/activityStream invlaid auth key" do
-
-  before(:all) do
-    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
-    @config = ConfigPath.new
-    @url = "https://#{@config.options['baseurl']}/userProfile/activityStream?api_key=123"
-  end
-
-  it "should 401" do
-    expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
+    it "should 401 when no auth key" do
+      expect {RestClient.get @url_no_key}.to raise_error(RestClient::Unauthorized)
+    end
+  
+    it "should 401 when no invalid key" do
+      expect {RestClient.get @url_invalid_key}.to raise_error(RestClient::Unauthorized)
+    end
   end
 end
