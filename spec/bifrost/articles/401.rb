@@ -11,18 +11,10 @@ describe "Articles API -- GET /articles/docId/123 without auth key" do
     @url = "https://#{@config.options['baseurl']}/articles/docId/123"
   end
 
-  before(:each) do
-
-  end
-
-  after(:each) do
-
-  end
-
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end
 
 describe "Articles API -- GET /articles/docId/123 invalid auth key" do
 
@@ -43,4 +35,4 @@ describe "Articles API -- GET /articles/docId/123 invalid auth key" do
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end
