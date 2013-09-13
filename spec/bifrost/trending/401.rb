@@ -11,20 +11,12 @@ describe "Trending API -- GET /trending/interests/me without auth key" do
     @url = "https://#{@config.options['baseurl']}/trending/interests/me"
   end
 
-  before(:each) do
-
-  end
-
-  after(:each) do
-
-  end
-
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end
 
- describe "Trending API -- GET /trending/interests/me invalid auth key" do
+describe "Trending API -- GET /trending/interests/me invalid auth key" do
 
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
@@ -32,15 +24,7 @@ describe "Trending API -- GET /trending/interests/me without auth key" do
     @url = "https://#{@config.options['baseurl']}/trending/interests/me?api_key=123"
   end
 
-  before(:each) do
-
-  end
-
-  after(:each) do
-
-  end
-
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end

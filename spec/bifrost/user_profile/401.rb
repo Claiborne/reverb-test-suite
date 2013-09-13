@@ -11,14 +11,6 @@ describe "User Profile API -- GET /userProfile/activityStream without auth key" 
     @url = "https://#{@config.options['baseurl']}/userProfile/activityStream"
   end
 
-  before(:each) do
-
-  end
-
-  after(:each) do
-
-  end
-
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
@@ -32,15 +24,7 @@ describe "User Profile API -- GET /userProfile/activityStream invlaid auth key" 
     @url = "https://#{@config.options['baseurl']}/userProfile/activityStream?api_key=123"
   end
 
-  before(:each) do
-
-  end
-
-  after(:each) do
-
-  end
-
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end

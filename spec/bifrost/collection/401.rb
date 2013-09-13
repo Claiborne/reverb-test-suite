@@ -11,20 +11,12 @@ describe "Collection API -- GET /collections without auth key" do
     @url = "https://#{@config.options['baseurl']}/collections"
   end
 
-  before(:each) do
-
-  end
-
-  after(:each) do
-
-  end
-
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end
 
- describe "Collection API -- GET /collections invalid auth key" do
+describe "Collection API -- GET /collections invalid auth key" do
 
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
@@ -43,5 +35,5 @@ describe "Collection API -- GET /collections without auth key" do
   it "should 401" do
     expect {RestClient.get @url}.to raise_error(RestClient::Unauthorized)
   end
- end
+end
 
