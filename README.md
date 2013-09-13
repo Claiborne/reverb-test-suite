@@ -1,7 +1,7 @@
 Reverb Test Suite
 =================
 
-In order to consolidate various test scripts developed by Reverb, the team is using a unified framework that will be the main entry point for all automated tests and scripts. 
+In order to consolidate various test scripts, this "unified framework" will be the main entry point for all automated tests and scripts. 
 
 ## REQUIRED SOFTWARE
 Below are the required software and gems you need to install to run this framework.
