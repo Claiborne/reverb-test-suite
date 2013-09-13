@@ -20,7 +20,7 @@ rake (used to run tests)
 
 rest-client (an HTTP client)
 
-selenium-webdriver (_the_ browser automation tool http://docs.seleniumhq.org/projects/webdriver/)
+selenium-webdriver (browser automation tool http://docs.seleniumhq.org/projects/webdriver/)
 
 colorize (easy way to make console output colorful, e.g.: "hello world".green)
 
@@ -34,8 +34,11 @@ All tests will be written using the Rspec2 framework - https://www.relishapp.com
 The current folder structure:
 
 The 'config' folder contains a list of all known DNS entires for all apps.
+
 The 'spec' folder is a repository for all tests.
+
 The 'lib' folder contains all helper classes required by tests.
+
 The 'scripts' folder contains one-off scripts used for improptu needs.
 
 To run all tests suites:
