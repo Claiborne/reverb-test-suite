@@ -42,3 +42,5 @@ class BrowserConfig
     @options = configs[browser]
   end
 end
+
+class ConfigurationException < StandardError; end;
