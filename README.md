@@ -1,10 +1,10 @@
 Reverb Test Suite
 =================
 
-In order to consolidate various test scripts, this "unified framework" will be the main entry point for all automated tests and scripts. 
+This framework will be the entry point for writing and running high-level test automation (regression, integration, acceptance) for frontend and backend applications
 
 ## REQUIRED SOFTWARE
-Below are the required software and gems you need to install to run this framework.
+Below are the required software and gems you need to install to run this framework. This framework has not yet been set up for iOS UI test automation; more about that to come shortly
 
 ### Ruby
 All tests are developed in Ruby (version 2.0.0-p247). Highly recommended using RVM to install and set-up Ruby http://www.rvm.io/
@@ -72,4 +72,3 @@ Here's an example of using an RSpec tag in your spec file:
       it "should have at least one link", :smoke => true do
           check_have_a_link('div#right-col-outnow-tabs')
       end
-      
