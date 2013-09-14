@@ -14,7 +14,7 @@ rspec (the test framework all tests are developed in https://www.relishapp.com/r
 
 json_pure (a json parser, mainly used to parse APIs)
 
-nokogiri (an HTML parser, maoinly used to parse IGN webpages that don't require javascript testing)
+nokogiri (an HTML parser, maoinly used to parse webpages that don't require javascript testing)
 
 rake (used to run tests)
 
