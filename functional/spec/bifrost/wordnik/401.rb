@@ -3,7 +3,7 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 
-describe "Wordnik API -- GET /wordnik/love/definitions?limit=10 with bad auth key" do
+describe "WORDNIK API -- GET /wordnik/love/definitions?limit=10 with bad auth key" do
 
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"

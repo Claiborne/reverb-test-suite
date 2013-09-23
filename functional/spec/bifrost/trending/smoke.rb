@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 
-describe "Trending API -- Smoke", :smoke => true do
+describe "TRENDING API -- Smoke", :smoke => true do
 
   before(:all) do
     # Get bifrost environment
