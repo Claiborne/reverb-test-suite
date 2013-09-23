@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "Get Interests Streams" do
+describe "USER FLOW - Get Interests Streams" do
 
   class Interests
     @me = []; @global = []
@@ -38,7 +38,7 @@ describe "Get Interests Streams" do
     Interests.me.length.should == 24
   end
 
-  it 'should get 24 global interest values' do
+  it 'should get 100 global interest values' do
     url = @bifrost_env+"/trending/interests/global?skip=0&limit=100&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -47,7 +47,7 @@ describe "Get Interests Streams" do
     end
     interests = (JSON.parse response)['interests']
     interests.each {|i| Interests.global << i['value']}
-    Interests.global.length.should == 24
+    Interests.global.length.should == 100
   end
 
   it "should return data for each 'me' interest" do

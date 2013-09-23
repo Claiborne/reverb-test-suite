@@ -5,7 +5,7 @@ require 'json'
 
 %w(/collections /collections/123 /collections/shared/123/123 
   /collections/123/recommendations?limit=20&skip=0).each do |endpoint|
-  describe "Collection API -- GET #{endpoint} when bad auth key" do
+  describe "COLLECTIONS API -- GET #{endpoint} when bad auth key" do
 
     before(:all) do
       ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
