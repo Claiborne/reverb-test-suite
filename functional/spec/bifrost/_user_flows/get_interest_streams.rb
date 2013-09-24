@@ -7,9 +7,9 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOW - Get Interests Streams" do
+describe "USER FLOW - Get Interests Streams For an Anon User" do
 
-  class Interests
+  class Interests_Helper
     @me = []; @global = []
     class << self; attr_accessor :me, :global; end
   end
@@ -34,8 +34,8 @@ describe "USER FLOW - Get Interests Streams" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests.me << i['value']}
-    Interests.me.length.should == 24
+    interests.each {|i| Interests_Helper.me << i['value']}
+    Interests_Helper.me.length.should == 24
   end
 
   it 'should get 100 global interest values' do
@@ -46,13 +46,13 @@ describe "USER FLOW - Get Interests Streams" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests.global << i['value']}
-    Interests.global.length.should == 100
+    interests.each {|i| Interests_Helper.global << i['value']}
+    Interests_Helper.global.length.should == 100
   end
 
   it "should return data for each 'me' interest" do
     errors = []
-    Interests.me.each do |interest|
+    Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
@@ -70,7 +70,7 @@ describe "USER FLOW - Get Interests Streams" do
 
   it "should return data for each 'global' interest" do
     errors = []
-    Interests.global.each do |interest|
+    Interests_Helper.global.each do |interest|
       url = @bifrost_env+"/interests/stream?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
