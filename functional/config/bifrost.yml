@@ -2,7 +2,7 @@ dev:
   baseurl: dev-api.helloreverb.com/v2
 
 stg:
-  baseurl:
+  baseurl: stage-api.helloreverb.com/v2
 
 prd:
   baseurl:
