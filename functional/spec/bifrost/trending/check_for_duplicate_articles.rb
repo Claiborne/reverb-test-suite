@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'  
 
-describe "TRENDING API -- Get 300 Articles With Anon User", :test => true do
+describe "TRENDING API -- Get 300 Articles With Anon User" do
 
   class Get_300_Helpers
     class << self; attr_accessor :me, :global; end
