@@ -18,11 +18,11 @@ module Token
   def get_token(base_url, login, password)
     login_endpoint = "#{base_url}/account/login"
     body = {
-      "login": login,
-      "deviceId": "reverb-test-suite",
-      "allowMergeIntoExisting": true,
-      "password": password,
-      "remember": true
+      "login" => login,
+      "deviceId" => "reverb-test-suite",
+      "allowMergeIntoExisting" => true,
+      "password" => password,
+      "remember" => true
       }.to_json
     headers = {:content_type => 'application/json', :accept => 'application/json'}
     response = RestClient.post login_endpoint, body, headers
