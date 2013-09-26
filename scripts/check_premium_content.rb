@@ -26,16 +26,21 @@ total_failure = 0
 rss_feeds.each do |feed|
   article_success = 0
   article_not_success = 0
+  success = ''
   form_data = "skip=0&limit=500&feedUrl=#{feed}&sortOrderUp=undefined&env=stage"
   response = RestClient.post "#{domain}/#{endpoint}?#{form_data}", '', :content_type => 'application/x-www-form-urlencoded'
   articles = JSON.parse response
   articles.each do |article|
     begin
       article_date = (Time.at(article['date'].match(/\A[0-9]{10}/).to_s.to_i+25200).to_datetime).to_s.match(/\A[^T]{1,}/).to_s
-     success = article['corpusSubmissions'][0]['result']
     rescue
       failed_feeds << feed
       next
+    end
+    article['corpusSubmissions'].each do |c|
+      if c['env'] == 'stage'
+        success = c['result']
+      end
     end
     #puts article_date+' '+success
     if article_date == date
