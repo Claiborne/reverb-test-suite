@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'rspec/core/rake_task'
 
-ENV["env"] ||= 'dev'
+ENV["env"] ||= 'stg'
 
 desc "Run Bifrost tests"
 RSpec::Core::RakeTask.new('bifrost') do |t|

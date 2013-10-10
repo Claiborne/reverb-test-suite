@@ -7,7 +7,7 @@ raise StandardError, "\nNOTE: Command line argument is required: YYYY-MM-DD".yel
 
 date = ARGV[0].to_s
 
-domain = 'http://stage-insights.helloreverb.com'
+domain = 'https://stage-insights.helloreverb.com'
 endpoint = 'api/rss.json/find-docs'
 
 rss_feeds = []
@@ -28,7 +28,13 @@ rss_feeds.each do |feed|
   article_not_success = 0
   success = ''
   form_data = "skip=0&limit=500&feedUrl=#{feed}&sortOrderUp=undefined&env=stage"
-  response = RestClient.post "#{domain}/#{endpoint}?#{form_data}", '', :content_type => 'application/x-www-form-urlencoded'
+  url = "#{domain}/#{endpoint}?#{form_data}"
+  begin
+    response = RestClient.post url, '', :content_type => 'application/x-www-form-urlencoded', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+  rescue => e
+    puts url.red
+    raise e, url
+  end
   articles = JSON.parse response
   articles.each do |article|
     begin
@@ -37,10 +43,14 @@ rss_feeds.each do |feed|
       failed_feeds << feed
       next
     end
-    article['corpusSubmissions'].each do |c|
-      if c['env'] == 'stage'
-        success = c['result']
+    if article['corpusSubmissions']
+      article['corpusSubmissions'].each do |c|
+        if c['env'] == 'stage'
+          success = c['result']
+        end
       end
+    else
+      next 
     end
     #puts article_date+' '+success
     if article_date == date

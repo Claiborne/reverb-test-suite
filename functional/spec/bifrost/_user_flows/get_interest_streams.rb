@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOW - Get Interests Streams For an Anon User" do
+describe "USER FLOW - Get Interests Streams For an Anon User", :test => true do
 
   class Interests_Helper
     @me = []; @global = []
@@ -26,7 +26,7 @@ describe "USER FLOW - Get Interests Streams For an Anon User" do
     @session_token = get_anon_token(@bifrost_env)
   end
 
-  it 'should get 24 me interest values' do
+  it 'should get 24 (max allowed) me interest values' do
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=100&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -38,7 +38,7 @@ describe "USER FLOW - Get Interests Streams For an Anon User" do
     Interests_Helper.me.length.should == 24
   end
 
-  it 'should get 100 global interest values' do
+  it 'should get 24 (max allowed) global interest values' do
     url = @bifrost_env+"/trending/interests/global?skip=0&limit=100&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -46,14 +46,15 @@ describe "USER FLOW - Get Interests Streams For an Anon User" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
+    interests.count.should == 100
     interests.each {|i| Interests_Helper.global << i['value']}
-    Interests_Helper.global.length.should == 100
+    Interests_Helper.global.length.should == 24
   end
 
   it "should return data for each 'me' interest" do
     errors = []
     Interests_Helper.me.each do |interest|
-      url = @bifrost_env+"/interests/stream?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
@@ -63,7 +64,8 @@ describe "USER FLOW - Get Interests Streams For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
-      data['tiles'].length.should > 0
+      puts interest+" --> "+data['tiles'].length.to_s
+      errors << interest if data['tiles'].length == 0
     end
     errors.should == []
   end
@@ -71,7 +73,7 @@ describe "USER FLOW - Get Interests Streams For an Anon User" do
   it "should return data for each 'global' interest" do
     errors = []
     Interests_Helper.global.each do |interest|
-      url = @bifrost_env+"/interests/stream?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      url = @bifrost_env+"/interests/stream/global?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
@@ -80,7 +82,8 @@ describe "USER FLOW - Get Interests Streams For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
-      data['tiles'].length.should > 0
+      puts interest+" --> "+data['tiles'].length.to_s
+      errors << interest if data['tiles'].length == 0
     end
     errors.should == []
   end

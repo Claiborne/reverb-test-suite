@@ -2,7 +2,7 @@ require 'rspec'
 require 'config_path'
 require 'rest_client'
 require 'json'
-require 'bifrost/token.rb'  
+require 'bifrost/token.rb'
 
 ['Anon User', 'Logged in User'].each do |usr|
 describe "TRENDING API -- Get 300 Articles With #{usr}" do
@@ -84,6 +84,6 @@ describe "TRENDING API -- Get 300 Articles With #{usr}" do
   end
 
     it 'should not return duplicate me articles by title' do
-    (Get_300_Helpers.me_titles.select{ |e| Get_300_Helpers.me_titles.count(e) > 1 }).uniq.should == []
+    (Get_300_Helpers.me_titles.select{ |e| puts e; puts ''; Get_300_Helpers.me_titles.count(e) > 1 }).uniq.should == []
   end
 end; end
