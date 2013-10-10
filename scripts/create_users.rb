@@ -4,7 +4,7 @@ require 'json'
 env = "https://stage-api.helloreverb.com/v2"
 endpoint = "/account/register"
 
-(0..99).each do |n|
+(0..2500).each do |n|
   body = {
     "login"=>"clayt3#{n}",
     "password"=>"testpassword",
@@ -15,5 +15,6 @@ endpoint = "/account/register"
   }.to_json
 
   RestClient.post env+endpoint, body, :content_type => 'application/json'
+  puts n
 
 end

@@ -6,12 +6,4 @@ stg:
 
 prd:
   baseurl:
-
-v2dev:
-  baseurl: dev-api.helloreverb.com/v2
-
-v2tg:
-  baseurl:
-
-v2prd:
-  baseurl:
+  
