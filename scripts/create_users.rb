@@ -1,8 +1,8 @@
 require 'rest-client'
 require 'json'
 
-env = "https://stage-api.helloreverb.com/v2"
-endpoint = "/account/register"
+env = "https://dev-api.helloreverb.com/v2"
+endpoint = "/account/register?clientId=51561484e4b0edfcfec11627"
 
 (0..2500).each do |n|
   body = {
