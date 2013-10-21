@@ -5,5 +5,5 @@ stg:
   baseurl: stage-api.helloreverb.com/v2
 
 prd:
-  baseurl:
+  baseurl: api.helloreverb.com/v2
   
