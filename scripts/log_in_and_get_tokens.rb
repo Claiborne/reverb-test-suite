@@ -3,6 +3,7 @@ require 'json'
 
 env = "https://stage-api.helloreverb.com/v2"
 endpoint = "/account/login"
+id = '515b32b0e4b03f3544d60a15'
 
 list_of_sessions = []
 
@@ -16,13 +17,14 @@ list_of_sessions = []
   }.to_json
 
   begin
-    res = RestClient.post env+endpoint, body, :content_type => 'application/json', :accept => 'json'
+    res = RestClient.post env+endpoint+"?clientId="+id, body, :content_type => 'application/json', :accept => 'json'
   rescue
     puts "#{n} failed"
     next
   end
   data = JSON.parse res
   list_of_sessions << data['token']
+  puts data['token']
 end
 
 File.open('/Users/willclaiborne/code/reverb-test-suite/scripts/stage-sessions.txt', 'w')  do |file|
