@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 
 %w(0 50 100 150).each do |skip|
-  describe "TRENDING API -- Get 'Me' Articles For Anon User" do
+  describe "TRENDING API -- Get 'Me' Tiles For Anon User" do
 
     before(:all) do
       # Get bifrost environment
@@ -45,11 +45,15 @@ require 'bifrost/token.rb'
       end
       interest_values.should == interest_values.uniq
     end
+
+    it 'should sort by publish date' do
+
+    end
   end
 end
 
 %w(0 50 100 150).each do |skip|
-  describe "TRENDING API -- Get 'Global' Articles For Anon User" do
+  describe "TRENDING API -- Get 'Global' Tiles For Anon User" do
 
     before(:all) do
       # Get bifrost environment
