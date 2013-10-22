@@ -47,7 +47,11 @@ require 'bifrost/token.rb'
     end
 
     it 'should sort by publish date' do
-
+      dates = []
+      @data['tiles'].each do |tile|
+        dates << tile['publishDate']
+      end
+      dates.should == dates.sort {|x,y| y <=> x }
     end
   end
 end
@@ -93,6 +97,14 @@ end
       end
       interest_values.should == interest_values.uniq
     end
+
+    it 'should sort by publish date' do
+      dates = []
+      @data['tiles'].each do |tile|
+        dates << tile['publishDate']
+      end
+      dates.should == dates.sort {|x,y| y <=> x }
+    end    
   end
 end
 
