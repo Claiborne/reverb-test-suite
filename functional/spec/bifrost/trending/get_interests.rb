@@ -146,3 +146,87 @@ describe "TRENDING API -- Get 'Me' Interests for Logged in User" do
     logged_in_interests.should_not == anon_interests
   end
 end
+
+describe "TRENDING API -- Skip and Limit for Trending Interests" do
+
+  before(:all) do
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    # Get anon session token
+    @session_token = get_anon_token(@bifrost_env) 
+  end
+
+  it "should limit 10 global interests" do
+    url = @bifrost_env+"/trending/interests/global?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response 
+    data['interests'].length.should == 10
+  end
+
+  xit "should limit 10 me interests (FAILS: Returns 11)" do
+    url = @bifrost_env+"/trending/interests/me?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response  
+    data['interests'].length.should == 10
+  end
+
+  it "should correctly paginate global interests" do
+    # get first page +1
+    url = @bifrost_env+"/trending/interests/global?skip=0&limit=26&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    first_page = JSON.parse response 
+
+    # get second page
+    url = @bifrost_env+"/trending/interests/global?skip=25&limit=26&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    second_page = JSON.parse response 
+
+    first_page['interests'].last['value'].should == second_page['interests'].first['value']
+  end
+  
+  it "should correctly paginate me interests" do
+    # get logged in session b/c anon only returns 25 interests
+    user_token = get_token @bifrost_env, 'clay00', 'testpassword'
+
+    # get first page +1
+    url = @bifrost_env+"/trending/interests/me?skip=0&limit=26&api_key="+user_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    first_page = JSON.parse response 
+
+    # get second page
+    url = @bifrost_env+"/trending/interests/me?skip=25&limit=26&api_key="+user_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    second_page = JSON.parse response 
+
+    first_page['interests'].last['value'].should == second_page['interests'].first['value']
+  end
+end

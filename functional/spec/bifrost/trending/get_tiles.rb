@@ -92,7 +92,7 @@ end
   end
 end
 
-describe "TRENDING API -- Get 'Me' Tiles for Logged in User", :test => true do
+describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
 
   before(:all) do
 
@@ -148,5 +148,134 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User", :test => true do
 
     # Compare logged-in interests to anon interests
     logged_in_tiles.should_not == anon_tiles
+  end
+end
+
+describe "TRENDING API -- Skip and Limit for Trending Tiles" do
+
+  before(:all) do
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    # Get anon session token
+    @session_token = get_anon_token(@bifrost_env) 
+  end
+
+  it "should limit 10 global tiles" do
+    url = @bifrost_env+"/trending/tiles/global?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response 
+    data['tiles'].length.should == 10
+  end
+
+  it "should limit 10 me tiles" do
+    url = @bifrost_env+"/trending/tiles/me?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response  
+    data['tiles'].length.should == 10
+  end
+end
+
+describe "TRENDING API -- Skip and Limit for Trending Tiles" do
+
+  before(:all) do
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    # Get anon session token
+    @session_token = get_anon_token(@bifrost_env) 
+  end
+
+  it "should limit 10 global tiles" do
+    url = @bifrost_env+"/trending/tiles/global?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response 
+    data['tiles'].length.should == 10
+  end
+
+  xit "should limit 10 me tiles (FAILS: Returns 11)" do
+    url = @bifrost_env+"/trending/tiles/me?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response  
+    data['tiles'].length.should == 10
+  end
+
+  it "should correctly paginate global tiles" do
+    # get first page +1
+    url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    first_page = JSON.parse response 
+
+    # debug
+    #first_page['tiles'].each do |tile|
+      #puts tile['contentId']
+    #end
+    #puts '-------'
+
+    # get second page
+    url = @bifrost_env+"/trending/tiles/global?skip=23&limit=24&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    second_page = JSON.parse response 
+
+   # debug
+    #second_page['tiles'].each do |tile|
+      #puts tile['contentId']
+    #end
+
+    first_page['tiles'].last.should == second_page['tiles'].first
+  end
+  
+  it "should correctly paginate me tiles" do
+    # get first page +1
+    url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    first_page = JSON.parse response 
+
+    # get second page
+    url = @bifrost_env+"/trending/tiles/me?skip=23&limit=24&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    second_page = JSON.parse response 
+
+    first_page['tiles'].last.should == second_page['tiles'].first
   end
 end
