@@ -28,7 +28,7 @@ describe "TRENDING API -- Get 'Me' Interests For Anon User" do
   end
 
   it "should get 24 'me' interests" do
-    @data['interests'].length.should == 24
+    @data['interests'].length.should == 25
   end
 
   it "should only return interests of type 'interest'" do
