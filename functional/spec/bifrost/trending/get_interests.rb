@@ -3,6 +3,7 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
+require 'api_checker.rb'; include APIChecker
 
 describe "TRENDING API -- Get 'Me' Interests For Anon User" do
 
@@ -29,6 +30,20 @@ describe "TRENDING API -- Get 'Me' Interests For Anon User" do
 
   it "should get 24 'me' interests" do
     @data['interests'].length.should == 25
+  end
+
+  it "should return a non-nil, non-blank 'value' value for each tile" do
+    @data['interests'].each do |interest|
+      check_not_nil interest['value']
+      check_not_blank interest['value']
+    end
+  end
+
+    it "should return a non-nil, non-blank 'score' value for each tile" do
+      @data['interests'].each do |interest|
+      check_not_nil interest['score']
+      check_not_blank interest['score']
+    end
   end
 
   it "should only return interests of type 'interest'" do
@@ -71,6 +86,20 @@ describe "TRENDING API -- Get 'Global' Interests For Anon User" do
 
   it "should get 100 'global' interests" do
     @data['interests'].length.should == 100
+  end
+
+  it "should return a non-blank, non-nil 'value' value" do
+    @data['interests'].each do |interest|
+      check_not_nil interest['value']
+      check_not_blank interest['value']
+    end
+  end
+
+  it "should return a non-blank, non-nil 'score' value" do
+    @data['interests'].each do |interest|
+      check_not_nil interest['score']
+      check_not_blank interest['score']
+    end
   end
 
   it "should only return interests of type 'interest'" do
