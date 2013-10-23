@@ -3,6 +3,7 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
+require 'bifrost/trending_helper.rb'
 
 %w(0 50 100 150).each do |skip|
   describe "TRENDING API -- Get 'Me' Tiles For Anon User" do
@@ -27,6 +28,8 @@ require 'bifrost/token.rb'
       end
       @data = JSON.parse response
     end
+
+    include_examples "Trending Tiles Basic Checks"
 
     it "should get 24 'me' articles" do
       @data['tiles'].length.should == 24
@@ -79,6 +82,8 @@ end
       end
       @data = JSON.parse response
     end
+
+    include_examples "Trending Tiles Basic Checks"
 
     it "should get 24 'global' articles" do
       @data['tiles'].length.should == 24
@@ -133,6 +138,7 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
       raise StandardError.new(e.message+" "+url)
     end
     @data_logged_in = JSON.parse response
+    @data = @data_logged_in
 
     # Get Interests for Anon User
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token
@@ -143,6 +149,8 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
     end
     @data_anon = JSON.parse response
   end
+
+  include_examples "Trending Tiles Basic Checks"
 
   it "should get 24 'me' tiles" do
     @data_logged_in['tiles'].length.should == 24  
