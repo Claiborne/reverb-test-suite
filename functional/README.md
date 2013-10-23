@@ -4,7 +4,7 @@ Reverb Fucntional and Acceptance Test Suite
 This framework will be the entry point for writing and running high-level test automation (regression, integration, acceptance) for frontend and backend applications
 
 ## REQUIRED SOFTWARE
-Below are the required software and gems you need to install to run this framework. This framework has not yet been set up for iOS UI test automation; more about that to come shortly
+Below are the required software and gems you need to install to run this framework. (Note: This framework has not yet been set up for iOS UI test automation; more about that to come shortly)
 
 ### Ruby
 All tests are developed in Ruby (version 2.0.0-p247). Highly recommended using RVM to install Ruby and manage Gemsets http://www.rvm.io/
@@ -23,7 +23,7 @@ How to set up Github on a Mac - http://help.github.com/mac-set-up-git/
 
 ## FRAMEWORK 
 
-All tests will be written using the Rspec2 framework - https://www.relishapp.com/rspec
+All tests are written using the Rspec2 framework - https://www.relishapp.com/rspec
 
 The current folder structure:
 
