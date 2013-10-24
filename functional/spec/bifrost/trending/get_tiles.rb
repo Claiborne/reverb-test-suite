@@ -237,7 +237,7 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     data['tiles'].length.should == 10
   end
 
-  xit "should limit 10 me tiles (FAILS: Returns 11)" do
+  it "should limit 10 me tiles" do
     url = @bifrost_env+"/trending/tiles/me?limit=10&api_key="+@session_token
     begin
       response = RestClient.get url, @headers

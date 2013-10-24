@@ -201,7 +201,7 @@ describe "TRENDING API -- Skip and Limit for Trending Interests" do
     data['interests'].length.should == 10
   end
 
-  xit "should limit 10 me interests (FAILS: Returns 11)" do
+  it "should limit 10 me interests" do
     url = @bifrost_env+"/trending/interests/me?limit=10&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
