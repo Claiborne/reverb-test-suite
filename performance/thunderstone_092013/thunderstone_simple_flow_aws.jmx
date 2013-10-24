@@ -17,15 +17,18 @@
           <stringProp name="-806324728">ARTICLE_ID_IMG</stringProp>
           <stringProp name="69787">FOD</stringProp>
           <stringProp name="-1005760919">INTERESTS</stringProp>
+          <stringProp name="1894436271">STG-SESSION</stringProp>
         </collectionProp>
         <collectionProp name="UserParameters.thread_values">
-          <collectionProp name="966951587">
+          <collectionProp name="-976295778">
             <stringProp name="-2129487315">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/article_ids.txt)}</stringProp>
             <stringProp name="1773230769">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/article_ids_img.txt)}</stringProp>
             <stringProp name="673431033">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/fod.txt)}</stringProp>
             <stringProp name="1043560263">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/interests.txt)}</stringProp>
+            <stringProp name="1489876434">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/stg-sessions.txt)}</stringProp>
           </collectionProp>
-          <collectionProp name="772031937">
+          <collectionProp name="-1836788680">
+            <stringProp name="0"></stringProp>
             <stringProp name="0"></stringProp>
             <stringProp name="0"></stringProp>
             <stringProp name="0"></stringProp>
@@ -109,7 +112,7 @@
           </elementProp>
           <elementProp name="GET_ARTICLE_THREAD" elementType="Argument">
             <stringProp name="Argument.name">GET_ARTICLE_THREAD</stringProp>
-            <stringProp name="Argument.value">0</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="GET_ARTICLE_BY_LOC_THREAD" elementType="Argument">
@@ -119,7 +122,7 @@
           </elementProp>
           <elementProp name="GET_INTEREST_STREAM_THREAD" elementType="Argument">
             <stringProp name="Argument.name">GET_INTEREST_STREAM_THREAD</stringProp>
-            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.value">0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="GET_ARTICLE_RECS_THREAD" elementType="Argument">
@@ -147,6 +150,11 @@
             <stringProp name="Argument.value">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/dev-tokens-anon.txt)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="STG_TOKENS_ANON" elementType="Argument">
+            <stringProp name="Argument.name">STG_TOKENS_ANON</stringProp>
+            <stringProp name="Argument.value">${__StringFromFile(/home/wclaiborne/jmeter/thunderstone_092013/stg-tokens-anon.txt)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -163,7 +171,7 @@
         <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
-        <stringProp name="HTTPSampler.domain">api.helloreverb.com/v2</stringProp>
+        <stringProp name="HTTPSampler.domain">stage-api.helloreverb.com/v2</stringProp>
         <stringProp name="HTTPSampler.port"></stringProp>
         <stringProp name="HTTPSampler.connect_timeout"></stringProp>
         <stringProp name="HTTPSampler.response_timeout"></stringProp>
@@ -319,7 +327,7 @@
           <stringProp name="ConstantTimer.delay">${HOME_WORDWALL_SLEEP}</stringProp>
         </ConstantTimer>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Wordwall Me Fresh" enabled="false">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Wordwall Me Fresh" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -329,7 +337,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/trending/interests/me?skip=0&amp;limit=300&amp;cursorId=1&amp;api_key=${DEV_TOKENS_ANON}</stringProp>
+          <stringProp name="HTTPSampler.path">/trending/interests/me?limit=25&amp;api_key=${STG_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -339,7 +347,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Wordwall Global Fresh" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Wordwall Global Fresh" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -349,7 +357,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/trending/interests/global?limit=300&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/trending/interests/global?limit=300&amp;api_key=${DEV_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -522,7 +530,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/trending/tiles/global?skip=0&amp;limit=24&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/trending/tiles/me?skip=0&amp;limit=24&amp;api_key=${STG_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1152,7 +1160,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/articles/docId/${ARTICLE_ID}?api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/articles/docId/41631005?api_key=${STG_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1271,7 +1279,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${GET_ARTICLE_BY_LOC_THREAD}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -1296,7 +1304,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/articles/articlesByLocation?lon=-122.424&amp;lat=37.775&amp;lonDelta=0.3&amp;latDelta=0.3&amp;nearestLimit=10&amp;popularLimit=10&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/articles/articlesByLocation?lon=-122.424&amp;lat=37.775&amp;lonDelta=0.3&amp;latDelta=0.3&amp;nearestLimit=10&amp;popularLimit=10&amp;api_key=${DEV_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1306,7 +1314,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Get By Loc" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Get By Loc" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1326,7 +1334,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Get By Loc" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Get By Loc" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1411,7 +1419,7 @@
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Get Interest Stream" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Get Interest Stream" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -1440,7 +1448,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/interests/stream/me?interest=${INTERESTS}&amp;skip=0&amp;limit=24&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/interests/stream/me?interest=${INTERESTS}&amp;skip=0&amp;limit=24&amp;api_key=${DEV_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1460,7 +1468,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/interests/stream/me?interest=United%20States&amp;skip=0&amp;limit=24&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/interests/stream/me?interest=United%20States&amp;skip=0&amp;limit=24&amp;api_key=${STG_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1594,12 +1602,26 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
+        <SMIMEAssertion guiclass="SMIMEAssertionGui" testclass="SMIMEAssertion" testname="SMIME Assertion" enabled="false">
+          <boolProp name="SMIMEAssert.verifySignature">false</boolProp>
+          <boolProp name="SMIMEAssert.notSigned">false</boolProp>
+          <stringProp name="SMIMEAssert.issuerDn"></stringProp>
+          <stringProp name="SMIMEAssert.signerDn"></stringProp>
+          <stringProp name="SMIMEAssert.signerSerial"></stringProp>
+          <stringProp name="SMIMEAssert.signerEmail"></stringProp>
+          <stringProp name="SMIMEAssert.signerCertFile"></stringProp>
+          <boolProp name="SMIMEAssert.signerNoCheck">false</boolProp>
+          <boolProp name="SMIMEAssert.signerCheckConstraints">false</boolProp>
+          <boolProp name="SMIMEAssert.signerCheckByFile">false</boolProp>
+          <stringProp name="SMIMEAssert.messagePosition"></stringProp>
+        </SMIMEAssertion>
+        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Get Article Recs" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${GET_ARTICLE_RECS_THREAD}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -1624,7 +1646,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/articles/recommendations/${ARTICLE_ID}?skip=0&amp;limit=100&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/articles/recommendations/41631005?skip=0&amp;limit=20&amp;api_key=${STG_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1634,7 +1656,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Recommendations" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Recommendations" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1654,7 +1676,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Recommendations" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Article Recommendations" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1743,7 +1765,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${CONCEPT_SEARCH_THREAD}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -1768,7 +1790,7 @@
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/interests/search/${INTEREST}?skip=0&amp;limit=100&amp;api_key=${API_KEY}</stringProp>
+          <stringProp name="HTTPSampler.path">/interests/search/Food?skip=0&amp;limit=100&amp;api_key=${STG_TOKENS_ANON}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1778,7 +1800,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Interest Search" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Interest Search" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1798,7 +1820,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Interest Search" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Interest Search" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
