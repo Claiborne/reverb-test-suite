@@ -8,21 +8,27 @@ require '../functional/lib/bifrost/token.rb'; include Token
 # Search corpus for bad words in title
 
 bad_words = []
+flagged_content = []
 
 File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
   bad_words << line.to_s.strip
 end
 
 bad_words.each do |bad_word|
-  puts "--------------- #{bad_word} ---------------".green
+  puts bad_word.yellow
+  flagged_content << "--------------- #{bad_word} ---------------"
   url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=0&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
   res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
   data = JSON.parse res
   puts "::::: #{bad_word} :::::".red if data.count > 99
   data.each do |d|
-    puts d['title']
+    flagged_content << d['title']
   end
 end
+
+File.open('/Users/willclaiborne/Desktop/flagged_article_titles', 'w') do |f|  
+  f.puts flagged_content
+end  
 
 # Below checks clean content for tier 1 content only
 
