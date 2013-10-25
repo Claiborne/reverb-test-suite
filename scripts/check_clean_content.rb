@@ -3,8 +3,29 @@ require 'colorize'
 require 'json'
 require 'date'
 require '../functional/lib/bifrost/token.rb'; include Token
-ENV['env'] = 'stg'
-puts RestClient.get "https://stage-api.helloreverb.com/v2/articles/docId/41895814?api_key=#{get_anon_token('stage-api.helloreverb.com/v2')}"
+#ENV['env'] = 'stg'
+
+# Search corpus for bad words in title
+
+bad_words = []
+
+File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
+  bad_words << line.to_s.strip
+end
+
+bad_words.each do |bad_word|
+  puts "--------------- #{bad_word} ---------------".green
+  url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=0&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
+  res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+  data = JSON.parse res
+  puts "::::: #{bad_word} :::::".red if data.count > 99
+  data.each do |d|
+    puts d['title']
+  end
+end
+
+# Below checks clean content for tier 1 content only
+
 #raise StandardError, "\nNOTE: Command line argument is required: YYYY-MM-DD".yellow unless ARGV[0].to_s.match(/\d\d\d\d-\d\d-\d\d/)
 =begin
 date = ARGV[0].to_s
