@@ -148,15 +148,6 @@ shared_examples 'Trending Tiles Basic Checks' do
       end
     end
 
-    it "should return a non-nil, non blank 'accessedOn' value for each tile of interest" do
-      @data['tiles'].each do |tile|
-        if tile['tileType'] == 'interest'
-          check_not_nil tile['accessedOn']
-          check_not_blank tile['accessedOn']
-        end
-      end
-    end
-
     it "should return a non-nil, non blank 'known' value for each tile" do
       @data['tiles'].each do |tile|
         check_not_nil tile['known']
