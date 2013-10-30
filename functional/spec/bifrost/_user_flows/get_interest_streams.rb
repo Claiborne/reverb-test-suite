@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Get Interests Streams For an Anon User" do
+describe "USER FLOWS - Get Trending interests For an Anon User" do
 
   class Interests_Helper
     @me = []; @global = []
