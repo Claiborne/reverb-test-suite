@@ -96,3 +96,8 @@ http://www.politico.com/rss/click_full.xml
 http://www.politico.com/rss/politicopicks.xml    
 http://www.politico.com/rss/congress.xml
 http://www.politico.com/rss/politicolive_full.xml
+http://syndication.boston.com/bostonglobe/editorial_opinion/blogs/the_angle/index.xml
+http://feeds.wbur.org/wbur_programs/radioboston
+http://feeds.wired.com/wired/index
+http://www.aljazeera.com/Services/Rss/?PostingId=2007731105943979989
+http://america.aljazeera.com/content/ajam/articles.rss
