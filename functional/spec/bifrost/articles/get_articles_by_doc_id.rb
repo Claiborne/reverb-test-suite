@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API -- GET Articles by docId" do
+describe "ARTICLES API -- GET Articles by docId", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -41,7 +41,6 @@ describe "ARTICLES API -- GET Articles by docId" do
       @me_trending_articles << article['contentId'] if article['tileType'] == 'article'
     end
     @me_trending_articles.each do |article|
-      puts article
       res = RestClient.get "#{@bifrost_env}/articles/docId/#{article}?api_key=#{@session}", @headers
       data = JSON.parse res
       @me_trending_articles_responses << data
@@ -157,7 +156,7 @@ describe "ARTICLES API -- GET Articles by docId" do
 
   it "should return the correct docId value for each me article" do 
     @me_trending_articles_responses.each_with_index do |article, index|
-      article['docId'].to_s.should == @global_trending_articles[index].to_s
+      article['docId'].to_s.should == @me_trending_articles[index].to_s
     end
   end
 
