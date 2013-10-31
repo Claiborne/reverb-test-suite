@@ -2,7 +2,6 @@ require 'rspec'
 require 'config_path'
 require 'rest_client'
 require 'json'
-require 'colorize'
 require 'api_checker.rb'; include APIChecker
 
 describe "ARTICLES API -- GET Articles by docId" do
