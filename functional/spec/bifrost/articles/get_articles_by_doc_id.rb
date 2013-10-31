@@ -2,9 +2,10 @@ require 'rspec'
 require 'config_path'
 require 'rest_client'
 require 'json'
+require 'colorize'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API -- GET Articles by docId", :test => true do
+describe "ARTICLES API -- GET Articles by docId" do
 
   before(:all) do
     # Get bifrost environment
@@ -75,7 +76,7 @@ describe "ARTICLES API -- GET Articles by docId", :test => true do
   it "should retun a non-blank, non-nil content value for each global article" do
     @global_trending_articles_responses.each do |article|
       content = article['content']
-      check_not_blank content
+      check_not_blank content if article['licenseType'] == 1
       check_not_nil content
     end 
   end
@@ -179,7 +180,7 @@ describe "ARTICLES API -- GET Articles by docId", :test => true do
   it "should retun a non-blank, non-nil content value for each me article" do
     @me_trending_articles_responses.each do |article|
       content = article['content']
-      check_not_blank content
+      check_not_blank content if article['licenseType'] == 1
       check_not_nil content
     end 
   end
@@ -224,19 +225,17 @@ describe "ARTICLES API -- GET Articles by docId", :test => true do
     end 
   end
 
-  it "should retun a non-blank, non-nil publisher.name value for each me article" do
+  it "should retun a non-nil publisher.name value for each me article" do
     @me_trending_articles_responses.each do |article|
       publisher_name = article['publisher']['name']
-      check_not_blank publisher_name
       check_not_nil publisher_name
     end 
   end
 
-  it "should retun a non-blank, non-nil publisher.url value for each me article" do
+  it "should retun a non-nil publisher.url value for each me article" do
     @me_trending_articles_responses.each do |article|
       publisher_url = article['publisher']['url']
-      check_not_blank publisher_url
-      check_not_nil publisher_url
+        check_not_nil publisher_url
     end 
   end
 
