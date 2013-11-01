@@ -3,7 +3,7 @@ require 'json'
 require 'rest_client'
 require 'thread'
 
-describe "USER FLOWS - Read an Article and Update Me Wordwall" do
+describe "USER FLOWS - Read an Article and Personalize" do
 
   def read_article(time, article)
     {
@@ -133,5 +133,17 @@ describe "USER FLOWS - Read an Article and Update Me Wordwall" do
     @article_data[:concepts].each do |article_concept|
       trending_me_interests.include?(article_concept).should be_true
     end
+  end
+
+  it 'should update user history' do
+    url = "#@bifrost_env/userProfile/history?startDate=1970-01-01T00:00:00.000Z&endDate=2015-10-30T22:18:13.410Z&skip=0&limit=24&api_key=#@session"
+    res = RestClient.get url, @headers
+    data = JSON.parse res
+    data['tiles'].count.should > 0
+    history_tiles = []
+    data['tiles'].each do |tile|
+      history_tiles << tile['contentId'].to_s
+    end
+    history_tiles.include?(@article_data[:article_id]).should be_true
   end
 end
