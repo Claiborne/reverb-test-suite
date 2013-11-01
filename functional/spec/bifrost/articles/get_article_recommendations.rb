@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API -- GET Recommendations", :test => true do
+describe "ARTICLES API -- GET Recommendations" do
 
   before(:all) do
     # Get bifrost environment
