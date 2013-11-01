@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API -- GET Articles By Location (San Francisco)", :test => true do
+describe "ARTICLES API -- GET Interests By Location (San Francisco)", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -56,9 +56,4 @@ describe "ARTICLES API -- GET Articles By Location (San Francisco)", :test => tr
     interest_returned.to_s.should == 'true'
   end
 
-  # check articles
-
-  #check tiles
-
-  #%w(contentId score titleType count location)
 end
