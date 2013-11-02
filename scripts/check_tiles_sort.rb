@@ -8,7 +8,7 @@ require 'json'
 30.times do
   puts ''
   #url = "https://stage-api.helloreverb.com/v2/trending/tiles/me?skip=#{@skip}&limit=#{@limit}&api_key=#{@api_key}&format=json"
-  url = "https://stage-api.helloreverb.com/v2/trending/tiles/social?skip=#{@skip}&api_key=ca3d2ddd98c2dfae653f6acc6937458eb9fcdf0ac8a82f78&format=json"
+  url = "https://stage-api.helloreverb.com/v2/trending/tiles/social?skip=#{@skip}&api_key=bdb49f7de517fa4afb6361b3896f41da8521109679c9bee0&format=json"
   res = RestClient.get url
   data = JSON.parse res
   @skip = @skip + data['tiles'].count
