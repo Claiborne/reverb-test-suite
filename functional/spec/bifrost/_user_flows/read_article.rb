@@ -17,7 +17,7 @@ describe "USER FLOWS - Read an Article and Personalize" do
       "eventArgs"=> [
       {
       "name"=> "docId",
-      "value"=> article
+      "value"=>article.to_s
       },
       {
       "name"=>"tappedFromApp",
