@@ -8,6 +8,8 @@ module Token
       return '51561484e4b0edfcfec11627'
     elsif ENV['env'].downcase == 'stg'
       return '515b32b0e4b03f3544d60a15'
+    elsif ENV['env'].downcase == 'prd'
+      return '515b32b0e4b03f3544d60a15'
     else
       raise StandardError, "Unable to return a clientId value from lib/bifrost/token.rb"
     end
