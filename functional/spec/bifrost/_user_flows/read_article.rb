@@ -94,7 +94,7 @@ describe "USER FLOWS - Read an Article and Personalize" do
     when 'prd'
       @article_data = {:article_id => '42419084', :concepts => ["San Francisco", "Brandon Jacobs", "Adam Schefter", "Getty Images", "NFC Championship Game", "ESPN"]}
     when 'stg'
-      @article_data = {:article_id => '38515770', :concepts => ["California", "San Francisco 49ers", "West Sacramento", "Oakland Raiders", "Letter box", "National Football League", "Showdown (poker)"]}
+      @article_data = {:article_id => '38515770', :concepts => ["California", "San Francisco 49ers", "West Sacramento, California", "Oakland Raiders", "Letter box", "National Football League", "Showdown (poker)"]}
     when 'dev'
       @article_data = {:article_id => '1888584', :concepts => ["San Francisco", "Kansas City, Missouri"]}
     else
