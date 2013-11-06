@@ -3,7 +3,7 @@ require 'json'
 require 'rest_client'
 require 'thread'
 
-describe "USER FLOWS - Read an Article and Personalize", :test => true do
+describe "USER FLOWS - Read an Article and Personalize" do
 
   def read_article(time, article)
     {
