@@ -33,7 +33,9 @@ rss_feeds.each do |feed|
     response = RestClient.post url, '', :content_type => 'application/x-www-form-urlencoded', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
   rescue => e
     puts url.red
-    raise e, url
+    puts e.message
+    failed_feeds << url
+    next
   end
   articles = JSON.parse response
   articles.each do |article|
