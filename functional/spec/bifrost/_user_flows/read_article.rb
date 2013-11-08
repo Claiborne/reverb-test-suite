@@ -40,7 +40,7 @@ describe "USER FLOWS - Read an Article and Personalize" do
       "value"=>'1'
       }
       ],
-      "startTime"=>time
+      "startTime"=>(time*1000)
       }
     ]
     }.to_json
@@ -69,7 +69,7 @@ describe "USER FLOWS - Read an Article and Personalize" do
           "value"=>'1'
         }
         ],
-        "startTime"=>time
+        "startTime"=>(time*1000)
         }
       ]
     }.to_json
@@ -122,6 +122,7 @@ describe "USER FLOWS - Read an Article and Personalize" do
   it 'should update me wordwall' do
     sleep 3
     url = "#{@bifrost_env}/trending/interests/me?api_key=#{@session}"
+    puts url
     res = RestClient.get url, @headers
     data = JSON.parse res
 
