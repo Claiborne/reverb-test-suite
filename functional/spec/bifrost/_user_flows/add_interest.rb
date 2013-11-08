@@ -32,7 +32,9 @@ describe "USER FLOWS - Add Interest to Anon User" do
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
-    
+  end
+
+  it 'should display the interest in me wordwall' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
@@ -45,17 +47,11 @@ describe "USER FLOWS - Add Interest to Anon User" do
     data['interests'].each do |interest|
       me_wall << interest['value']
     end
-    begin
-      me_wall.include?(@interest).should be_true
-    rescue
-      puts me_wall
-      puts ""
-      puts url
-    end
+    me_wall.include?(@interest).should be_true
   end
 
-  it 'should display the added interest in me tiles' do
-    tiles = []
+  it 'should display the interest in me tiles' do
+    me_tiles = []
     url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -64,8 +60,8 @@ describe "USER FLOWS - Add Interest to Anon User" do
     end
     data = JSON.parse response
     data['tiles'].each do |tile|
-      tiles << tile['contentId']
+      me_tiles << tile['contentId']
     end
-    tiles.include?(@interest).should be_true
+    me_tiles.include?(@interest).should be_true
   end
 end
