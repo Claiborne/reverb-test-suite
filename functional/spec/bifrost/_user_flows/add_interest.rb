@@ -53,4 +53,19 @@ describe "USER FLOWS - Add Interest to Anon User" do
       puts url
     end
   end
+
+  it 'should display the added interest in me tiles' do
+    tiles = []
+    url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    data['tiles'].each do |tile|
+      tiles << tile['contentId']
+    end
+    tiles.include?(@interest).should be_true
+  end
 end
