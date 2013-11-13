@@ -20,7 +20,7 @@ end
 
 bad_words.each do |bad_word|
   %w(0 100 200 300 400 500).each do |skip|
-    puts "."
+    print "."
     flagged_content << "--------------- #{bad_word} ---------------"
     url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
