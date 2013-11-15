@@ -28,4 +28,3 @@ bad_words.each do |bad_word|
     break unless data.count > 99
   end
 end
-
