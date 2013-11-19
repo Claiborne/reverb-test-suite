@@ -42,7 +42,7 @@ TO_EMAIL = "wclaiborne@helloreverb.com"
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
 To: Caitlin <#{TO_EMAIL}>
-Subject: "Flagged Article Titles from QA"
+Subject: Flagged Article Titles from QA
 #{output}
 END_OF_MESSAGE
 
