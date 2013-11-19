@@ -16,7 +16,7 @@ today = (Time.now.to_s.match /\d\d\d\d-\d\d\-\d\d/).to_s
 File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
   bad_words << line.to_s.strip
 end
-=begin
+
 bad_words.each do |bad_word|
   %w(0 100 200 300 400 500).each do |skip|
     output << "--------------- #{bad_word} ---------------\n"
@@ -34,8 +34,7 @@ bad_words.each do |bad_word|
     break unless data.count > 99
   end
 end
-=end
-output = 'RAN FROM CRON!'
+
 FROM_EMAIL = "everbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
 TO_EMAIL = "wclaiborne@helloreverb.com"
