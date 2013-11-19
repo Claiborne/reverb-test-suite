@@ -21,7 +21,12 @@ bad_words.each do |bad_word|
     print "."
     flagged_content << "--------------- #{bad_word} ---------------"
     url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
-    res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+    begin
+      res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+    rescue => e
+      flagged_content << "COULD NOT SEARCH FOR #{bad_word}. There was a corpus error: #{e.message}"
+      next
+    end
     data = JSON.parse res
     data.each do |d|
       (flagged_content << d['title']) if d['createDate'].match(date)
