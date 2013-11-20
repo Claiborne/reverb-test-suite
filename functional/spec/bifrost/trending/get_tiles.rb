@@ -89,7 +89,7 @@ end
       @data['tiles'].length.should == 24
     end
 
-    it "should only return interests of type 'article'" do
+    it "should only return tiles of type 'article'" do
       @data['tiles'].each do |i|
         i['tileType'].should == 'article'
       end
@@ -172,43 +172,6 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
 
     # Compare logged-in interests to anon interests
     logged_in_tiles.should_not == anon_tiles
-  end
-end
-
-describe "TRENDING API -- Skip and Limit for Trending Tiles" do
-
-  before(:all) do
-    # Get bifrost environment
-    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
-    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
-
-    # Set headers
-    @headers = {:content_type => 'application/json', :accept => 'application/json'}
-
-    # Get anon session token
-    @session_token = get_anon_token(@bifrost_env) 
-  end
-
-  it "should limit 10 global tiles" do
-    url = @bifrost_env+"/trending/tiles/global?limit=10&api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response 
-    data['tiles'].length.should == 10
-  end
-
-  it "should limit 10 me tiles" do
-    url = @bifrost_env+"/trending/tiles/me?limit=10&api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response  
-    data['tiles'].length.should == 10
   end
 end
 
