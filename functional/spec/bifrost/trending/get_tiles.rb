@@ -266,23 +266,25 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     first_page['tiles'].last.should == second_page['tiles'].first
   end
 
-  it "should paginate global tiles to only 100" do
-    url = @bifrost_env+"/trending/tiles/global?skip=99&limit=24&api_key="+@session_token
+  it "should paginate global tiles past 150" do
+    url = @bifrost_env+"/trending/tiles/global?skip=150&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
       raise StandardError.new(e.message+" "+url)
     end
     data = JSON.parse response
-    data['tiles'].length.should == 1
+    data['tiles'].length.should > 0
+  end
 
-    url = @bifrost_env+"/trending/tiles/global?skip=100&limit=24&api_key="+@session_token
+    it "should paginate me tiles past 150" do
+    url = @bifrost_env+"/trending/tiles/me?skip=150&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
       raise StandardError.new(e.message+" "+url)
     end
     data = JSON.parse response
-    data['tiles'].length.should == 0
+    data['tiles'].length.should > 0
   end
 end
