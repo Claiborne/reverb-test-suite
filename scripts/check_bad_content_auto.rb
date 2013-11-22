@@ -24,10 +24,15 @@ bad_words.each do |bad_word|
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
-      output << "COULD NOT SEARCH FOR #{bad_word}. There was a corpus error: #{e.message}"
+      output << "There was a corpus error: #{e.message}"
       next
     end
-    data = JSON.parse res
+    begin
+      data = JSON.parse res
+    rescue => e
+      output << "There was a corpus error: JSON not returned from Corpus. #{e.message}"
+      next
+    end
     data.each do |d|
       output << "#{d['title']}\n" if d['createDate'].match(today)
     end
@@ -35,7 +40,7 @@ bad_words.each do |bad_word|
   end
 end
 
-FROM_EMAIL = "everbqualityassurance@gmail.com"
+FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
 TO_EMAIL = "caitlin@helloreverb.com"
 

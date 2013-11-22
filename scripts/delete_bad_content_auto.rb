@@ -66,7 +66,7 @@ bad_words.each do |bad_word|
   end
 end
 
-FROM_EMAIL = "everbqualityassurance@gmail.com"
+FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
 TO_EMAIL = "caitlin@helloreverb.com"
 
