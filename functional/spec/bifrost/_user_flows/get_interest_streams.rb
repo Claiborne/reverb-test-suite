@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Get Trending interests For an Anon User" do
+describe "USER FLOWS - Get Trending interests For an Anon User", :test => true do
 
   class Interests_Helper
     @me = []; @global = []
@@ -38,17 +38,17 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.me.length.should == 25
   end
 
-  it 'should get 100 global interest values' do
-    url = @bifrost_env+"/trending/interests/global?skip=0&limit=100&api_key="+@session_token
+  it 'should return at least 300 global interest values' do
+    url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.count.should == 100
+    interests.count.should > 299
     interests.each {|i| Interests_Helper.global << i['value']}
-    Interests_Helper.global.length.should == 100
+    Interests_Helper.global.length.should > 299
   end
 
   it "should return 24 articles for each 'me' interest" do
