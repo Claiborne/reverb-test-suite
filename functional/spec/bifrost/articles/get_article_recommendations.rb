@@ -21,8 +21,9 @@ describe "ARTICLES API -- GET Recommendations" do
     res = RestClient.get "#@bifrost_env/trending/tiles/global?limit=24&api_key=#@session", @headers
     @article_id = JSON.parse(res)['tiles'][0]['contentId']
 
+    url = "#@bifrost_env/articles/recommendations/#@article_id?api_key=#@session"
     begin
-      response = RestClient.get "#@bifrost_env/articles/recommendations/#@article_id?api_key=#@session", @headers
+      response = RestClient.get url, @headers
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
