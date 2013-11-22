@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Get Trending interests For an Anon User", :test => true do
+describe "USER FLOWS - Get Trending interests For an Anon User" do
 
   class Interests_Helper
     @me = []; @global = []
@@ -46,8 +46,8 @@ describe "USER FLOWS - Get Trending interests For an Anon User", :test => true d
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.count.should > 299
     interests.each {|i| Interests_Helper.global << i['value']}
+    interests.count.should > 299
     Interests_Helper.global.length.should > 299
   end
 
