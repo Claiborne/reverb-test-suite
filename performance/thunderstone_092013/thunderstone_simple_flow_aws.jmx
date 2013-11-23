@@ -2379,7 +2379,7 @@
             <bytes>true</bytes>
           </value>
         </objProp>
-        <stringProp name="filename">/home/wclaiborne/results.csv</stringProp>
+        <stringProp name="filename">/home/jmeter/results.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Create User" enabled="false">
