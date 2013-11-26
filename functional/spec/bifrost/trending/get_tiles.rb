@@ -70,7 +70,7 @@ require 'Time'
 end
 
 %w(0 50 100 150).each do |skip|
-  describe "TRENDING API -- Get 'Global' Tiles For Anon User", :test => true do
+  describe "TRENDING API -- Get 'Global' Tiles For Anon User" do
 
     before(:all) do
       # Get bifrost environment
