@@ -4,6 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 require 'bifrost/trending_helper.rb'
+require 'Time'
 
 %w(0 50 100 150).each do |skip|
   describe "TRENDING API -- Get 'Me' Tiles For Anon User" do
@@ -56,11 +57,20 @@ require 'bifrost/trending_helper.rb'
       end
       dates.should == dates.sort {|x,y| y <=> x }
     end
+
+    if skip == '0'
+      it 'should return the first article no more than 4 hours old' do
+        first_article_date = @data['tiles'][0]['publishDate']
+        first_article_time = Time.parse first_article_date
+        time_difference = Time.now.to_i - first_article_time.to_i
+        time_difference.should < 60*60*4
+      end
+    end
   end
 end
 
 %w(0 50 100 150).each do |skip|
-  describe "TRENDING API -- Get 'Global' Tiles For Anon User" do
+  describe "TRENDING API -- Get 'Global' Tiles For Anon User", :test => true do
 
     before(:all) do
       # Get bifrost environment
@@ -109,7 +119,17 @@ end
         dates << tile['publishDate']
       end
       dates.should == dates.sort {|x,y| y <=> x }
-    end    
+    end  
+
+    if skip == '0'
+      it 'should return the first article no more than 1 hour old' do
+        first_article_date = @data['tiles'][0]['publishDate']
+        first_article_time = Time.parse first_article_date
+        time_difference = Time.now.to_i - first_article_time.to_i
+        time_difference.should < 60*60
+      end
+    end
+
   end
 end
 
