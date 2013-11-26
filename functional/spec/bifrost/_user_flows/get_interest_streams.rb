@@ -58,7 +58,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User", :test => true d
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
-        errors << url
+        errors << "#{url} 404 Not Found"
         next
       rescue => e
         raise StandardError.new(e.message+":\n"+url)
