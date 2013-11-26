@@ -40,7 +40,7 @@ module Token
     begin
       response = RestClient.post login_endpoint, body, headers
     rescue => e
-      raise StandardError.new(e.message+":\n"+url)
+      raise StandardError.new(e.message+":\n"+login_endpoint)
     end
     data = JSON.parse response
     data['token']
