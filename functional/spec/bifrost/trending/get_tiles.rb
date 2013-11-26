@@ -129,7 +129,6 @@ end
         time_difference.should < 60*60
       end
     end
-
   end
 end
 
