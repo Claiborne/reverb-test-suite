@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Get Trending interests For an Anon User" do
+describe "USER FLOWS - Get Trending interests For an Anon User", :test => true do
 
   class Interests_Helper
     @me = []; @global = []
@@ -69,8 +69,9 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     errors.should == []
   end
 
-  it "should return at least one article for each 'global' interest" do
+  it "should return at least one recent article for each 'global' interest" do
     errors = []
+    not_recent = []
     Interests_Helper.global.each do |interest|
       url = @bifrost_env+"/interests/stream/global?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
       begin
@@ -82,7 +83,18 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       end
       data = JSON.parse response
       errors << interest if data['tiles'].length == 0
+
+      # check recency
+      begin 
+        first_article_date = data['tiles'][0]['publishDate']
+        first_article_time = Time.parse first_article_date
+        time_difference = Time.now.to_i - first_article_time.to_i
+        time_difference.should < 60*60*12
+      rescue => e
+        not_recent << "#{interest} may not be updating"
+      end
     end
     errors.should == []
+    not_recent.should == []
   end
 end
