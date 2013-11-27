@@ -20,6 +20,10 @@ describe "USER FLOWS - Social Wall and Articles" do
     @session_token = get_token @bifrost_env, 'clay_social', 'testpassword'
   end
 
+  it 'should delete a user\'s sifter' do
+    # DELETE /api/cache/users/socialSifter/:userId
+  end
+
   it 'should start with a blank social wall' do
     url = "#@bifrost_env/trending/interests/social?skip=0&api_key=#@session_token"
     puts url
@@ -49,20 +53,20 @@ describe "USER FLOWS - Social Wall and Articles" do
     user_who_shared = 153008 # clay_share
 
     body = {
-  "eventName"=>"com.reverb.events.heimdall.shares.ContentShared",
-  "sharedContent"=>[{
-    "eventName"=>"com.reverb.events.ContentShare",
-    "itemType"=>"article",
-    "itemId"=>article,
-    "attribution"=>{
-      "eventName"=>"com.reverb.datacontracts.Attribution",
-      "network"=>"reverb",
-      "shareDate"=>"2013-11-26T07:33:15Z",
-      "userId"=>user_who_shared
-    }
-  }],
-  "affectedUsers"=>affected_user
-}.to_json
+      "eventName"=>"com.reverb.events.heimdall.shares.ContentShared",
+      "sharedContent"=>[{
+        "eventName"=>"com.reverb.events.ContentShare",
+        "itemType"=>"article",
+        "itemId"=>article,
+        "attribution"=>{
+          "eventName"=>"com.reverb.datacontracts.Attribution",
+          "network"=>"reverb",
+          "shareDate"=>"2013-11-26T07:33:15Z",
+          "userId"=>user_who_shared
+        }
+      }],
+      "affectedUsers"=>affected_user
+    }.to_json
 
     veggr_social_service = '10.178.29.73'
     url = "http://#{veggr_social_service}:8000/api/baldr/notify/heimdall-background-service/shares"
