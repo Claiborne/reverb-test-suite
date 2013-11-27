@@ -4,7 +4,9 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 
-describe "USER FLOWS - Social Wall and Articles", :test => true do
+### NOTE: This is hardcoded for dev only right now ####
+
+describe "USER FLOWS - Social Wall and Articles" do
 
   before(:all) do
     # Get bifrost environment
@@ -42,9 +44,9 @@ describe "USER FLOWS - Social Wall and Articles", :test => true do
   end
 
   it 'should post a share event to baldr' do
-    article = '40000010'
-    affected_user = [152867] # clay_social
-    user_who_shared = 153008 # clay_share
+    article = '2319855'
+    affected_user = [1180637] # clay_social
+    user_who_shared = 1180753 # clay_share
 
     body = {
   "eventName"=>"com.reverb.events.heimdall.shares.ContentShared",
@@ -62,7 +64,8 @@ describe "USER FLOWS - Social Wall and Articles", :test => true do
   "affectedUsers"=>affected_user
 }.to_json
 
-    url = "http://10.178.29.73:8000/api/baldr/notify/heimdall-background-service/shares"
+    veggr_social_service = '10.178.29.73'
+    url = "http://#{veggr_social_service}:8000/api/baldr/notify/heimdall-background-service/shares"
     RestClient.post url, body, @headers
 
   end
