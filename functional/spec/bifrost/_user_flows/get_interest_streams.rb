@@ -3,11 +3,11 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
-require 'colorize'
+require 'colorize'; require 'Time'
 
 include Token
 
-describe "USER FLOWS - Get Trending interests For an Anon User", :test => true do
+describe "USER FLOWS - Get Trending interests For an Anon User" do
 
   class Interests_Helper
     @me = []; @global = []
@@ -86,6 +86,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User", :test => true d
       first_article_date = data['tiles'][0]['publishDate']
       first_article_time = Time.parse first_article_date
       time_difference = Time.now.to_i - first_article_time.to_i
+      puts time_difference
       errors << "#{interest}: first article more than 12 hours old" if time_difference > 60*60*12
     end
     errors.should == []
