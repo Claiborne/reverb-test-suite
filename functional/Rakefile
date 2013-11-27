@@ -22,3 +22,9 @@ RSpec::Core::RakeTask.new('veggr') do |t|
   t.pattern = 'spec/veggr/**/*.rb'
 end
 
+desc "Run Idun tests"
+RSpec::Core::RakeTask.new('idun') do |t|
+  t.rspec_opts = ["-Ilib","--format documentation","--color"]
+  t.pattern = 'spec/idun/**/*.rb'
+end
+
