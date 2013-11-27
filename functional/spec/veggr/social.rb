@@ -6,7 +6,7 @@ require 'bifrost/token.rb'; include Token
 
 ### NOTE: This is hardcoded for stage only right now ####
 
-describe "USER FLOWS - Social Wall and Articles" do
+describe "VEGGR SOCIAL - Social Shares" do
 
   before(:all) do
     # Get bifrost environment
