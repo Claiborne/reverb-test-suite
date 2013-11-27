@@ -1,0 +1,11 @@
+dev:
+  baseurl: insights.helloreverb.com
+  auth: Y2FpdGxpbjpzdzMzdHVtcw==
+
+stg:
+  baseurl: stage-insights.helloreverb.com
+  auth: d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz
+
+prd:
+  baseurl: dev-insights.helloreverb.com
+  auth: d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz
