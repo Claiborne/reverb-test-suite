@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'; include Token
 
-### NOTE: This is hardcoded for dev only right now ####
+### NOTE: This is hardcoded for stage only right now ####
 
 describe "USER FLOWS - Social Wall and Articles" do
 
@@ -44,9 +44,9 @@ describe "USER FLOWS - Social Wall and Articles" do
   end
 
   it 'should post a share event to baldr' do
-    article = '2319855'
-    affected_user = [1180637] # clay_social
-    user_who_shared = 1180753 # clay_share
+    article = '40000010'
+    affected_user = [152867] # clay_social
+    user_who_shared = 153008 # clay_share
 
     body = {
   "eventName"=>"com.reverb.events.heimdall.shares.ContentShared",
