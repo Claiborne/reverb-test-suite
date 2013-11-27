@@ -2,7 +2,7 @@ require 'rspec'
 require 'config_path'
 require 'rest_client'
 require 'json'
-require 'bifrost/token.rb'
+require 'bifrost/token.rb'; include Token
 
 ### NOTE: This is hardcoded for dev only right now ####
 
@@ -10,7 +10,7 @@ describe "USER FLOWS - Social Wall and Articles" do
 
   before(:all) do
     # Get bifrost environment
-    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/bifrost.yml"
     @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
 
     # Set headers

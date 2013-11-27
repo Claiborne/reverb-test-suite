@@ -15,3 +15,10 @@ RSpec::Core::RakeTask.new('bifrost-user-flows') do |t|
   t.rspec_opts = ["-Ilib","--format documentation","--color"]
   t.pattern = 'spec/bifrost/_user_flows/**/*.rb'
 end
+
+desc "Run Veggr tests"
+RSpec::Core::RakeTask.new('veggr') do |t|
+  t.rspec_opts = ["-Ilib","--format documentation","--color"]
+  t.pattern = 'spec/veggr/**/*.rb'
+end
+
