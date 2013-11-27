@@ -13,6 +13,10 @@ describe "USER FLOWS - Social Wall and Articles" do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/bifrost.yml"
     @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
 
+    # Get veggr social environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/veggr_social.yml"
+    @veggr_social_env = "http://#{ConfigPath.new.options['baseurl']}:8000"
+
     # Set headers
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
@@ -68,8 +72,7 @@ describe "USER FLOWS - Social Wall and Articles" do
       "affectedUsers"=>affected_user
     }.to_json
 
-    veggr_social_service = '10.178.29.73'
-    url = "http://#{veggr_social_service}:8000/api/baldr/notify/heimdall-background-service/shares"
+    url = "#@veggr_social_env/api/baldr/notify/heimdall-background-service/shares"
     RestClient.post url, body, @headers
 
   end
