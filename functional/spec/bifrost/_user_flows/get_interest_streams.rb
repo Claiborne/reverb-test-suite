@@ -69,20 +69,42 @@ describe "USER FLOWS - Get Trending interests For an Anon User", :test => true d
     errors.should == []
   end
 
-  it "should return at least one recent article for each 'global' interest" do
+  it "should return recent articles for each 'me' interest" do
     errors = []
+    Interests_Helper.me.each do |interest|
+      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue RestClient::ResourceNotFound => e
+        errors << "#{url} 404 Not Found"
+        next
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      data = JSON.parse response
+
+      first_article_date = data['tiles'][0]['publishDate']
+      first_article_time = Time.parse first_article_date
+      time_difference = Time.now.to_i - first_article_time.to_i
+      errors << "#{interest}: first article more than 12 hours old" if time_difference > 60*60*12
+    end
+    errors.should == []
+  end
+
+  it "should return at least one recent article for each 'global' interest" do
+    blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
       url = @bifrost_env+"/interests/stream/global?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
-        errors << url
+        blank_tiles << "#{url} 404 Not Found"
       rescue => e
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
-      errors << interest if data['tiles'].length == 0
+      blank_tiles << interest if data['tiles'].length == 0
 
       # check recency
       begin 
@@ -94,7 +116,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User", :test => true d
         not_recent << "#{interest} may not be updating"
       end
     end
-    errors.should == []
+    blank_tiles.should == []
     not_recent.should == []
   end
 end
