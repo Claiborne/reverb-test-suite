@@ -14,7 +14,7 @@ flagged_content = []
 today = (Time.now.to_s.match /\d\d\d\d-\d\d\-\d\d/).to_s
  
 File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
-  bad_words << line.to_s.strip
+  bad_words << line.to_s.downcase.strip
 end
 
 bad_words.each do |bad_word|

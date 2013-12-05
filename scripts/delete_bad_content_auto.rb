@@ -8,7 +8,7 @@ bad_words = []
 ids = []
 
 File.open(File.dirname(__FILE__)+'/bad_words_autodelete.txt', "r").each_line do |line|
-  bad_words << line.to_s.strip
+  bad_words << line.to_s.downcase.strip
 end
 
 puts "BEFORE"
