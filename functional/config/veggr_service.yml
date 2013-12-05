@@ -1,0 +1,8 @@
+dev:
+  baseurl: 
+
+stg:
+  baseurl: 10.161.58.236
+
+prd:
+  baseurl:
