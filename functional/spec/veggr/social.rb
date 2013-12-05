@@ -8,6 +8,11 @@ require 'bifrost/token.rb'; include Token
 
 describe "VEGGR SOCIAL - Social Shares" do
 
+  class Veggr_Helper
+    @social_interests = []
+    class << self; attr_accessor :social_interests; end
+  end
+
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/bifrost.yml"
@@ -83,18 +88,44 @@ describe "VEGGR SOCIAL - Social Shares" do
 
     url = "#@veggr_social_env/api/baldr/notify/heimdall-background-service/shares"
     RestClient.post url, body, @headers
-
   end
 
   it 'should have content on user\'s social wall after baldr share' do
+    url = "#@bifrost_env/trending/interests/social?skip=0&api_key=#@session_token"
+    begin
+      res = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse res
+    data['interests'].length.should > 0
 
+    data['interests'].each do |interest|
+      Veggr_Helper.social_interests << interest['value']
+    end
   end
 
   it 'should have content on user\'s social tiles after baldr share' do
-
+    url = "#@bifrost_env/trending/tiles/social?skip=0&api_key=#@session_token"
+    begin
+      res = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse res
+    data['tiles'].length.should > 0
   end
 
   it 'should have contnent for each social word after baldr share' do
-
+    Veggr_Helper.social_interests.each do |social_interest|
+      url = "#@bifrost_env/interests/stream/social?interest=#{social_interest}&api_key=#@session_token"
+      begin
+        res = RestClient.get url, @headers
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+    data = JSON.parse res
+    data['tiles'].length.should > 0
+    end
   end
 end
