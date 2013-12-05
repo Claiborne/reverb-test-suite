@@ -28,9 +28,8 @@ describe "VEGGR SOCIAL - Social Shares" do
     @session_token = get_token @bifrost_env, 'clay_social', 'testpassword'
   end
 
-  xit 'should delete a user\'s sifter' do
-    # DELETE /api/cache/users/socialSifter/:userId
-    url = "#@veggr_service_env/api/cache/users/socialSifter/:userId"
+  it 'should delete a user\'s sifter' do
+    url = "#@veggr_service_env/api/cache/users/socialSifter/152867"
     begin
       res = RestClient.delete url, @headers
     rescue => e
