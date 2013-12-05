@@ -118,7 +118,7 @@ describe "VEGGR SOCIAL - Social Shares" do
 
   it 'should have contnent for each social word after baldr share' do
     Veggr_Helper.social_interests.each do |social_interest|
-      url = "#@bifrost_env/interests/stream/social?interest=#{social_interest}&api_key=#@session_token"
+      url = "#@bifrost_env/interests/stream/social?interest=#{CGI::escape social_interest}&api_key=#@session_token"
       begin
         res = RestClient.get url, @headers
       rescue => e
