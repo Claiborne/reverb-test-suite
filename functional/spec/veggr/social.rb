@@ -44,7 +44,6 @@ describe "VEGGR SOCIAL - Social Shares" do
 
   it 'should start with a blank social wall' do
     url = "#@bifrost_env/trending/interests/social?skip=0&api_key=#@session_token"
-    puts url
     begin
       res = RestClient.get url, @headers
     rescue => e
