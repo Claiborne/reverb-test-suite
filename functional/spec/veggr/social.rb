@@ -17,6 +17,10 @@ describe "VEGGR SOCIAL - Social Shares" do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/veggr_social.yml"
     @veggr_social_env = "http://#{ConfigPath.new.options['baseurl']}:8000"
 
+    # Get veggr service environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/veggr_service.yml"
+    @veggr_service_env = "http://#{ConfigPath.new.options['baseurl']}:8000"
+
     # Set headers
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
@@ -24,8 +28,14 @@ describe "VEGGR SOCIAL - Social Shares" do
     @session_token = get_token @bifrost_env, 'clay_social', 'testpassword'
   end
 
-  it 'should delete a user\'s sifter' do
+  xit 'should delete a user\'s sifter' do
     # DELETE /api/cache/users/socialSifter/:userId
+    url = "#@veggr_service_env/api/cache/users/socialSifter/:userId"
+    begin
+      res = RestClient.delete url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
   end
 
   it 'should start with a blank social wall' do
