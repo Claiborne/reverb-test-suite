@@ -26,7 +26,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     @session_token = get_anon_token(@bifrost_env)
   end
 
-  it 'should get 25 (max allowed) me interest values' do
+  it 'should return 25 (max allowed) me interest values' do
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=100&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -38,7 +38,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.me.length.should == 25
   end
 
-  it 'should return at least 300 global interest values' do
+  it 'should return at least 215 global interest values' do
     url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -47,8 +47,8 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     end
     interests = (JSON.parse response)['interests']
     interests.each {|i| Interests_Helper.global << i['value']}
-    interests.count.should > 299
-    Interests_Helper.global.length.should > 299
+    interests.count.should > 214
+    Interests_Helper.global.length.should > 214
   end
 
   it "should return 24 articles for each 'me' interest" do
@@ -86,13 +86,13 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       first_article_date = data['tiles'][0]['publishDate']
       first_article_time = Time.parse first_article_date
       time_difference = Time.now.to_i - first_article_time.to_i
-      puts time_difference
-      errors << "#{interest}: first article more than 12 hours old" if time_difference > 60*60*12
+      hours = 20
+      errors << "#{interest}: first article more than #{hours} hours old" if time_difference > 60*60*hours
     end
     errors.should == []
   end
 
-  it "should return at least one recent article for each 'global' interest" do
+  it "should return at least two articles that are receent for each 'global' interest" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
@@ -105,19 +105,23 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
-      blank_tiles << interest if data['tiles'].length == 0
+      blank_tiles << interest if data['tiles'].length < 2
 
       # check recency
       begin 
         first_article_date = data['tiles'][0]['publishDate']
         first_article_time = Time.parse first_article_date
         time_difference = Time.now.to_i - first_article_time.to_i
-        time_difference.should < 60*60*12
+        time_difference.should < 60*60*24
       rescue => e
-        not_recent << "#{interest} may not be updating"
+        not_recent << "#{interest.upcase} may not be updating"
       end
     end
     blank_tiles.should == []
-    not_recent.should == []
+    begin
+    not_recent.length.should < 4
+    rescue
+      not_recent.should == []
+    end
   end
 end
