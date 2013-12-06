@@ -1,5 +1,5 @@
 dev:
-  baseurl: 10.166.185.145
+  baseurl:
 
 stg:
   baseurl: 10.196.26.180
