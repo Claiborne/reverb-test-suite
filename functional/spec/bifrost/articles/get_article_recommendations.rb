@@ -71,7 +71,7 @@ describe "ARTICLES API -- GET Recommendations" do
   # check interest tiles 
 
   %w(contentId score tileType count known accessedOn shareUrl).each do |key|
-    it "should return a non-blank, non-nil value for each interest" do
+    it "should return a non-blank, non-nil #{key} value for each interest" do
       @data['tiles'].each do |interest|
         if interest['tileType'] == 'interest'
           check_not_blank interest[key]
