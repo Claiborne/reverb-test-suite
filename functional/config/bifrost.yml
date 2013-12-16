@@ -6,6 +6,6 @@ stg:
 
 prd:
   baseurl: api.helloreverb.com/v2
-
+  
 haproxy:
   baseurl: haproxy.helloreverb.com/v2

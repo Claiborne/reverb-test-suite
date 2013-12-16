@@ -1,4 +1,4 @@
-Reverb Fucntional and Acceptance Test Suite
+Reverb Functional and Acceptance Test Suite
 =================
 
 This framework will be the entry point for writing and running high-level test automation (regression, integration, acceptance) for frontend and backend applications
