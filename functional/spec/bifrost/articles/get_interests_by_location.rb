@@ -63,7 +63,7 @@ describe "ARTICLES API -- GET Interests By Location (San Francisco SOMA)", :test
     end
   end
 
-  ['Moscone Center', 'San Francisco Ferry Building', 'Nob Hill, San Francisco'].each do |interest|
+  ['Moscone Center', 'San Francisco Ferry Building', 'AT&T Park'].each do |interest|
     it "should return a tile for #{interest}" do
       has_interest = false
       @data['tiles'].each do |tile|
