@@ -3,7 +3,8 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
-require 'colorize'; require 'Time'
+require 'colorize'
+require 'Time'
 
 include Token
 
@@ -68,7 +69,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     end
     errors.should == []
   end
-
+=begin
   it "should return recent articles for each 'me' interest" do
     errors = []
     Interests_Helper.me.each do |interest|
@@ -91,8 +92,8 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     end
     errors.should == []
   end
-
-  it "should return at least two articles that are receent for each 'global' interest" do
+=end
+  it "should return at least two articles for each 'global' interest" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
@@ -108,6 +109,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       blank_tiles << interest if data['tiles'].length < 2
 
       # check recency
+=begin
       begin 
         first_article_date = data['tiles'][0]['publishDate']
         first_article_time = Time.parse first_article_date
@@ -116,12 +118,15 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       rescue => e
         not_recent << "#{interest.upcase} may not be updating"
       end
+=end
     end
     blank_tiles.should == []
+=begin
     begin
     not_recent.length.should < 4
     rescue
       not_recent.should == []
     end
+=end
   end
 end

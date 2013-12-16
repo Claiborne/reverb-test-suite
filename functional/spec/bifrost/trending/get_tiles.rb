@@ -194,7 +194,7 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API -- Skip and Limit for Trending Tiles" do
+describe "TRENDING API -- Skip and Limit for Trending Tiles", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -285,8 +285,8 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     first_page['tiles'].last.should == second_page['tiles'].first
   end
 
-  it "should paginate global tiles past 150" do
-    url = @bifrost_env+"/trending/tiles/global?skip=150&limit=24&api_key="+@session_token
+  it "should paginate global tiles past 450" do
+    url = @bifrost_env+"/trending/tiles/global?skip=450&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -296,8 +296,8 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     data['tiles'].length.should > 0
   end
 
-    it "should paginate me tiles past 450" do
-    url = @bifrost_env+"/trending/tiles/me?skip=450&limit=24&api_key="+@session_token
+    it "should paginate me tiles past 200" do
+    url = @bifrost_env+"/trending/tiles/me?skip=200&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e

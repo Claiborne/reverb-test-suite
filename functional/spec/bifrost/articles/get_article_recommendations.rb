@@ -48,7 +48,7 @@ describe "ARTICLES API -- GET Recommendations" do
 
   # check article tiles
 
-  %w(contentId score tileType header summary publisherInfo publishDate known accessedOn shareUrl).each do |key|
+  %w(contentId score tileType header summary publisherInfo publishDate known shareUrl).each do |key|
     it "should return a non-blank, non-nil #{key} value for each article" do
       @data['tiles'].each do |article|
         if article['tileType'] == 'article'
@@ -70,7 +70,7 @@ describe "ARTICLES API -- GET Recommendations" do
 
   # check interest tiles 
 
-  %w(contentId score tileType count known accessedOn shareUrl).each do |key|
+  %w(contentId score tileType count known shareUrl).each do |key|
     it "should return a non-blank, non-nil #{key} value for each interest" do
       @data['tiles'].each do |interest|
         if interest['tileType'] == 'interest'
