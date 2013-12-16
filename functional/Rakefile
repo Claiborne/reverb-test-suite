@@ -27,4 +27,3 @@ RSpec::Core::RakeTask.new('idun') do |t|
   t.rspec_opts = ["-Ilib","--format documentation","--color"]
   t.pattern = 'spec/idun/**/*.rb'
 end
-
