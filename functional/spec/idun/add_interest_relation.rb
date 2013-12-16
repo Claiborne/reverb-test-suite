@@ -2,8 +2,15 @@ require 'rspec'
 require 'config_path'
 require 'rest_client'
 require 'json'
+require 'concept_relations_json.rb'
 
 ### NOTE: This is hardcoded for stage only right now ####
+
+puts delete_concept_relation
+
+#  curl -H "content-type: application/json" -XPOST http://10.196.26.180:8000/api/recommend/recBundleFromConcept -d '{"concepts":[{"id":"Baseball","weight":1.0}]}'
+
+=begin
 
 describe "IDUN - Add and Delete Related Concepts" do
 
@@ -66,3 +73,4 @@ describe "IDUN - Add and Delete Related Concepts" do
   it 'get intereset relation assert no \'Jackie Robinson\'' do
 
   end
+=end
