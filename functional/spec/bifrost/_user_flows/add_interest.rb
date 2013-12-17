@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Add and Remove Interest to Anon User", :test => true do
+describe "USER FLOWS - Add and Remove Interest to Anon User" do
 
   before(:all) do
     # Get bifrost environment
