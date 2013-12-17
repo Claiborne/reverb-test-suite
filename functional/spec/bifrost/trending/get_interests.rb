@@ -132,7 +132,8 @@ describe "TRENDING API -- Get 'Me' Interests for Logged in User" do
     @session_token = get_anon_token(@bifrost_env) 
 
     # Get logged in session token
-    @session_token_logged_in = get_token @bifrost_env, 'clay00', 'testpassword'
+    @session_token_logged_in = get_token @bifrost_env, 'clay01
+', 'testpassword'
 
     # Get Interests for Logged-in User
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=25&api_key="+@session_token_logged_in
@@ -236,7 +237,8 @@ describe "TRENDING API -- Skip and Limit for Trending Interests" do
   
   it "should correctly paginate me interests" do
     # get logged in session b/c anon only returns 25 interests
-    user_token = get_token @bifrost_env, 'clay00', 'testpassword'
+    user_token = get_token @bifrost_env, 'clay01
+', 'testpassword'
 
     # get first page +1
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=26&api_key="+user_token
