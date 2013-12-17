@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Favorite an article" do
+describe "USER FLOWS - Favorite and unfavorite an article" do
   
   class Fav_Article_Helper
     @article = nil
