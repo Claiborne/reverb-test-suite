@@ -132,8 +132,7 @@ describe "TRENDING API -- Get 'Me' Interests for Logged in User" do
     @session_token = get_anon_token(@bifrost_env) 
 
     # Get logged in session token
-    @session_token_logged_in = get_token @bifrost_env, 'clay01
-', 'testpassword'
+    @session_token_logged_in = get_token @bifrost_env, 'clay01', 'testpassword'
 
     # Get Interests for Logged-in User
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=25&api_key="+@session_token_logged_in
