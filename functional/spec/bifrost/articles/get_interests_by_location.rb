@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API -- GET Interests By Location (San Francisco SOMA)", :test => true do
+describe "ARTICLES API -- GET Interests By Location (San Francisco SOMA)" do
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
