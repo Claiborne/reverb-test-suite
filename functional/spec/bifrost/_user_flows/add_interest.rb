@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Add Interest to Anon User" do
+describe "USER FLOWS - Add and Remove Interest to Anon User", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -63,5 +63,30 @@ describe "USER FLOWS - Add Interest to Anon User" do
       me_tiles << tile['contentId']
     end
     me_tiles.include?(@interest).should be_true
+  end
+
+  it 'should remove interest' do
+    url = @bifrost_env+"/interests/?interest=#@interest&api_key="+@session_token
+    begin
+      response = RestClient.delete url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+  end
+
+  it 'should not display the interest in me wordwall' do
+    # check interest added to me wall
+    url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    me_wall = []
+    data['interests'].each do |interest|
+      me_wall << interest['value']
+    end
+    me_wall.include?(@interest).should_not be_true
   end
 end
