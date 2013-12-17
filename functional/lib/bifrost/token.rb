@@ -28,21 +28,32 @@ module Token
   end
 
   def get_token(base_url, login, password)
-    login_endpoint = "#{base_url}/account/login?clientId=#{get_client_id}"
-    body = {
-      "login" => login,
-      "deviceId" => "reverb-test-suite",
-      "allowMergeIntoExisting" => true,
-      "password" => password,
-      "remember" => true
-      }.to_json
-    headers = {:content_type => 'application/json', :accept => 'application/json'}
-    begin
-      response = RestClient.post login_endpoint, body, headers
-    rescue => e
-      raise StandardError.new(e.message+":\n"+login_endpoint)
-    end
-    data = JSON.parse response
+    data = sign_in base_url, login, password
     data['token']
   end
+
+  def get_token_and_login(base_url, login, password)
+    data = sign_in base_url, login, password
+    [data['token'], data['userId']]
+  end
+
+  private
+
+    def sign_in(base_url, login, password)
+      login_endpoint = "#{base_url}/account/login?clientId=#{get_client_id}"
+      body = {
+        "login" => login,
+        "deviceId" => "reverb-test-suite",
+        "allowMergeIntoExisting" => true,
+        "password" => password,
+        "remember" => true
+        }.to_json
+      headers = {:content_type => 'application/json', :accept => 'application/json'}
+      begin
+        response = RestClient.post login_endpoint, body, headers
+      rescue => e
+        raise StandardError.new(e.message+":\n"+login_endpoint)
+      end
+      JSON.parse response 
+    end
 end
