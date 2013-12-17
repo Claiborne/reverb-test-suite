@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Favorite an article", :test => true do
+describe "USER FLOWS - Favorite an article" do
   
   class Fav_Article_Helper
     @article = nil
@@ -23,8 +23,7 @@ describe "USER FLOWS - Favorite an article", :test => true do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Sign in
-    login = get_token_and_login @bifrost_env, 'clay01
-', 'testpassword'
+    login = get_token_and_login @bifrost_env, 'clay01', 'testpassword'
     @session_token = login[0]
     @user_id = login[1]
   end
@@ -57,6 +56,7 @@ describe "USER FLOWS - Favorite an article", :test => true do
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
+    sleep 2
   end
 
   it "should return favorited article" do
@@ -68,7 +68,7 @@ describe "USER FLOWS - Favorite an article", :test => true do
       raise StandardError.new(e.message+":\n"+url)
     end
     data = JSON.parse response
-    data['tiles'][0].should == article
+    data['tiles'][0]['contentId'].should == article
   end
 
   it "should remove an article from favorites" do
@@ -79,6 +79,7 @@ describe "USER FLOWS - Favorite an article", :test => true do
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
+    sleep 2
   end
 
   it "should not return unfavorited article" do
@@ -90,6 +91,6 @@ describe "USER FLOWS - Favorite an article", :test => true do
       raise StandardError.new(e.message+":\n"+url)
     end
     data = JSON.parse response
-    data['tiles'][0].should != article
+    data['tiles'][0].should_not == article
   end
 end
