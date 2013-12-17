@@ -147,7 +147,8 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
     @session_token = get_anon_token(@bifrost_env) 
 
     # Get logged in session token
-    @session_token_logged_in = get_token @bifrost_env, 'clay00', 'testpassword'
+    @session_token_logged_in = get_token @bifrost_env, 'clay01
+', 'testpassword'
 
     # Get Interests for Logged-in User
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token_logged_in
