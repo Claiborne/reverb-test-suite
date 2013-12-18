@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 require 'colorize'
-require 'Time'
+require 'time'
 
 include Token
 

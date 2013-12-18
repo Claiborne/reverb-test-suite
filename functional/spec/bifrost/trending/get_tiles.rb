@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 require 'bifrost/trending_helper.rb'
-require 'Time'
+require 'time'
 
 %w(0 50 100 150).each do |skip|
   describe "TRENDING API -- Get 'Me' Tiles For Anon User" do
