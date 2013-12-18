@@ -24,6 +24,23 @@ describe "USER FLOWS - Add and Remove Interest to Anon User" do
     @interest = 'Cake'
   end
 
+  it 'should search for an interest' do
+    interest = @interest.downcase
+    url = @bifrost_env+"/interests/search/#{interest}?limit=10&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    search_results = []
+    data['results'].each do |result|
+      search_results << result['value']
+    end
+    search_results.length.should > 0
+    search_results.include?(@interest).should be_true
+  end
+
   it 'should add an interest' do
     # add interest
     url = @bifrost_env+"/interests?api_key="+@session_token
