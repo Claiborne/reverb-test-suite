@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API -- GET Recommendations" do
+describe "USER FLOWS -- Read Recommendationed Articles", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -39,6 +39,17 @@ describe "ARTICLES API -- GET Recommendations" do
     article_returned = false
     @data['tiles'].each do |tile|
       if tile['tileType'] == 'article'
+        article_returned = true
+        break
+      end
+    end
+    article_returned.to_s.should == 'true'
+  end
+
+  it 'should return at least one interest tile' do
+    article_returned = false
+    @data['tiles'].each do |tile|
+      if tile['tileType'] == 'interest'
         article_returned = true
         break
       end
@@ -89,5 +100,14 @@ describe "ARTICLES API -- GET Recommendations" do
       end
     end
   end
+
+  # open recommended articles 
+
+  it 'should open each recommended article' do
+    
+  end
+
+  # open recommended interests 
+
 end
   
