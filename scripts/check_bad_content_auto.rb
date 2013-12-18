@@ -18,6 +18,7 @@ File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
 end
 
 bad_words.each do |bad_word|
+  sleep 1
   %w(0 100 200 300 400 500).each do |skip|
     output << "--------------- #{bad_word} ---------------\n"
     url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
