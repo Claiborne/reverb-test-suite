@@ -236,8 +236,7 @@ describe "TRENDING API -- Skip and Limit for Trending Interests" do
   
   it "should correctly paginate me interests" do
     # get logged in session b/c anon only returns 25 interests
-    user_token = get_token @bifrost_env, 'clay01
-', 'testpassword'
+    user_token = get_token @bifrost_env, 'clay01', 'testpassword'
 
     # get first page +1
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=26&api_key="+user_token
