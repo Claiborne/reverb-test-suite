@@ -123,7 +123,7 @@ describe "USER FLOWS -- Read Recommendationed Content" do
     @recommended_articles['tiles'].each do |interest|
       if interest['tileType'] == 'interest'
         interest_name = interest['contentId']
-        url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest_name}&skip=0&limit=50&api_key="+@session
+        url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest_name}&skip=0&limit=24&api_key="+@session
         begin
           response = RestClient.get url, @headers
         rescue => e
