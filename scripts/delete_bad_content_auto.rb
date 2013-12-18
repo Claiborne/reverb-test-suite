@@ -14,6 +14,7 @@ end
 puts "BEFORE"
 
 bad_words.each do |bad_word|
+  sleep 1
   %w(0 100 200 300 400 500).each do |skip|
     #puts "--------------- #{bad_word} ---------------\n"
     print "+"
@@ -38,6 +39,7 @@ bad_words.each do |bad_word|
 end
 
 ids.each do |id|
+  sleep 1
   url = "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/deleteDocById?id=#{id}"
   begin
     RestClient.delete url,  :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
