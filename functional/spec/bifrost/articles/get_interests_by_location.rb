@@ -26,8 +26,6 @@ describe "ARTICLES API -- GET Interests By Location (San Francisco SOMA)" do
     url = "#@bifrost_env/articles/articlesByLocation?lon=#{lon}&lat=#{lat}&lonDelta=#{lonDelta}&latDelta=#{latDelta}"\
     "&nearestLimit=#{nearestLimit}&popularLimit=#{popularLimit}&api_key=#@session"
 
-    puts url
-
     begin
       response = RestClient.get url, @headers
     rescue => e
