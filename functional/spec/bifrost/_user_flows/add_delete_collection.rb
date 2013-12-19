@@ -67,4 +67,25 @@ describe "USER FLOWS - Create and Delete Collections", :test => true do
     CollectionFlowHelper.collection['summary'].should == 'this is the summary'
   end
 
+  it 'should get colleciton by ID' do
+    id = CollectionFlowHelper.collection['id']
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin 
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['name'].should == @collection_name
+    data['id'].should == id
+  end
+
+  it 'should delete collection' do
+
+  end
+
+  it 'should return a 404 when deleted collection is requested by ID' do
+
+  end
+
 end
