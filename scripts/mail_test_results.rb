@@ -1,6 +1,6 @@
 require 'net/smtp'
 
-file = File.open("/home/wclaiborne/bifrost-prd-results.txt ")
+file = File.open("/home/wclaiborne/bifrost-prd-results.txt")
 contents = ""
 file.each {|line|
   contents << line
