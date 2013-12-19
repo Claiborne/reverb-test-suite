@@ -6,7 +6,7 @@ require 'api_checker.rb'
 
 include APIChecker
 
-describe "INTERESTS API -- Interest Search", :test => true do
+describe "INTERESTS API -- Interest Search" do
 
   before(:all) do
     # Get bifrost environment
