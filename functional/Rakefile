@@ -10,6 +10,12 @@ RSpec::Core::RakeTask.new('bifrost') do |t|
   t.pattern = 'spec/bifrost/**/*.rb'
 end
 
+desc "Run Bifrost tests without format documentation"
+RSpec::Core::RakeTask.new('bifrost-nodoc') do |t|
+  t.rspec_opts = ["-Ilib","--color"]
+  t.pattern = 'spec/bifrost/**/*.rb'
+end
+
 desc "Run Bifrost user-flows tests"
 RSpec::Core::RakeTask.new('bifrost-user-flows') do |t|
   t.rspec_opts = ["-Ilib","--format documentation","--color"]
