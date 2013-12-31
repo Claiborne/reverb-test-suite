@@ -66,7 +66,6 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :test => true do
   it 'should return first trending global article no more than 3 hours old' do
     first_article = Time.parse(@anon_global_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
-    puts time_difference
     time_difference.should < 60*60*3
   end
 end
