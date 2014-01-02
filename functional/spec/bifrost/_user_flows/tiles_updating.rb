@@ -6,7 +6,7 @@ require 'bifrost/token.rb'
 
 include Token
 
-describe "USER FLOWS - Check Trending Tiles Are Updating", :test => true do
+describe "USER FLOWS - Check Trending Tiles Are Updating" do
 
   before(:all) do
     # Get bifrost environment

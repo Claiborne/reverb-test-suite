@@ -57,15 +57,6 @@ require 'time'
       end
       dates.should == dates.sort {|x,y| y <=> x }
     end
-
-    if skip == '0'
-      it 'should return the first article no more than 4 hours old' do
-        first_article_date = @data['tiles'][0]['publishDate']
-        first_article_time = Time.parse first_article_date
-        time_difference = Time.now.to_i - first_article_time.to_i
-        time_difference.should < 60*60*4
-      end
-    end
   end
 end
 
@@ -120,15 +111,6 @@ end
       end
       dates.should == dates.sort {|x,y| y <=> x }
     end  
-
-    if skip == '0'
-      it 'should return the first article no more than 1 hour old' do
-        first_article_date = @data['tiles'][0]['publishDate']
-        first_article_time = Time.parse first_article_date
-        time_difference = Time.now.to_i - first_article_time.to_i
-        time_difference.should < 60*60
-      end
-    end
   end
 end
 
@@ -260,7 +242,7 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
       #puts tile['contentId']
     #end
 
-    first_page['tiles'].last.should == second_page['tiles'].first
+    first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
   
   it "should correctly paginate me tiles" do
@@ -282,7 +264,7 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     end
     second_page = JSON.parse response 
 
-    first_page['tiles'].last.should == second_page['tiles'].first
+    first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
 
   it "should paginate global tiles past 450" do
