@@ -17,7 +17,6 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     @session_token = get_anon_token @bifrost_env
-    @social_token = get_social_token @bifrost_env
 
     # Get anon me tiles
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token
@@ -27,16 +26,6 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
       raise StandardError.new(e.message+":\n"+url)
     end
     @anon_me_tiles = JSON.parse anon_me_response
-
-    # Get social tiles
-
-    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@social_token
-    begin
-      social_response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+":\n"+url)
-    end
-    @social_tiles = JSON.parse social_response
 
     # Get anon global tiles
     url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session_token
@@ -60,6 +49,17 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
   end
 
   it 'should return first trending social article no more than 2 hours old', :prd => true do
+
+    social_token = get_social_token @bifrost_env
+
+    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token
+    begin
+      social_response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    @social_tiles = JSON.parse social_response
+
     first_article = Time.parse(@social_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
     time_difference.should < 60*60*2
