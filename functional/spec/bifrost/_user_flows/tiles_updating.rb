@@ -52,7 +52,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
 
     social_token = get_social_token @bifrost_env
 
-    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+3social_token
+    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token
     begin
       social_response = RestClient.get url, @headers
     rescue => e
