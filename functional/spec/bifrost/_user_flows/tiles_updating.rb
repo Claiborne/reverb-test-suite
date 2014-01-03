@@ -6,7 +6,7 @@ require 'bifrost/token.rb'
 
 include Token
 
-describe "USER FLOWS - Check Trending Tiles Are Updating", :test => true do
+describe "USER FLOWS - Check Trending Tiles Are Updating" do
 
   before(:all) do
     # Get bifrost environment
@@ -59,7 +59,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :test => true do
     time_difference.should < 60*60*2
   end
 
-  it 'should return first trending social article no more than 2 hours old', :stg => true do
+  it 'should return first trending social article no more than 2 hours old', :prd => true do
     first_article = Time.parse(@social_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
     time_difference.should < 60*60*2
