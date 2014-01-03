@@ -6,7 +6,7 @@ require 'bifrost/token.rb'
 
 include Token
 
-describe "USER FLOWS - Check Trending Tiles Are Updating" do
+describe "USER FLOWS - Check Trending Tiles Are Updating", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -17,6 +17,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     @session_token = get_anon_token @bifrost_env
+    @social_token = get_social_token @bifrost_env
 
     # Get anon me tiles
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token
@@ -29,14 +30,13 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
 
     # Get social tiles
 
-    # TODO
-    #url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@???????
-    #begin
-     # social_response = RestClient.get url, @headers
-    #rescue => e
-     # raise StandardError.new(e.message+":\n"+url)
-    #end
-    #@social_tiles = JSON.parse social_response
+    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@social_token
+    begin
+      social_response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    @social_tiles = JSON.parse social_response
 
     # Get anon global tiles
     url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session_token
@@ -53,19 +53,21 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     @user_id = login[1]
   end
 
-  it 'should return first trending me article no more than 8 hours old' do
+  it 'should return first trending me article no more than 2 hours old' do
     first_article = Time.parse(@anon_me_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
-    time_difference.should < 60*60*8
+    time_difference.should < 60*60*2
   end
 
-  xit 'should update social tiles: TODO' do
-
+  it 'should return first trending social article no more than 2 hours old', :stg => true do
+    first_article = Time.parse(@social_tiles['tiles'][0]['publishDate']).to_i
+    time_difference = Time.now.utc.to_i - first_article
+    time_difference.should < 60*60*2
   end
 
-  it 'should return first trending global article no more than 3 hours old' do
+  it 'should return first trending global article no more than 2 hours old' do
     first_article = Time.parse(@anon_global_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
-    time_difference.should < 60*60*3
+    time_difference.should < 60*60*2
   end
 end
