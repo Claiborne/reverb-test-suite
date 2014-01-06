@@ -25,14 +25,15 @@ bad_words.each do |bad_word|
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
+      sleep 7 # wait for Corpus to recover
       output << "There was a corpus error: #{e.message}"
-      next
+      break
     end
     begin
       data = JSON.parse res
     rescue => e
       output << "There was a corpus error: JSON not returned from Corpus. #{e.message}"
-      next
+      break
     end
     data.each do |d|
       output << "#{d['title']}\n" if d['createDate'].match(today)

@@ -22,6 +22,7 @@ bad_words.each do |bad_word|
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
+      sleep 7 # wait for Corpus to recover
       puts "Could not search for #{bad_word}. There was a corpus error: #{e.message}"
       next
     end
@@ -44,6 +45,7 @@ ids.each do |id|
   begin
     RestClient.delete url,  :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
   rescue => e
+    sleep 7 # wait for Corpus to recover
     puts e.message.to_s
   end
   print '.'
@@ -62,14 +64,15 @@ bad_words.each do |bad_word|
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
+      sleep 7 # wait for Corpus to recover
       output << "COULD NOT SEARCH FOR #{bad_word}. There was a corpus error: #{e.message}"
-      next
+      break
     end
     begin 
       data = JSON.parse res
     rescue 
       output << "NOTE: CORPUS DID NOT RETRUN VALID DATA for #{bad_word}. Please search for content manually and delete" 
-      next
+      break
     end
     data.each do |d|
       output << "#{d['title']}\n"
