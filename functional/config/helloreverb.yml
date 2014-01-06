@@ -1,0 +1,8 @@
+development:
+  baseurl: 
+  
+staging:
+  baseurl: bluesteel.helloreverb.com
+
+production:
+  baseurl: helloreverb.com
