@@ -234,7 +234,7 @@ describe "TRENDING API -- Skip and Limit for Trending Interests" do
     first_page['interests'].last['value'].should == second_page['interests'].first['value']
   end
   
-  xit "should correctly paginate me interests (FAILS IN PRD: But app doesn't paginate interests" do
+  xit "should correctly paginate me interests (FAILS IN PRD: But app doesn't paginate interests)" do
     # get logged in session b/c anon only returns 25 interests
     user_token = get_token @bifrost_env, 'clay01', 'testpassword'
 
