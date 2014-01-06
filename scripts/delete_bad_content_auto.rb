@@ -53,7 +53,9 @@ end
 
 puts "AFTER"
 
-output = "Results "
+output = "Deleted "
+output << "#{ids.count} articles\n\n"
+output << "Results "
 output << "for:\n"
 output << "#{Time.now}\n"
 
