@@ -24,7 +24,7 @@ describe "HelloReverb.com -- /share/collection/reverb/ces-2014 (#{protocol})" do
   end
 
   it "should return at least one article with title text" do
-    tile = @doc.at_css("div[class='brick set'] span.titleText")
+    tile = @doc.at_css("div.fullSet span.titleText")
     tile.should be_true
     tile.text.strip.length.should > 0
   end
@@ -58,11 +58,11 @@ describe "HelloReverb.com -- /share/interest/reverb/HTML5 (#{protocol})" do
   end
 
   it "should return h1 with text 'HTML5'" do
-    @doc.at_css('h1').text.should == 'Wrong title'
+    @doc.at_css('h1').text.should == 'HTML5'
   end
 
   it "should return at least one article with title text" do
-    tile = @doc.at_css("div[class='brick set'] span.titleText")
+    tile = @doc.at_css("div.fullSet span.titleText")
     tile.should be_true
     tile.text.strip.length.should > 0
   end
