@@ -8,7 +8,7 @@ file.each {|line|
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = "wclaiborne@helloreverb.com","qa@helloreverb.com"
+TO_EMAIL = ["wclaiborne@helloreverb.com","willclaiborne@gmail.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
@@ -22,3 +22,4 @@ smtp.enable_starttls
 smtp.start('gmail.com', 'reverbqualityassurance', PASSWORD, :login) do |smtp|
   smtp.send_message msgstr, FROM_EMAIL, TO_EMAIL
 end
+smtp.finish
