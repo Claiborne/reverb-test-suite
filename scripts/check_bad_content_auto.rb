@@ -58,3 +58,5 @@ smtp.enable_starttls
 smtp.start('gmail.com', 'reverbqualityassurance', PASSWORD, :login) do |smtp|
   smtp.send_message msgstr, FROM_EMAIL, TO_EMAIL
 end
+smtp.finish
+
