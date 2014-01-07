@@ -39,3 +39,9 @@ RSpec::Core::RakeTask.new('helloreverb') do |t|
   t.rspec_opts = ["-Ilib","--format documentation","--color"]
   t.pattern = 'spec/helloreverb/**/*.rb'
 end
+
+desc "Run Helloreverb.com tests without format documentation"
+RSpec::Core::RakeTask.new('helloreverb-nodoc') do |t|
+  t.rspec_opts = ["-Ilib","--color"]
+  t.pattern = 'spec/helloreverb/**/*.rb'
+end
