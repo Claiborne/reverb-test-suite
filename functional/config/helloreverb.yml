@@ -1,0 +1,8 @@
+dev:
+  baseurl: 
+  
+stg:
+  baseurl: bluesteel.helloreverb.com
+
+prd:
+  baseurl: helloreverb.com
