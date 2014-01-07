@@ -4,7 +4,7 @@ module FeChecker
   #require 'fe_checker'
   #include FeChecker
   
-  require 'open_page'
+  require 'open_page.rb'
   include OpenPage
   
   def check_display_text(locator)
