@@ -58,7 +58,7 @@ describe "HelloReverb.com -- /share/interest/reverb/HTML5 (#{protocol})" do
   end
 
   it "should return h1 with text 'HTML5'" do
-    @doc.at_css('h1').text.should == 'HTML5'
+    @doc.at_css('h1').text.should == 'Wrong title'
   end
 
   it "should return at least one article with title text" do
