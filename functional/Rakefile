@@ -33,3 +33,9 @@ RSpec::Core::RakeTask.new('idun') do |t|
   t.rspec_opts = ["-Ilib","--format documentation","--color"]
   t.pattern = 'spec/idun/**/*.rb'
 end
+
+desc "Run Helloreverb.com tests"
+RSpec::Core::RakeTask.new('helloreverb') do |t|
+  t.rspec_opts = ["-Ilib","--format documentation","--color"]
+  t.pattern = 'spec/helloreverb/**/*.rb'
+end
