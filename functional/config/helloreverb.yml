@@ -1,8 +1,8 @@
-development:
+dev:
   baseurl: 
   
-staging:
+stg:
   baseurl: bluesteel.helloreverb.com
 
-production:
+prd:
   baseurl: helloreverb.com
