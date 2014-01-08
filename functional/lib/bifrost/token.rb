@@ -28,13 +28,18 @@ module Token
   end
 
   def get_social_token(base_url)
-    #client_id = get_client_id
-    client_id = '515b32b0e4b03f3544d60a15'
+    client_id = get_client_id
     endpoint = "#{base_url}/account/oauthLogin?clientId=#{client_id}"
-    token = '2255573574-Xr7leYq5atAmXH9vG2Zi7dHKWzuHDJcDg4xosG1'
-    secret = 'nRR4j8rsjpPJFJupk7FaXVVzuXBtl8XS5qySzy7INRyNo'
-
-    headers = {:content_type => 'application/json', :accept => 'application/json'}
+    if ENV['env'] == 'prd'
+      token = '2255573574-Xr7leYq5atAmXH9vG2Zi7dHKWzuHDJcDg4xosG1'
+      secret = 'nRR4j8rsjpPJFJupk7FaXVVzuXBtl8XS5qySzy7INRyNo'
+    elsif ENV['env'] == 'stg' 
+      token = '2255573574-R2jWpp2ntGa4EnQ9C47QsIWKo3dAwwivXeGYMTX'
+      secret = 'pHEQ4NNNGyph4U64T9KYOD88lvYQqRZy6SQm07j0HhggC'
+    elsif ENV['env'] == 'dev' 
+      token = '2255573574-5B1QGZ3esomOOylG6h5tcEdqb0W5bs9XY8SBlu3'
+      secret = 'ogykkiUJ98CzpM1Kd70VhEclQhzG34xKHlFQlfgWNujGw'
+    end              
 
     body = {
       "deviceId"=>"reverb-test-suite",
@@ -45,7 +50,7 @@ module Token
     }.to_json
 
     begin 
-      response = RestClient.post endpoint, body, headers
+      response = RestClient.post endpoint, body, {:content_type => 'application/json', :accept => 'application/json'}
     rescue => e
       raise StandardError.new(e.message+" "+endpoint)
     end
