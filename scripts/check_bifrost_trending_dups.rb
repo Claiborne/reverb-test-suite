@@ -1,6 +1,5 @@
 require 'rest-client'
 require 'json'
-require 'colorize'
 require 'rspec'
 require File.dirname(__FILE__)+'/../functional/lib/bifrost/article_dup_checker.rb'; include ArticleDupChecker
 require File.dirname(__FILE__)+'/../functional/lib/bifrost/token.rb'; include Token
