@@ -14,7 +14,7 @@ end
 puts "BEFORE"
 
 bad_words.each do |bad_word|
-  sleep 1
+  sleep 0.4
   %w(0 100 200 300 400 500).each do |skip|
     #puts "--------------- #{bad_word} ---------------\n"
     print "+"
@@ -24,7 +24,7 @@ bad_words.each do |bad_word|
     rescue => e
       sleep 7 # wait for Corpus to recover
       puts "Could not search for #{bad_word}. There was a corpus error: #{e.message}"
-      next
+      break
     end
     begin 
       data = JSON.parse res
@@ -33,12 +33,20 @@ bad_words.each do |bad_word|
     end
     data.each do |d|
       #puts "#{d['title']}\n"
-      ids << d['id']
+      ids << "#{d['id']} -- #{d['title']}"
     end
     break unless data.count > 99
   end
 end
-
+#delete
+output = "Deleted "
+output << "#{ids.count} articles\n"
+output << "Titles and IDs:\n"
+ids.each do |id|
+  output << "#{id}\n"
+end
+#delete
+=begin
 ids.each do |id|
   sleep 1
   url = "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/deleteDocById?id=#{id}"
@@ -82,10 +90,11 @@ bad_words.each do |bad_word|
     break unless data.count > 99
   end
 end
+=end
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = "caitlin@helloreverb.com"
+TO_EMAIL = "wclaiborne@helloreverb.com"
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
@@ -99,5 +108,3 @@ smtp.enable_starttls
 smtp.start('gmail.com', 'reverbqualityassurance', PASSWORD, :login) do |smtp|
   smtp.send_message msgstr, FROM_EMAIL, TO_EMAIL
 end
-smtp.finish
-
