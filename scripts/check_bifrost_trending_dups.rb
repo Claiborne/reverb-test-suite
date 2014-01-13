@@ -10,8 +10,9 @@ describe "Trending articles" do
     tiles = []
     duplicate_articles = []
     skip = 0
-    2.times do 
-      res = RestClient.get article_endpoint+"?skip=#{skip}&api_key="+key, @headers
+    22.times do 
+      puts skip
+      res = RestClient.get article_endpoint+"?skip=#{skip}&limit=24&api_key="+key, @headers
       data = JSON.parse res
       data['tiles'].each do |tile|
         tiles << tile
@@ -19,7 +20,8 @@ describe "Trending articles" do
       duplicates_or_near_duplicates(tiles).each do |dup|
         duplicate_articles << dup[0]['contentId']
       end
-      puts data['tiles'].count
+    skip = skip + data['tiles'].count
+    break if data['tiles'].count == 0
     end
     duplicate_articles
   end
