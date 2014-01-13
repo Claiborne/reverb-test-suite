@@ -18,7 +18,7 @@ require 'time'
       @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
       # Get anon session token
-      @session_token = get_anon_token(@bifrost_env) 
+      @session_token = get_anon_token @bifrost_env
 
       # Get Articles for Anon User
       url = @bifrost_env+"/trending/tiles/me?#{skip}=0&limit=100&api_key="+@session_token
@@ -72,7 +72,7 @@ end
       @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
       # Get anon session token
-      @session_token = get_anon_token(@bifrost_env) 
+      @session_token = get_anon_token @bifrost_env
 
       # Get Articles for Anon User
       url = @bifrost_env+"/trending/tiles/global?#{skip}=0&limit=100&api_key="+@session_token
@@ -126,12 +126,12 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env) 
+    @session_token = get_anon_token @bifrost_env
 
     # Get logged in session token
     @session_token_logged_in = get_token @bifrost_env, 'clay01', 'testpassword'
 
-    # Get Interests for Logged-in User
+    # Get tiles for logged-in user
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token_logged_in
     begin
       response = RestClient.get url, @headers
@@ -141,7 +141,7 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
     @data_logged_in = JSON.parse response
     @data = @data_logged_in
 
-    # Get Interests for Anon User
+    # Get tiles for anon user
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -176,6 +176,38 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
   end
 end
 
+describe "TRENDING API -- Get 'Social' Tiles for Logged in User" do
+
+  before(:all) do
+
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    # Get social session token
+    @session_token = get_social_token @bifrost_env
+
+    # Get tiles for logged-in user
+    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    @data_logged_in = JSON.parse response
+    @data = @data_logged_in
+  end
+
+  include_examples "Trending Tiles Basic Checks"
+
+  it "should get 24 'social' tiles" do
+    @data_logged_in['tiles'].length.should == 24  
+  end
+end
+
 describe "TRENDING API -- Skip and Limit for Trending Tiles" do
 
   before(:all) do
@@ -187,7 +219,7 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env) 
+    @session_token = get_anon_token @bifrost_env
   end
 
   it "should limit 10 global tiles" do
