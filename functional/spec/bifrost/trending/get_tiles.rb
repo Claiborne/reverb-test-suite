@@ -176,7 +176,7 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API -- Skip and Limit for Trending Tiles" do
+describe "TRENDING API -- Skip and Limit for Trending Tiles", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -229,7 +229,7 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     #puts '-------'
 
     # get second page
-    url = @bifrost_env+"/trending/tiles/global?skip=23&limit=24&api_key="+@session_token
+    url = @bifrost_env+"/trending/tiles/global?skip=#{first_page['tiles'].count-1}&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -256,7 +256,7 @@ describe "TRENDING API -- Skip and Limit for Trending Tiles" do
     first_page = JSON.parse response 
 
     # get second page
-    url = @bifrost_env+"/trending/tiles/me?skip=23&limit=24&api_key="+@session_token
+    url = @bifrost_env+"/trending/tiles/me?skip=#{first_page['tiles'].count-1}&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
