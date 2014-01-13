@@ -150,15 +150,15 @@ shared_examples 'Trending Tiles Basic Checks' do
 
     it "should return a non-nil, non blank 'known' value for each tile" do
       @data['tiles'].each do |tile|
-        check_not_nil tile['known']
-        check_not_blank tile['known']
+        check_not_nil tile['known'] unless tile['tileType'] == 'person'
+        check_not_blank tile['known'] unless tile['tileType'] == 'person'
       end
     end
 
     it "should return a non-nil, non blank 'shareUrl' value for each tile" do
       @data['tiles'].each do |tile|
-        check_not_nil tile['shareUrl']
-        check_not_blank tile['shareUrl']
+        check_not_nil tile['shareUrl'] unless tile['tileType'] == 'person'
+        check_not_blank tile['shareUrl'] unless tile['tileType'] == 'person'
       end
     end
   end
