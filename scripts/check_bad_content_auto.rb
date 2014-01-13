@@ -36,7 +36,7 @@ bad_words.each do |bad_word|
       break
     end
     data.each do |d|
-      output << "#{d['title']}\n" if d['createDate'].match(today)
+      output << "#{d['title']}\n" # if d['createDate'].match(today)
     end
     break unless data.count > 99
   end
