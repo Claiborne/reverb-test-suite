@@ -176,7 +176,7 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API -- Skip and Limit for Trending Tiles", :test => true do
+describe "TRENDING API -- Skip and Limit for Trending Tiles" do
 
   before(:all) do
     # Get bifrost environment
