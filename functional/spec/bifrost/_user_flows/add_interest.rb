@@ -68,7 +68,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User" do
   end
 
   it 'should display the interest in me tiles' do
-    sleep 1
+    sleep 5
     me_tiles = []
     url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
     begin
