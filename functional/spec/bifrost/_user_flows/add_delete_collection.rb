@@ -7,7 +7,7 @@ require 'api_checker.rb'
 
 include APIChecker
 
-describe "USER FLOWS - Create and Delete Collections", :collections => true do
+describe "USER FLOWS - Create and Delete Collections", :collections => true, :stg => true do
 
   class CollectionFlowHelper
     class << self; attr_accessor :collection; end
