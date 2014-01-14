@@ -56,6 +56,7 @@ describe "USER FLOWS - Create and Delete Collections", :collections => true do
       raise StandardError.new(e.message+" "+url)
     end
     CollectionFlowHelper.collection = JSON.parse response
+    puts CollectionFlowHelper.collection
   end
 
   it 'should create a collection with the approriate name' do
@@ -63,11 +64,11 @@ describe "USER FLOWS - Create and Delete Collections", :collections => true do
   end
 
   it 'should create a collection with the appropriate number of tiles' do
-    CollectionFlowHelper.collection['tiles'][0].count.should == 1
+    CollectionFlowHelper.collection['tiles'].count.should == 1
   end
 
   it 'should create a collection with the appropriate article' do
-    CollectionFlowHelper.collection['tiles'][0]['contentId'].should == @collection_article_id
+    CollectionFlowHelper.collection['tiles'][0]['contentId'].should == @collection_article_id.to_s
   end
 
   it 'should create a collection with the appropriate pinnedConcepts' do
