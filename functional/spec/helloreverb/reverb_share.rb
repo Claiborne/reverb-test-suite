@@ -31,7 +31,12 @@ describe "HelloReverb.com -- /share/collection/reverb/ces-2014 (#{protocol})" do
 
   it "should not return any broken tile images" do
     broken_images = []
-    @doc.css('div.fullSet a div').count.should > 0
+    begin
+      @doc.css('div.fullSet a div').count.should > 0
+    rescue => e
+      puts @doc
+      raise e
+    end
     @doc.css('div.fullSet a div').each do |image|
       image_url = image.attribute('style').to_s.gsub('background:url(','').gsub(/\).*/,'')
       begin
@@ -69,7 +74,12 @@ describe "HelloReverb.com -- /share/interest/reverb/HTML5 (#{protocol})" do
 
   it "should not return any broken tile images" do
     broken_images = []
-    @doc.css('div.fullSet a div').count.should > 0
+    begin
+      @doc.css('div.fullSet a div').count.should > 0
+    rescue => e
+      puts @doc
+      raise e
+    end
     @doc.css('div.fullSet a div').each do |image|
       image_url = image.attribute('style').to_s.gsub('background:url(','').gsub(/\).*/,'')
       begin
