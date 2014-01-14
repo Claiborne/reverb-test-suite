@@ -56,7 +56,6 @@ describe "USER FLOWS - Create and Delete Collections", :collections => true do
       raise StandardError.new(e.message+" "+url)
     end
     CollectionFlowHelper.collection = JSON.parse response
-    puts CollectionFlowHelper.collection
   end
 
   it 'should create a collection with the approriate name' do
