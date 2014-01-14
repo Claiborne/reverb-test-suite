@@ -7,7 +7,7 @@ require 'api_checker.rb'
 
 include APIChecker
 
-describe "USER FLOWS - Create and Delete Collections", :test => true do
+describe "USER FLOWS - Create and Delete Collections", :collections => true do
 
   class CollectionFlowHelper
     class << self; attr_accessor :collection; end
@@ -28,34 +28,47 @@ describe "USER FLOWS - Create and Delete Collections", :test => true do
 
     @collection_name = "claytest#{Random.rand 1000000000}"
 
+    if ENV['env'] == 'dev'
+      @collection_article_id = 2694320
+    elsif ENV['env'] == 'stg'
+      @collection_article_id = 42983919
+    elsif ENV['env'] == 'prd'
+      @collection_article_id = 47702591
+    else
+      @collection_article_id = 2694320 # default to stage
+    end
+
   end
 
   it "should create a collection" do
     url = @bifrost_env+"/collections?api_key="+@session
     body = {
               "collection_name"=>@collection_name,
-              "articles"=>[
-                "2"
-              ],
+              "articles"=>[@collection_article_id],
               "pinnedConcepts"=>[
                 "Knitting", "Cake"
               ],
               "summary"=>"this is the summary"
-            }
+            }.to_json
     begin 
       response = RestClient.post url, body, @headers
     rescue => e
       raise StandardError.new(e.message+" "+url)
     end
     CollectionFlowHelper.collection = JSON.parse response
+    puts CollectionFlowHelper.collection
   end
 
   it 'should create a collection with the approriate name' do
     CollectionFlowHelper.collection['name'].should == @collection_name
   end
 
-  it 'should create a collection with the appropriate article count' do
-    CollectionFlowHelper.collection['tiles'][0]['count']['items'].should == 2
+  it 'should create a collection with the appropriate number of tiles' do
+    CollectionFlowHelper.collection['tiles'][0].count.should == 1
+  end
+
+  it 'should create a collection with the appropriate article' do
+    CollectionFlowHelper.collection['tiles'][0]['contentId'].should == @collection_article_id
   end
 
   it 'should create a collection with the appropriate pinnedConcepts' do
@@ -81,11 +94,20 @@ describe "USER FLOWS - Create and Delete Collections", :test => true do
   end
 
   it 'should delete collection' do
-
+    collection_id = CollectionFlowHelper.collection['id']
+    url = @bifrost_env+"/collections/#{collection_id}?api_key="+@session
+    begin 
+      response = RestClient.delete url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
   end
 
   it 'should return a 404 when deleted collection is requested by ID' do
-
+    sleep 1
+    id = CollectionFlowHelper.collection['id']
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    expect {RestClient.get url, @headers}.to raise_error(RestClient::ResourceNotFound)
   end
 
 end
