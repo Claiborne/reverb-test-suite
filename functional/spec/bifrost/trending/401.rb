@@ -5,7 +5,7 @@ require 'json'
 
 %w(interests tiles).each do |endpoint|
   %w(me me?skip=0&limit=20 social global).each do |context|
-    describe "TRENDING API -- GET /trending/#{endpoint}/#{context} with bad auth key" do
+    describe "TRENDING API - GET /trending/#{endpoint}/#{context} with bad auth key" do
 
       before(:all) do
         ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"

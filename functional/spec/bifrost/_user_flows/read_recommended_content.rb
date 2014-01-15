@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "USER FLOWS -- Read Recommendationed Content" do
+describe "USER FLOWS - Read Recommendationed Content" do
 
   before(:all) do
     # Get bifrost environment

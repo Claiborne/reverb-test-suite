@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 
 %w(/articles/articlesByLocation?lon=1&lat=1&lonDelta=1&latDelta=1&nearestLimit=1&popularLimit=1 /articles/docId/123 /articles/recommendations/123?skip=0&limit=20).each do |endpoint|
-  describe "ARTICLES API -- GET #{endpoint} with bad auth key" do
+  describe "ARTICLES API - GET #{endpoint} with bad auth key" do
 
     before(:all) do
       ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
