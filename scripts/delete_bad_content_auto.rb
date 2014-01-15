@@ -81,7 +81,7 @@ bad_words.each do |bad_word|
       break
     end
     data.each do |d|
-      output << "#{d['id']} -- #{d['title']}"
+      output << "#{d['id']} -- #{d['title']}\n"
     end
     break unless data.count > 99
   end
