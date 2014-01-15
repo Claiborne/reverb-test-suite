@@ -7,7 +7,7 @@ require 'bifrost/trending_helper.rb'
 require 'time'
 
 %w(0 50 100 150).each do |skip|
-  describe "TRENDING API -- Get 'Me' Tiles For Anon User" do
+  describe "TRENDING API - Get 'Me' Tiles For Anon User" do
 
     before(:all) do
       # Get bifrost environment
@@ -61,7 +61,7 @@ require 'time'
 end
 
 %w(0 50 100 150).each do |skip|
-  describe "TRENDING API -- Get 'Global' Tiles For Anon User" do
+  describe "TRENDING API - Get 'Global' Tiles For Anon User" do
 
     before(:all) do
       # Get bifrost environment
@@ -114,7 +114,7 @@ end
   end
 end
 
-describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
+describe "TRENDING API - Get 'Me' Tiles for Logged in User" do
 
   before(:all) do
 
@@ -176,7 +176,7 @@ describe "TRENDING API -- Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API -- Get 'Social' Tiles for Logged in User" do
+describe "TRENDING API - Get 'Social' Tiles for Logged in User" do
 
   before(:all) do
 
@@ -208,7 +208,7 @@ describe "TRENDING API -- Get 'Social' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API -- Skip and Limit for Trending Tiles" do
+describe "TRENDING API - Skip and Limit for Trending Tiles" do
 
   before(:all) do
     # Get bifrost environment

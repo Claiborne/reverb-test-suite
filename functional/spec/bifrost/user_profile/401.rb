@@ -5,7 +5,7 @@ require 'json'
 
 %w(/userProfile/activityStream /userProfile/byUserId/123 /userProfile/followers /userProfile/following 
   /userProfile/history /userProfile/history/first /userProfile/mine /userProfile/reverbs).each do |endpoint|
-  describe "USER PROFILE API -- GET #{endpoint} with bad auth key" do
+  describe "USER PROFILE API - GET #{endpoint} with bad auth key" do
 
     before(:all) do
       ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"

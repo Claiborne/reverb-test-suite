@@ -8,7 +8,7 @@ require 'fe_checker.rb'
 
 %w(http https).each do |protocol|
 
-describe "HelloReverb.com -- /share/collection/reverb/ces-2014 (#{protocol})" do
+describe "HelloReverb.com - /share/collection/reverb/ces-2014 (#{protocol})" do
 
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/helloreverb.yml"
@@ -51,7 +51,7 @@ describe "HelloReverb.com -- /share/collection/reverb/ces-2014 (#{protocol})" do
   end
 end
 
-describe "HelloReverb.com -- /share/interest/reverb/HTML5 (#{protocol})" do
+describe "HelloReverb.com - /share/interest/reverb/HTML5 (#{protocol})" do
 
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/helloreverb.yml"
