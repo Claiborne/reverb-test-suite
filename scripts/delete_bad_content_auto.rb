@@ -11,6 +11,8 @@ File.open(File.dirname(__FILE__)+'/bad_words_autodelete.txt', "r").each_line do 
   bad_words << line.to_s.downcase.strip
 end
 
+bad_words = ['giveaway']
+
 puts "BEFORE"
 
 bad_words.each do |bad_word|
@@ -32,26 +34,23 @@ bad_words.each do |bad_word|
       next
     end
     data.each do |d|
-      #puts "#{d['title']}\n"
       ids << "#{d['id']} -- #{d['title']}"
     end
     break unless data.count > 99
   end
 end
-#delete
-output = "Deleted "
+
+output = "Attempting to delete "
 output << "#{ids.count} articles\n"
-output << "Titles and IDs:\n"
+output << "IDs and titles:\n"
+
 ids.each do |id|
-  output << "#{id}\n"
-end
-#delete
-=begin
-ids.each do |id|
-  sleep 1
-  url = "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/deleteDocById?id=#{id}"
+  id_num = id.match(/\A\d*/).to_s
+  sleep 0.5
+  url = "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/deleteDocById?id=#{id_num}"
   begin
     RestClient.delete url,  :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+    output << "#{id}\n"
   rescue => e
     sleep 7 # wait for Corpus to recover
     puts e.message.to_s
@@ -61,11 +60,8 @@ end
 
 puts "AFTER"
 
-output = "Deleted "
-output << "#{ids.count} articles\n\n"
-output << "Results "
-output << "for:\n"
-output << "#{Time.now}\n"
+output << "\n\n"
+output << "Articles returned after deletions:\n"
 
 bad_words.each do |bad_word|
   %w(0 100 200 300 400 500).each do |skip|
@@ -85,16 +81,15 @@ bad_words.each do |bad_word|
       break
     end
     data.each do |d|
-      output << "#{d['title']}\n"
+      output << "#{d['id']} -- #{d['title']}\n"
     end
     break unless data.count > 99
   end
 end
-=end
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = "wclaiborne@helloreverb.com"
+TO_EMAIL = "caitlin@helloreverb.com"
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
