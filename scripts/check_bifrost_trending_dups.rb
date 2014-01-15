@@ -38,7 +38,6 @@ describe "Trending articles" do
       }
   end
   
-  
   before(:all) do
     ENV['env'] = 'prd'
 
