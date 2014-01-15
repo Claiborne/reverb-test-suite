@@ -7,7 +7,6 @@ require 'bifrost/token.rb'
 include Token
 
 describe "USER FLOWS - Check Trending Tiles Are Updating" do
-
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
@@ -48,7 +47,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     time_difference.should < 60*60*2
   end
   
-  it 'should return first trending social article no more than 2 hours old' do
+  it 'should return first trending social article no more than 2 hours old', :test => true do
 
     social_token = get_social_token @bifrost_env
 
