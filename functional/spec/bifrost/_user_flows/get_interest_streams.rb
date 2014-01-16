@@ -24,10 +24,10 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env)
+    @session_token = get_anon_token @bifrost_env
   end
 
-  it 'should return 25 (max allowed) me interest values' do
+  it 'should return 25 (max allowed) me interests' do
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=100&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -39,7 +39,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.me.length.should == 25
   end
 
-  xit 'should return at least 215 global interest values (FAILS IN PRODUCTION)' do
+  xit 'should return at least 215 global interests (FAILS IN PRODUCTION)' do
     url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -52,7 +52,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.global.length.should > 214
   end
 
-  it 'should return at least 99 global interest values' do
+  it 'should return at least 99 global interests' do
     url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -85,30 +85,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     end
     errors.should == []
   end
-=begin
-  it "should return recent articles for each 'me' interest" do
-    errors = []
-    Interests_Helper.me.each do |interest|
-      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
-      begin
-        response = RestClient.get url, @headers
-      rescue RestClient::ResourceNotFound => e
-        errors << "#{url} 404 Not Found"
-        next
-      rescue => e
-        raise StandardError.new(e.message+":\n"+url)
-      end
-      data = JSON.parse response
 
-      first_article_date = data['tiles'][0]['publishDate']
-      first_article_time = Time.parse first_article_date
-      time_difference = Time.now.to_i - first_article_time.to_i
-      hours = 20
-      errors << "#{interest}: first article more than #{hours} hours old" if time_difference > 60*60*hours
-    end
-    errors.should == []
-  end
-=end
   it "should return at least two articles for each 'global' interest" do
     blank_tiles = []
     not_recent = []
@@ -123,18 +100,6 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       end
       data = JSON.parse response
       blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 2
-
-      # check recency
-=begin
-      begin 
-        first_article_date = data['tiles'][0]['publishDate']
-        first_article_time = Time.parse first_article_date
-        time_difference = Time.now.to_i - first_article_time.to_i
-        time_difference.should < 60*60*24
-      rescue => e
-        not_recent << "#{interest.upcase} may not be updating"
-      end
-=end
     end
 
     if blank_tiles.count < 1
@@ -144,12 +109,62 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     else
       blank_tiles.count.should < 5
     end
-=begin
+  end
+end
+
+describe "USER FLOWS - Get Trending interests For an Social User" do
+
+  class Interests_Helper
+    @social = []
+    class << self; attr_accessor :social; end
+  end
+
+  before(:all) do
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    # Get social session token
+    @session_token = get_social_token @bifrost_env
+  end
+
+  it 'should return 500 social interests' do
+    url = @bifrost_env+"/trending/interests/social?skip=0&api_key="+@session_token
     begin
-    not_recent.length.should < 4
-    rescue
-      not_recent.should == []
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
     end
-=end
+    interests = (JSON.parse response)['interests']
+    interests.each {|i| Interests_Helper.social << i['value']}
+    Interests_Helper.social.length.should == 500
+  end
+
+  it "should return at least two articles for each 'social' interest" do
+    blank_tiles = []
+    not_recent = []
+    Interests_Helper.social.each do |interest|
+      url = @bifrost_env+"/interests/stream/social?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue RestClient::ResourceNotFound => e
+        blank_tiles << "#{url} 404 Not Found"
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      data = JSON.parse response
+      (blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 1) unless interest.match(/\d{4}/)
+    end
+
+    if blank_tiles.count < 1
+      blank_tiles.should == []
+    elsif blank_tiles.count > 2
+      blank_tiles.should == []
+    else
+      blank_tiles.count.should < 3
+    end
   end
 end
