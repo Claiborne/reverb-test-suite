@@ -16,7 +16,7 @@ describe "TRENDING API - Get 'Me' Interests For Anon User" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env)	
+    @session_token = get_anon_token @bifrost_env
 
     # Get Interests for Anon User
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=100&api_key="+@session_token
@@ -72,7 +72,7 @@ describe "TRENDING API - Get 'Global' Interests For Anon User" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env) 
+    @session_token = get_anon_token @bifrost_env
 
     # Get Interests for Anon User
     url = @bifrost_env+"/trending/interests/global?skip=0&limit=100&api_key="+@session_token
@@ -129,7 +129,7 @@ describe "TRENDING API - Get 'Me' Interests for Logged in User" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env) 
+    @session_token = get_anon_token @bifrost_env
 
     # Get logged in session token
     @session_token_logged_in = get_token @bifrost_env, 'clay01', 'testpassword'
@@ -176,6 +176,35 @@ describe "TRENDING API - Get 'Me' Interests for Logged in User" do
   end
 end
 
+describe "TRENDING API - Get 'Social' Interests for Logged in Social User" do
+
+  before(:all) do
+
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    # Get anon session token
+    @session_token = get_social_token @bifrost_env
+
+    # Get Interests for Logged-in User
+    url = @bifrost_env+"/trending/interests/social?skip=0&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    @data_logged_in = JSON.parse response
+  end
+
+  it "should get 500 'social' interests" do
+    @data_logged_in['interests'].length.should == 500  
+  end
+end
+
 describe "TRENDING API - Skip and Limit for Trending Interests" do
 
   before(:all) do
@@ -187,7 +216,7 @@ describe "TRENDING API - Skip and Limit for Trending Interests" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     # Get anon session token
-    @session_token = get_anon_token(@bifrost_env) 
+    @session_token = get_anon_token @bifrost_env
   end
 
   xit "should limit 10 global interests (FAIL: LIMIT NOT RESPECTED FOR INTERESTS but app doesn't paginate)" do
