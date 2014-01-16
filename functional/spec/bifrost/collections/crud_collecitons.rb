@@ -269,17 +269,7 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
     article = @article_ids[3]
     body = {:articlesToAdd=>[article]}.to_json
     url = @bifrost_env+"/collections/#{id}/config?api_key="+@anon_session
-    begin
-      response = RestClient.put url, body, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response
-    articles = []
-    data['tiles'].each do |tile|
-      articles << tile['contentId']
-    end
-    articles.include?(article.to_s).should be_false
+    expect {RestClient.put url, body, @headers}.to raise_error(RestClient::ResourceNotFound)
 
     # Now do a get and make same assertions
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -299,7 +289,7 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
   it 'should not allow another user to delete your collection' do
     collection_id = CollectionFlowHelper.collection['id']
     url = @bifrost_env+"/collections/#{collection_id}?api_key="+@anon_session
-    expect {RestClient.delete url, @headers}.to raise_error(RestClient::BadRequest)
+    expect {RestClient.delete url, @headers}.to raise_error(RestClient::ResourceNotFound)
   end
 
   it 'should delete collection' do
