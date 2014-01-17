@@ -66,11 +66,24 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
   end
 
   it 'should create a collection with the appropriate number of tiles' do
-    CollectionFlowHelper.collection['tiles'].count.should == 1
+    CollectionFlowHelper.collection['tiles'].count.should == 3
   end
 
-  it 'should create a collection with the appropriate article' do
-    CollectionFlowHelper.collection['tiles'][0]['contentId'].should == @article_ids[0].to_s
+  it 'should create a collection with the appropriate article tiles' do
+    tiles = []
+    CollectionFlowHelper.collection['tiles'].each do |tile|
+      tiles << tile['contentId']
+    end
+    tiles.include?(@article_ids[0].to_s).should be_true
+  end
+
+  it 'should create a collection with the appropriate article tiles' do
+    tiles = []
+    CollectionFlowHelper.collection['tiles'].each do |tile|
+      tiles << tile['contentId']
+    end
+    tiles.include?("Knitting").should be_true
+    tiles.include?("Cake").should be_true
   end
 
   it 'should create a collection with the appropriate pinnedConcepts' do
