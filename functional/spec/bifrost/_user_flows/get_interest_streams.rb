@@ -70,7 +70,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
   it "should return 24 articles for each 'me' interest" do
     errors = []
     Interests_Helper.me.each do |interest|
-      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
@@ -88,7 +88,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
   it "should return at least 30 articles for each 'me' interest" do
     less_than_30_articles = []
     Interests_Helper.me.each do |interest|
-      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=24&limit=50&api_key="+@session_token
+      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=24&limit=24&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
@@ -107,7 +107,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
-      url = @bifrost_env+"/interests/stream/global?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      url = @bifrost_env+"/interests/stream/global?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
@@ -164,7 +164,7 @@ describe "USER FLOWS - Get Trending interests For an Social User" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.social.each do |interest|
-      url = @bifrost_env+"/interests/stream/social?interest=#{CGI::escape interest}&skip=0&limit=50&api_key="+@session_token
+      url = @bifrost_env+"/interests/stream/social?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
