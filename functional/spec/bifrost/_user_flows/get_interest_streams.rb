@@ -8,7 +8,7 @@ require 'time'
 
 include Token
 
-describe "USER FLOWS - Get Trending interests For an Anon User" do
+describe "USER FLOWS - Get Trending interests For an Anon User", :test => true do
 
   class Interests_Helper
     @me = []; @global = []
@@ -82,6 +82,25 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       end
       data = JSON.parse response
       errors << interest if data['tiles'].length != 24
+    end
+    errors.should == []
+  end
+
+  it "should return at least 30 articles for each 'me' interest" do
+    errors = []
+    puts Interests_Helper.me.count
+    Interests_Helper.me.each do |interest|
+      url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=24&limit=50&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue RestClient::ResourceNotFound => e
+        errors << "#{url} 404 Not Found"
+        next
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      data = JSON.parse response
+      errors << interest if data['tiles'].length > 5
     end
     errors.should == []
   end
