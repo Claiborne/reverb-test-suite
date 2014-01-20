@@ -11,8 +11,6 @@ File.open(File.dirname(__FILE__)+'/bad_words_autodelete.txt', "r").each_line do 
   bad_words << line.to_s.downcase.strip
 end
 
-bad_words = ['giveaway']
-
 puts "BEFORE"
 
 bad_words.each do |bad_word|
