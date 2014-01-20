@@ -19,7 +19,7 @@ describe "CONCEPT LISTS - Grey-listed Concepts" do
     # Get anon session token
     @session_token = get_anon_token(@bifrost_env)
 
-    @grey_listed_word = 'Grep'
+    @grey_listed_word = 'Female'
   end
 
   it 'should appear as a tile when searched for' do
@@ -39,6 +39,7 @@ describe "CONCEPT LISTS - Grey-listed Concepts" do
   end
 
   it 'should add the grey-listed interest' do
+    # add interest
     url = @bifrost_env+"/interests?api_key="+@session_token
     begin
       response = RestClient.post url, {:value=>@grey_listed_word,:interestType=>:interest}.to_json, @headers
@@ -47,9 +48,10 @@ describe "CONCEPT LISTS - Grey-listed Concepts" do
     end
   end
 
-  it 'should not display the interest in me wordwall' do
+  xit 'should display the interest in me wordwall (TODO)' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
+    puts url
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -60,22 +62,6 @@ describe "CONCEPT LISTS - Grey-listed Concepts" do
     data['interests'].each do |interest|
       me_wall << interest['value']
     end
-    me_wall.include?(@grey_listed_word).should be_false
+    me_wall.include?(@grey_listed_word).should be_true
   end
-
-  xit 'should not display the interest in me tiles (THIS RETURNS FALSE POSITIVE B/C RVB-4658)' do
-    me_tiles = []
-    url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+":\n"+url)
-    end
-    data = JSON.parse response
-    data['tiles'].each do |tile|
-      me_tiles << tile['contentId']
-    end
-    me_tiles.include?(@grey_listed_word).should be_false
-  end
-
 end
