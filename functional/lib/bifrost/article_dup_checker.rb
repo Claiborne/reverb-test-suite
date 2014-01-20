@@ -1,4 +1,5 @@
 require 'set'
+require 'digest/md5'
 
 module ArticleDupChecker
 
@@ -50,5 +51,14 @@ module ArticleDupChecker
       duplicates = rest.find_all{|data2| are_duplicates_or_near_duplicates(data1, data2, closeness)}.map{|d| [data1, d]}
       duplicates_or_near_duplicates_recur(rest, accum + duplicates, closeness)
     end
-
+    
+    def exact_duplicates(datas)
+      digests = Hash.new
+      datas.each do |data|
+        digest = Digest::MD5.hexdigest(title_and_summary(data))
+        digests.include?(digest) ? (digests[digest] << data) : (digests[digest] = [data])
+      end
+      digests.values.map{|v| v.size > 1 ? v : nil}.compact
+    end
+    
 end
