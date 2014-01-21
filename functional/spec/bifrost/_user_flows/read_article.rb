@@ -122,7 +122,6 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
   it 'should update me wordwall' do
     sleep 3
     url = "#{@bifrost_env}/trending/interests/me?api_key=#{@session}"
-    puts url
     res = RestClient.get url, @headers
     data = JSON.parse res
 
