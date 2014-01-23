@@ -92,7 +92,8 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     # Define env data
     case ENV['env']
     when 'prd'
-      @article_data = {:article_id => '42419084', :concepts => ["San Francisco", "Brandon Jacobs", "Adam Schefter", "Getty Images", "NFC Championship Game", "ESPN"]}
+      @article_data = {:article_id => '40935535', :concepts => ["Eric Reid", "Free agent", "National Football League Draft"]}
+    when 'stg'
     when 'stg'
       @article_data = {:article_id => '38515770', :concepts => ["California", "San Francisco 49ers", "West Sacramento, California", "Oakland Raiders", "Letter box", "National Football League", "Showdown (poker)"]}
     when 'dev'
