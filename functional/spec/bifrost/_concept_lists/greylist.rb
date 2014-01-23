@@ -51,7 +51,6 @@ describe "CONCEPT LISTS - Grey-listed Concepts" do
   xit 'should display the interest in me wordwall (TODO)' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
-    puts url
     begin
       response = RestClient.get url, @headers
     rescue => e
