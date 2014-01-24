@@ -112,12 +112,12 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
   end
 
   it 'should send an article read event' do
-    RestClient.post @event_url, read_article(Time.now.to_i, @article_data[:article_id]), 'Content-Type' => 'application/json'
+    RestClient.post @event_url, read_article(Time.now.utc.to_i, @article_data[:article_id]), 'Content-Type' => 'application/json'
   end
 
   it 'should exit an article after 15 seconds' do
     sleep 15
-    RestClient.post @event_url, exit_article(Time.now.to_i), 'Content-Type' => 'application/json' 
+    RestClient.post @event_url, exit_article(Time.now.utc.to_i), 'Content-Type' => 'application/json' 
   end
 
   it 'should update me wordwall' do
