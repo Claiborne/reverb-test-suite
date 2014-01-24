@@ -7,7 +7,7 @@ require 'api_checker.rb'
 
 include APIChecker
 
-describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => true, :indev => true do
+describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => true, :indev => true do
 
   class CollectionFlowHelper
     class << self; attr_accessor :collection; end
@@ -29,6 +29,11 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
 
     @collection_name = "claytest#{Random.rand 1000000000}"
 
+    @interest_one = 'Knitting'
+    @interest_two = 'Cake'
+    @interest_three = 'California'
+    @interest_four = 'New York'
+
     # Get an array of articles
     news_tiles_url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session
     begin
@@ -49,7 +54,7 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
               :collection_name=>@collection_name,
               :articles=>[@article_ids[0]],
               :pinnedConcepts=>[
-                "Knitting", "Cake"
+                @interest_one, @interest_two
               ],
               :summary=>"this is the summary"
             }.to_json
@@ -77,22 +82,35 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
     tiles.include?(@article_ids[0].to_s).should be_true
   end
 
-  it 'should create a collection with the appropriate article tiles' do
+  it 'should create a collection with the appropriate interest tiles' do
     tiles = []
     CollectionFlowHelper.collection['tiles'].each do |tile|
       tiles << tile['contentId']
     end
-    tiles.include?("Knitting").should be_true
-    tiles.include?("Cake").should be_true
+    tiles.include?(@interest_one).should be_true
+    tiles.include?(@interest_two).should be_true
   end
 
   it 'should create a collection with the appropriate pinnedConcepts' do
-    pinned_concepts = ["Knitting", "Cake"]
+    pinned_concepts = [@interest_one, @interest_two]
     CollectionFlowHelper.collection['contentPreferences']['pinnedConcepts'].should == pinned_concepts
   end
 
   it 'should create a collection with the appropriate summary' do
     CollectionFlowHelper.collection['summary'].should == 'this is the summary'
+  end
+
+  it 'should create a collecion with a contentImage.url value' do
+    CollectionFlowHelper.collection['contentImage']['url'].match(/images.helloreverb.com\/api\/image/).should be_true
+  end
+
+  it 'should create a collecion with a contentImage.url value that 200s when requested' do
+    image_url = CollectionFlowHelper.collection['contentImage']['url']
+    begin 
+      res = RestClient.get image_url+"&api_key=#@session"
+     rescue => e
+      raise StandardError.new(e.message+" "+image_url)
+    end
   end
 
   it 'should get colleciton by ID' do
@@ -102,18 +120,18 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
       response = RestClient.get url, @headers
     rescue => e
       raise StandardError.new(e.message+" "+url)
-
     end
     data = JSON.parse response
     data['name'].should == @collection_name
     data['id'].should == id
   end
 
-  it 'should add an article to a collection' do
+  it 'should add three articles to a collection' do
     id = CollectionFlowHelper.collection['id']
-    article1 = @article_ids[1]
-    article2 = @article_ids[2]
-    body = {:articlesToAdd=>[article1,article2]}.to_json
+    article1 = @article_ids[2]
+    article2 = @article_ids[1]
+    article3 = @article_ids[3]
+    body = {:articlesToAdd=>[article1,article2,article3]}.to_json
     url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
     begin
       response = RestClient.put url, body, @headers
@@ -127,6 +145,7 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
     end
     articles.include?(article1.to_s).should be_true
     articles.include?(article2.to_s).should be_true
+    articles.include?(article3.to_s).should be_true
 
     # Now do a get and make same assertions
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -142,6 +161,7 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
     end
     articles.include?(article1.to_s).should be_true
     articles.include?(article2.to_s).should be_true
+    articles.include?(article3.to_s).should be_true
   end
 
   it 'should remove an article from a collection' do
@@ -177,6 +197,47 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
     end
     tiles.include?(article1.to_s).should be_false
     tiles.include?(article2.to_s).should be_false
+  end
+
+  it 'should add more articles and order them by newest added first' do
+    id = CollectionFlowHelper.collection['id'] 
+    # Add the 8th article
+    article8 = @article_ids[7]
+    body = {:articlesToAdd=>[article8]}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+
+    # Add the 6th article
+    article6 = @article_ids[5]
+    body = {:articlesToAdd=>[article6]}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+
+    # Assert ordered by newest added first
+    order = [5,7,3,0]
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    articles = []
+    i = 0
+    data['tiles'].each do |tile|
+      unless tile['tileType'] == 'interest'
+        tile['contentId'].should == @article_ids[order[i]].to_s
+        i = i+1
+      end
+    end
   end
 
   it 'should add an interest to a collection' do
@@ -249,6 +310,69 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
     interests.include?(interest2).should be_false
   end
 
+  it 'should add more interests and order them by newest added first' do
+    id = CollectionFlowHelper.collection['id']
+    order = [@interest_four, @interest_three, @interest_one, @interest_two]
+    body = {:pinnedInterestsToAdd=>[@interest_three]}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    body = {:pinnedInterestsToAdd=>[@interest_four]}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    i = 0
+    data['tiles'].each do |tile|
+      unless tile['tileType'] == 'article'
+        tile['contentId'].should == order[i]
+        i = i+1
+      end
+    end
+  end
+
+  it 'should not clump all interest or article tiles together' do
+    id = CollectionFlowHelper.collection['id']
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    tileTypes = []
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['tiles'].each do |tile|
+      tileTypes << tile['tileType']
+    end
+    tileTypes.length.should > 3
+    tileTypes.should_not == tileTypes.sort
+    tileTypes.should_not == tileTypes.sort { |x,y| y <=> x } 
+  end
+
+  it 'should return true when asked if a colleciton with this name exists before name change' do
+    collection_name = @collection_name
+    url = @bifrost_env+"/collections/exists?name=#{collection_name}&api_key="+@session
+    begin 
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['exists'].to_s.should == 'true'
+  end
+
   it "should modify a collection's name and summary" do
     id = CollectionFlowHelper.collection['id']
     modified_name = 'modified name'
@@ -279,7 +403,7 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
 
   it 'should prevent others from adding an article to a collection you created' do
     id = CollectionFlowHelper.collection['id']
-    article = @article_ids[3]
+    article = @article_ids[9]
     body = {:articlesToAdd=>[article]}.to_json
     url = @bifrost_env+"/collections/#{id}/config?api_key="+@anon_session
     expect {RestClient.put url, body, @headers}.to raise_error(RestClient::ResourceNotFound)
@@ -297,6 +421,42 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :stg => tru
       articles << tile['contentId']
     end
     articles.include?(article.to_s).should be_false
+  end
+
+  it 'should return true when asked if a colleciton with this name exists after name change' do
+    collection_name = 'modified%20name'
+    url = @bifrost_env+"/collections/exists?name=#{collection_name}&api_key="+@session
+    begin 
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['exists'].to_s.should == 'true'
+  end
+
+  it 'should return false when asked if a colleciton with a fake name exists' do
+    collection_name = 'sjsdfohsjfohsdfhqw'
+    url = @bifrost_env+"/collections/exists?name=#{collection_name}&api_key="+@session
+    begin 
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['exists'].to_s.should == 'false'
+  end
+
+  it 'should return false when asked if a existing collcection name that is not yours exists' do
+    collection_name = 'modified%20name'
+    url = @bifrost_env+"/collections/exists?name=#{collection_name}&api_key="+@anon_session
+    begin 
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['exists'].to_s.should == 'false'
   end
 
   it 'should not allow another user to delete your collection' do
