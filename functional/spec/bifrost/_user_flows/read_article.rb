@@ -94,7 +94,6 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     when 'prd'
       @article_data = {:article_id => '40935535', :concepts => ["Eric Reid", "Free agent", "National Football League Draft"]}
     when 'stg'
-    when 'stg'
       @article_data = {:article_id => '38515770', :concepts => ["California", "San Francisco 49ers", "West Sacramento, California", "Oakland Raiders", "Letter box", "National Football League", "Showdown (poker)"]}
     when 'dev'
       @article_data = {:article_id => '1888584', :concepts => ["San Francisco", "Kansas City, Missouri"]}
@@ -112,12 +111,12 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
   end
 
   it 'should send an article read event' do
-    RestClient.post @event_url, read_article(Time.now.utc.to_i, @article_data[:article_id]), 'Content-Type' => 'application/json'
+    RestClient.post @event_url, read_article(Time.now.to_i, @article_data[:article_id]), 'Content-Type' => 'application/json'
   end
 
   it 'should exit an article after 15 seconds' do
     sleep 15
-    RestClient.post @event_url, exit_article(Time.now.utc.to_i), 'Content-Type' => 'application/json' 
+    RestClient.post @event_url, exit_article(Time.now.to_i), 'Content-Type' => 'application/json' 
   end
 
   it 'should update me wordwall' do
@@ -137,6 +136,7 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
   end
 
   it 'should update user history' do
+    sleep 5
     url = "#@bifrost_env/userProfile/history?startDate=1970-01-01T00:00:00.000Z&endDate=2015-10-30T22:18:13.410Z&skip=0&limit=24&api_key=#@session"
     res = RestClient.get url, @headers
     data = JSON.parse res
