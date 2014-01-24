@@ -136,7 +136,7 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
   end
 
   it 'should update user history' do
-    sleep 5
+    sleep 10
     url = "#@bifrost_env/userProfile/history?startDate=1970-01-01T00:00:00.000Z&endDate=2015-10-30T22:18:13.410Z&skip=0&limit=24&api_key=#@session"
     res = RestClient.get url, @headers
     data = JSON.parse res
