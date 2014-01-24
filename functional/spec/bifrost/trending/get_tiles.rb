@@ -321,19 +321,8 @@ describe "TRENDING API - Skip and Limit for Trending Tiles" do
     first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
 
-  it "should paginate global tiles past 450", :stg => true do
+  it "should paginate global tiles past 450" do
     url = @bifrost_env+"/trending/tiles/global?skip=450&limit=24&api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response
-    data['tiles'].length.should > 0
-  end
-
-  it "should paginate global tiles past 200", :dev => true do
-    url = @bifrost_env+"/trending/tiles/global?skip=200&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
