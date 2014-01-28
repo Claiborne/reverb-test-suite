@@ -66,7 +66,7 @@ describe "Trending articles" do
        raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
      end
    end
-
+  
   it "should not return duplicate articles in 'friends'" do
     duplicate_articles_returned = check_dups @domain+"/trending/tiles/social", @social_token
     begin
@@ -75,43 +75,70 @@ describe "Trending articles" do
       raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
     end
   end
-
+  
   it "should not return any exact duplicate articles in 'news'" do
      duplicate_articles_returned = check_dups @domain+"/trending/tiles/global", @anon_token
      begin
        duplicate_articles_returned.should == []
      rescue => e
-       raise e, "Exact Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, "EaDuplicates returned:\n#{return_readable_output duplicate_articles_returned}"
      end
    end
- 
+  
   it "should not return any exact duplicate articles in 'me'" do
      duplicate_articles_returned = exact_duplicates(articles(@domain+"/trending/tiles/me", @anon_token))
      begin
        duplicate_articles_returned.should == []
      rescue => e
-       raise e, "Exact Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
      end
    end
-
+  
   it "should not return any exact duplicate articles in 'friends'" do
     duplicate_articles_returned = exact_duplicates(articles(@domain+"/trending/tiles/social", @social_token))
     begin
       duplicate_articles_returned.should == []
     rescue => e
-      raise e, "Exact Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+      raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
     end
   end
 
   
-  it "should not return duplicate articles in 'news'" do
+  it "should not return exact content duplicate articles in 'news'" do
      duplicate_articles_returned = exact_duplicates(articles(@domain+"/trending/tiles/global", @anon_token))
      begin
        duplicate_articles_returned.should == []
      rescue => e
-       raise e, "Exact Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
      end
    end
+
+   it "should not return exact duplicate articles by contentId in 'news'" do
+      duplicate_articles_returned = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/global", @anon_token))
+      begin
+        duplicate_articles_returned.should == []
+      rescue => e
+        raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+      end
+    end
+
+    it "should not return exact duplicate articles by contentId in 'me'" do
+       duplicate_articles_returned = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/me", @anon_token))
+       begin
+         duplicate_articles_returned.should == []
+       rescue => e
+         raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       end
+     end
+   
+   it "should not return exact duplicate articles by contentId in 'friends'" do
+      duplicate_articles_returned = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/social", @social_token))
+      begin
+        duplicate_articles_returned.should == []
+      rescue => e
+        raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+      end
+    end
    
   
 end
