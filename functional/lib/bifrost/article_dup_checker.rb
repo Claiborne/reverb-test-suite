@@ -70,7 +70,7 @@ module ArticleDupChecker
       group_by{|a,i| a}.
       map{|k,v| v.size > 1 ? v : nil}.compact.
       map{|l| [l[0][0], l.map{|x| x[1]}, l.map{|x| x[1]}.max-l.map{|x| x[1]}.min]}.
-      map{|k, is, d| d >= at_least ? [k, is, d] : nil}.compact
+      map{|k, is, d| d >= at_least ? is : nil}.compact
     end
     
 end

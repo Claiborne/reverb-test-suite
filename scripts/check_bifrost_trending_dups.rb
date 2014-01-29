@@ -41,10 +41,14 @@ describe "Trending articles" do
     duplicates_or_near_duplicates(articles(article_endpoint, key))
   end
 
-  def return_readable_output(dup_articles)
-    less = dup_articles.map{ |s| 
+  def readable_output(duplicate_sets)
+    less = duplicate_sets.map{ |s| 
       s.map{|art| art.slice("contentId", "shareUrl", "summary")}}
     JSON.pretty_generate(less)
+  end
+  
+  def duplicate_error_message(context, duplicate_sets)
+    "DUPLICATES: #{context} : There were #{duplicate_sets.size} sets of duplicates.\nThey were:\n#{readable_output(duplicate_sets)}"
   end
 
   before(:all) do
@@ -59,86 +63,87 @@ describe "Trending articles" do
 
   
   it "should not return near duplicate articles in 'me'" do
-     duplicate_articles_returned = check_dups @domain+"/trending/tiles/me", @anon_token
+     duplicate_sets = check_dups @domain+"/trending/tiles/me", @anon_token
      begin
-       duplicate_articles_returned.should == []
+       duplicate_sets.should == []
      rescue => e
-       raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, duplicate_error_message("Near duplicate articles in 'me'", duplicate_sets)
      end
    end
   
   it "should not return near duplicate articles in 'friends'" do
-    duplicate_articles_returned = check_dups @domain+"/trending/tiles/social", @social_token
+    duplicate_sets = check_dups @domain+"/trending/tiles/social", @social_token
     begin
-      duplicate_articles_returned.should == []
+      duplicate_sets.should == []
     rescue => e
-      raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+      raise e, duplicate_error_message("Near duplicate articles in 'friends'", duplicate_sets)
     end
   end
   
   it "should not return any near duplicate articles in 'news'" do
-     duplicate_articles_returned = check_dups @domain+"/trending/tiles/global", @anon_token
+     duplicate_sets = check_dups @domain+"/trending/tiles/global", @anon_token
      begin
-       duplicate_articles_returned.should == []
+       duplicate_sets.should == []
      rescue => e
-       raise e, "EaDuplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, duplicate_error_message("Near duplicate articles in 'global'", duplicate_sets)
      end
    end
   
   it "should not return any exact duplicate articles (by content) in 'me'" do
-     duplicate_articles_returned = exact_duplicates(articles(@domain+"/trending/tiles/me", @anon_token))
+     duplicate_sets = exact_duplicates(articles(@domain+"/trending/tiles/me", @anon_token))
      begin
-       duplicate_articles_returned.should == []
+       duplicate_sets.should == []
      rescue => e
-       raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, duplicate_error_message("Exact duplicate articles (by content) in 'me'", duplicate_sets)
      end
    end
   
   it "should not return any exact duplicate articles (by content) in 'friends'" do
-    duplicate_articles_returned = exact_duplicates(articles(@domain+"/trending/tiles/social", @social_token))
+    duplicate_sets = exact_duplicates(articles(@domain+"/trending/tiles/social", @social_token))
     begin
-      duplicate_articles_returned.should == []
+      duplicate_sets.should == []
     rescue => e
-      raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+      raise e, duplicate_error_message("Exact duplicate articles (by content) in 'friends'", duplicate_sets)
     end
   end
 
   
-  it "should not return exact content duplicate articles (by content) in 'news'" do
-     duplicate_articles_returned = exact_duplicates(articles(@domain+"/trending/tiles/global", @anon_token))
+  it "should not return exact content duplicate articles (by content) in 'global'" do
+     duplicate_sets = exact_duplicates(articles(@domain+"/trending/tiles/global", @anon_token))
      begin
-       duplicate_articles_returned.should == []
+       duplicate_sets.should == []
      rescue => e
-       raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+       raise e, duplicate_error_message("Exact duplicate articles (by content) in 'global'", duplicate_sets)
      end
    end
 
-   it "should not return exact duplicate articles by contentId in 'news'" do
-      duplicate_articles_returned = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/global", @anon_token))
-      begin
-        duplicate_articles_returned.should == []
-      rescue => e
-        raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
-      end
-    end
 
     it "should not return exact duplicate articles by contentId in 'me'" do
-       duplicate_articles_returned = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/me", @anon_token))
+       duplicate_sets = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/me", @anon_token))
        begin
-         duplicate_articles_returned.should == []
+         duplicate_sets.should == []
        rescue => e
-         raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+         raise e, duplicate_error_message("Exact duplicate articles (by contentId) in 'me'", duplicate_sets)
        end
      end
    
    it "should not return exact duplicate articles by contentId in 'friends'" do
-      duplicate_articles_returned = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/social", @social_token))
+      duplicate_sets = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/social", @social_token))
       begin
-        duplicate_articles_returned.should == []
+        duplicate_sets.should == []
       rescue => e
-        raise e, "Duplicates returned:\n#{return_readable_output duplicate_articles_returned}"
+        raise e, duplicate_error_message("Exact duplicate articles (by contentId) in 'friends'", duplicate_sets)
       end
     end
+
+    it "should not return exact duplicate articles by contentId in 'global'" do
+       duplicate_sets = exact_duplicates_by_content_id(articles(@domain+"/trending/tiles/global", @anon_token))
+       begin
+         duplicate_sets.should == []
+       rescue => e
+         raise e, duplicate_error_message("Exact duplicate articles (by contentId) in 'global'", duplicate_sets)
+       end
+     end
    
   
 end
