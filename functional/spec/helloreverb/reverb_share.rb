@@ -13,10 +13,30 @@ describe "HelloReverb.com - /share/collection/reverb/ces-2014 (#{protocol})" do
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/helloreverb.yml"
     @web_env = "#{protocol}://#{ConfigPath.new.options['baseurl']}"
+    @clientId = ConfigPath.new.options['clientId'].to_s
+    @clientSecret = ConfigPath.new.options['clientSecret'].to_s
     @doc = nokogiri_open @web_env+"/share/collection/reverb/ces-2014"
+
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/bifrost.yml"
+    @api_env = "https://#{ConfigPath.new.options['baseurl']}"
   end
 
-  it "should return 200" do
+  context "Bifrost API call" do
+
+    it 'should return at least one tile' do
+      url = "#@api_env/collections/shared/reverb/ces-2014?skip=0&limit=50&clientId=#@clientId&clientSecret=#@clientSecret"
+      begin
+        res = RestClient.get url, {:content_type => 'application/json', :accept => 'application/json'}
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      data = JSON.parse res
+      data['tiles'].length.should > 0
+    end
+  
+  end
+
+  it "should return a < 400 response code" do
   end
 
   it "should return h1 with text 'CES 2014'" do
@@ -29,7 +49,7 @@ describe "HelloReverb.com - /share/collection/reverb/ces-2014 (#{protocol})" do
     tile.text.strip.length.should > 0
   end
 
-  xit "should not return any broken tile images" do
+  it "should not return any broken tile images" do
     broken_images = []
     begin
       @doc.css('div.fullSet a div').count.should > 0
@@ -38,10 +58,10 @@ describe "HelloReverb.com - /share/collection/reverb/ces-2014 (#{protocol})" do
       raise e
     end
     @doc.css('div.fullSet a div').each do |image|
-      image_url = image.attribute('style').to_s.gsub('background:url(','').gsub(/\).*/,'')
+      image_url = image.attribute('style').to_s.gsub('background:url(','').gsub(/\).*/,'').gsub("'",'')
       begin
-        response = RestClient.get image_url
-        response.code.should == 200
+        response = RestClient.get image_url.to_s
+        #response.code.should == 200
       rescue => e
         broken_images << "#{e.message} when requesting: #{image_url}"
         next
@@ -56,10 +76,30 @@ describe "HelloReverb.com - /share/interest/reverb/HTML5 (#{protocol})" do
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/helloreverb.yml"
     @web_env = "#{protocol}://#{ConfigPath.new.options['baseurl']}"
+    @clientId = ConfigPath.new.options['clientId'].to_s
+    @clientSecret = ConfigPath.new.options['clientSecret'].to_s
     @doc = nokogiri_open @web_env+"/share/interest/reverb/HTML5"
+
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/bifrost.yml"
+    @api_env = "https://#{ConfigPath.new.options['baseurl']}"
   end
 
-  it "should return 200" do
+  context "Bifrost API call" do
+
+    it 'should return at least one tile' do
+      url = "#@api_env/interests/stream/me?interest=HTML5&skip=0&limit=50&clientId=#@clientId&clientSecret=#@clientSecret"
+      begin
+        res = RestClient.get url, {:content_type => 'application/json', :accept => 'application/json'}
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      data = JSON.parse res
+      data['tiles'].length.should > 0
+    end
+  
+  end
+
+  it "should return a < 400 response code" do
   end
 
   it "should return h1 with text 'HTML5'" do
@@ -72,7 +112,7 @@ describe "HelloReverb.com - /share/interest/reverb/HTML5 (#{protocol})" do
     tile.text.strip.length.should > 0
   end
 
-  xit "should not return any broken tile images" do
+  it "should not return any broken tile images" do
     broken_images = []
     begin
       @doc.css('div.fullSet a div').count.should > 0
@@ -81,7 +121,7 @@ describe "HelloReverb.com - /share/interest/reverb/HTML5 (#{protocol})" do
       raise e
     end
     @doc.css('div.fullSet a div').each do |image|
-      image_url = image.attribute('style').to_s.gsub('background:url(','').gsub(/\).*/,'')
+      image_url = image.attribute('style').to_s.gsub('background:url(','').gsub(/\).*/,'').gsub("'",'')
       begin
         response = RestClient.get image_url
         response.code.should == 200
@@ -94,4 +134,4 @@ describe "HelloReverb.com - /share/interest/reverb/HTML5 (#{protocol})" do
   end
 end
 
-end
+end # end %w(http https) iteration
