@@ -16,6 +16,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
     @session_token = get_anon_token @bifrost_env
+    @signed_in_session_token = get_token @bifrost_env, 'clay01', 'testpassword'
 
     # Get anon me tiles
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@session_token
@@ -26,6 +27,15 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     end
     @anon_me_tiles = JSON.parse anon_me_response
 
+    # Get signed-in me tiles
+    url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@signed_in_session_token
+    begin
+      signed_in_me_response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    @signed_in_me_tiles = JSON.parse signed_in_me_response
+
     # Get anon global tiles
     url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session_token
     begin
@@ -35,20 +45,34 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     end
     @anon_global_tiles = JSON.parse anon_global_response
 
+    # Get signed-in global tiles
+    url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@signed_in_session_token
+    begin
+      signed_in_global_response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    @signed_in_global_tiles = JSON.parse signed_in_global_response
+
     # Sign in
     login = get_token_and_login @bifrost_env, 'clay01', 'testpassword'
     @session_token = login[0]
     @user_id = login[1]
   end
 
-  it 'should return first trending me article no more than 2 hours old' do
+  it 'should return first trending me article no more than 2 hours old for anon user' do
     first_article = Time.parse(@anon_me_tiles['tiles'][0]['publishDate']).to_i
+    time_difference = Time.now.utc.to_i - first_article
+    time_difference.should < 60*60*2
+  end
+
+  it 'should return first trending me article no more than 2 hours old for signed-in user' do
+    first_article = Time.parse(@signed_in_me_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
     time_difference.should < 60*60*2
   end
   
   it 'should return first trending social article no more than 2 hours old' do
-
     social_token = get_social_token @bifrost_env
 
     url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token
@@ -64,8 +88,14 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     time_difference.should < 60*60*2
   end
 
-  it 'should return first trending global article no more than 2 hours old' do
+  it 'should return first trending global article no more than 2 hours old for anon user' do
     first_article = Time.parse(@anon_global_tiles['tiles'][0]['publishDate']).to_i
+    time_difference = Time.now.utc.to_i - first_article
+    time_difference.should < 60*60*2
+  end
+
+  it 'should return first trending global article no more than 2 hours old for signed-in user' do
+    first_article = Time.parse(@signed_in_global_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
     time_difference.should < 60*60*2
   end
