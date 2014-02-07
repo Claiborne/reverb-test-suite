@@ -7,7 +7,7 @@ require 'api_checker.rb'
 
 include APIChecker
 
-describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => true, :indev => true do
+describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => true  do
 
   class CollectionFlowHelper
     class << self; attr_accessor :collection; end
@@ -480,5 +480,31 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => tr
     id = CollectionFlowHelper.collection['id']
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
     expect {RestClient.get url, @headers}.to raise_error(RestClient::ResourceNotFound)
+  end
+
+  it "should allow create a collection with a nil summary" do
+    url = @bifrost_env+"/collections?api_key="+@session
+    body = {
+              :collection_name=>@collection_name+'nil_summary',
+              :articles=>[@article_ids[0]],
+              :pinnedConcepts=>[
+                @interest_one
+              ],
+              :summary=>nil
+            }.to_json
+    begin 
+      response = RestClient.post url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    id = (JSON.parse response)['id']
+    id.to_s.length.should > 0
+    sleep 1
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin 
+      response = RestClient.delete url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
   end
 end
