@@ -129,6 +129,7 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     data['interests'].each do |interest|
       trending_me_interests << interest['value']
     end
+    trending_me_interests.length.should > 0
 
     @article_data[:concepts].each do |article_concept|
       trending_me_interests.include?(article_concept).should be_true
@@ -146,5 +147,25 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
       history_tiles << tile['contentId'].to_s
     end
     history_tiles.include?(@article_data[:article_id]).should be_true
+  end
+
+  it 'should delete an inferred interest' do
+    interest = @article_data[:concepts][0]
+    url = "#@bifrost_env/interests?interest=#{CGI::escape interest}&api_key=#@session"
+    RestClient.delete url, @headers
+  end
+
+  it "should remove inferred interest from user's wordwall (FAILS IN PRODUCTION: RVB-4957)", :dev => true do
+    url = "#{@bifrost_env}/trending/interests/me?api_key=#{@session}"
+    res = RestClient.get url, @headers
+    data = JSON.parse res
+
+    trending_me_interests = []
+    data['interests'].each do |interest|
+      puts interest['value']
+      trending_me_interests << interest['value']
+    end
+   trending_me_interests.length.should > 0
+   trending_me_interests.include?(@article_data[:concepts][0].to_s).should be_false
   end
 end
