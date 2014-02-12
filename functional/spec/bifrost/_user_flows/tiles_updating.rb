@@ -6,7 +6,7 @@ require 'bifrost/token.rb'
 
 include Token
 
-describe "USER FLOWS - Check Trending Tiles Are Updating" do
+describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => true do
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
@@ -29,6 +29,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
 
     # Get signed-in me tiles
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@signed_in_session_token
+    puts url
     begin
       signed_in_me_response = RestClient.get url, @headers
     rescue => e
@@ -76,6 +77,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating" do
     social_token = get_social_token @bifrost_env
 
     url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token
+    puts url
     begin
       social_response = RestClient.get url, @headers
     rescue => e
