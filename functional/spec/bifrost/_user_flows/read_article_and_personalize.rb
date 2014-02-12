@@ -162,7 +162,6 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
 
     trending_me_interests = []
     data['interests'].each do |interest|
-      puts interest['value']
       trending_me_interests << interest['value']
     end
    trending_me_interests.length.should > 0
