@@ -29,7 +29,6 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
 
     # Get signed-in me tiles
     url = @bifrost_env+"/trending/tiles/me?skip=0&limit=24&api_key="+@signed_in_session_token
-    puts url
     begin
       signed_in_me_response = RestClient.get url, @headers
     rescue => e
@@ -77,7 +76,6 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
     social_token = get_social_token @bifrost_env
 
     url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token
-    puts url
     begin
       social_response = RestClient.get url, @headers
     rescue => e

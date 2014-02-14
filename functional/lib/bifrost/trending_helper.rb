@@ -76,15 +76,6 @@ shared_examples 'Trending Tiles Basic Checks' do
       end
     end
 
-    it "should return a non-nil, non blank 'contentImage.mimeType' value for each tile if contentImage" do
-      @data['tiles'].each do |tile|
-        if tile['contentImage'] && tile['tileType'] == 'article'
-          check_not_nil tile['contentImage']['mimeType']
-          check_not_blank tile['contentImage']['mimeType']
-        end
-      end
-    end
-
     it "should return a non-nil, non blank 'contentImage.width' value for each tile if contentImage" do
       @data['tiles'].each do |tile|
         if tile['contentImage']
