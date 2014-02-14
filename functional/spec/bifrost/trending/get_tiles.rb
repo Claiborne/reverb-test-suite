@@ -114,7 +114,7 @@ end
   end
 end
 
-describe "TRENDING API - Get 'Me' Tiles for Logged in User", :test => true do
+describe "TRENDING API - Get 'Me' Tiles for Logged in User" do
 
   before(:all) do
 
