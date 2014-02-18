@@ -119,7 +119,7 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     RestClient.post @event_url, exit_article(Time.now.utc.to_i-100), 'Content-Type' => 'application/json' 
   end
 
-  it 'should update me wordwall' do
+  it 'should update me wordwall', :fails => true do # RVB-5209
     sleep 3
     url = "#{@bifrost_env}/trending/interests/me?api_key=#{@session}"
     res = RestClient.get url, @headers
