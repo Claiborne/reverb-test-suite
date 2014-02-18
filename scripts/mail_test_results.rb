@@ -8,7 +8,7 @@ file.each {|line|
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = "qa@helloreverb.com"
+TO_EMAIL = ["qa@helloreverb.com","ocp@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
