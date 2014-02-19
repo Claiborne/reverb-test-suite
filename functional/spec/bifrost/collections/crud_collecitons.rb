@@ -113,6 +113,10 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => tr
     end
   end
 
+  it 'should create a collection with known = false' do
+    CollectionFlowHelper.collection['known'].should == false
+  end
+
   it 'should get colleciton by ID' do
     id = CollectionFlowHelper.collection['id']
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
