@@ -155,7 +155,7 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     RestClient.delete url, @headers
   end
 
-  it "should remove inferred interest from user's wordwall (FAILS IN PRODUCTION: RVB-4957)", :dev => true do
+  it "should remove inferred interest from user's wordwall" do
     url = "#{@bifrost_env}/trending/interests/me?api_key=#{@session}"
     res = RestClient.get url, @headers
     data = JSON.parse res
