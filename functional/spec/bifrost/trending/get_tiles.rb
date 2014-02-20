@@ -153,6 +153,17 @@ describe "TRENDING API - Get 'Me' Tiles for Logged in User" do
 
   include_examples "Trending Tiles Basic Checks"
 
+  it 'should return a count.items value of > 1 for each interest tile' do
+    interests = []
+    @data['tiles'].each do |tile|
+      if tile['tileType'] == 'interest'
+        interests << tile['contentId']
+        tile['count']['items'].should > 1
+      end
+    end 
+    interests.count.should > 0
+  end
+
   it "should get 24 'me' tiles" do
     @data_logged_in['tiles'].length.should == 24  
   end
