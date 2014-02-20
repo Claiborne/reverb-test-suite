@@ -31,6 +31,17 @@ shared_examples 'Trending Tiles Basic Checks' do
       end
     end
 
+    it 'should return a count.items value of > 1 for each interest tile' do
+      interests = []
+      @data['tiles'].each do |tile|
+        if tile['tileType'] == 'interest'
+          interests << tile['contentId']
+          tile['count']['items'].should > 1
+        end
+      end 
+      interests.count.should > 0
+    end
+
     it "should return a non-nil, non-blank 'header.value' value for each tile" do
       @data['tiles'].each do |tile|
         if tile['tileType'] == 'article'
