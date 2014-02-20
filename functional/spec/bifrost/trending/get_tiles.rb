@@ -228,9 +228,11 @@ describe "TRENDING API - Get 'Social' Tiles for Logged in User" do
   %w(network shareDate remoteHandle remoteId).each do |key|
     it "should return a non-blank, non-nil 'attribution.#{key}' value for each tile" do
       @data_logged_in['tiles'].each do |tile|
-        tile['attribution'][0][key].should be_true
-        check_not_blank tile['attribution'][0][key]
-        check_not_nil tile['attribution'][0][key]
+        unless tile['tileType'] == 'person'
+          tile['attribution'][0][key].should be_true
+          check_not_blank tile['attribution'][0][key]
+          check_not_nil tile['attribution'][0][key]
+        end
       end
     end
   end
