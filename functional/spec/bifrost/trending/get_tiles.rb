@@ -5,6 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'bifrost/trending_helper.rb'
 require 'time'
+require 'api_checker.rb'; include APIChecker
 
 %w(0 25 50 75 100 125 150 175 200).each do |skip|
   describe "TRENDING API - Get 'Me' Tiles For Anon User (skip #{skip})" do
@@ -153,6 +154,17 @@ describe "TRENDING API - Get 'Me' Tiles for Logged in User" do
 
   include_examples "Trending Tiles Basic Checks"
 
+  it 'should return a count.items value of > 1 for each interest tile' do
+    interests = []
+    @data['tiles'].each do |tile|
+      if tile['tileType'] == 'interest'
+        interests << tile['contentId']
+        tile['count']['items'].should > 1
+      end
+    end 
+    interests.count.should > 0
+  end
+
   it "should get 24 'me' tiles" do
     @data_logged_in['tiles'].length.should == 24  
   end
@@ -205,6 +217,24 @@ describe "TRENDING API - Get 'Social' Tiles for Logged in User" do
 
   it "should get 24 'social' tiles" do
     @data_logged_in['tiles'].length.should == 24  
+  end
+
+  it "should return an attribution key for each tile" do
+    @data_logged_in['tiles'].each do |tile|
+      tile['attribution'].should be_true
+    end
+  end
+
+  %w(network shareDate remoteHandle remoteId).each do |key|
+    it "should return a non-blank, non-nil 'attribution.#{key}' value for each tile" do
+      @data_logged_in['tiles'].each do |tile|
+        unless tile['tileType'] == 'person'
+          tile['attribution'][0][key].should be_true
+          check_not_blank tile['attribution'][0][key]
+          check_not_nil tile['attribution'][0][key]
+        end
+      end
+    end
   end
 end
 
