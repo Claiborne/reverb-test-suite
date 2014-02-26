@@ -117,6 +117,10 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => tr
     CollectionFlowHelper.collection['known'].should == false
   end
 
+  it "should create a collection with a flag of 'public'" do
+    CollectionFlowHelper.collection['flags'].should == ['public']
+  end
+
   it 'should get colleciton by ID' do
     id = CollectionFlowHelper.collection['id']
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -403,6 +407,46 @@ describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => tr
     data = JSON.parse response
     data['name'].should == modified_name
     data['summary'].should == modified_summary
+  end
+
+  it "should add an 'recommendations-disabled' flag" do
+    id = CollectionFlowHelper.collection['id']
+    body = {:enableRecommendations=>false}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['flags'].include?('recommendations-disabled').should be_true
+  end
+
+  it "should remove the 'recommendations-disabled' flag" do
+    id = CollectionFlowHelper.collection['id']
+    body = {:enableRecommendations=>true}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['flags'].include?('recommendations-disabled').should be_false
   end
 
   it 'should prevent others from adding an article to a collection you created' do
