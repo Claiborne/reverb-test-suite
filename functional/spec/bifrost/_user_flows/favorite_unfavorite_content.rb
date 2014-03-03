@@ -95,7 +95,7 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
   end
 end
 
-describe "USER FLOWS - Favorite and unfavorite an interest" do
+describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY IN PROD RVB-5295)", :fails => true do
   
   class Fav_Interest_Helper
     @interest = nil
@@ -145,7 +145,7 @@ describe "USER FLOWS - Favorite and unfavorite an interest" do
     sleep 2
   end
 
-  it "should return favorited interest (FAILS INTERMITTENTLY IN PROD RVB-5295)", :fails => true do
+  it "should return favorited interest" do 
     interest = Fav_Interest_Helper.interest
     url = @bifrost_env+"/userProfile/reverbs/#@user_id?api_key="+@session_token
     begin
