@@ -286,7 +286,7 @@ describe "TRENDING API - Skip and Limit for Trending Tiles" do
     data['tiles'].length.should == 10
   end
 
-  xit "should correctly paginate global tiles (FAIL IN PRODUCTION)" do
+  it "should correctly paginate global tiles" do
     # get first page
     url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session_token
     begin

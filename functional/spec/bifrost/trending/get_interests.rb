@@ -84,7 +84,7 @@ describe "TRENDING API - Get 'Global' Interests For Anon User" do
     @data = JSON.parse response
   end
 
-  xit "should get 100 'global' interests (FAIL: SORT CHANGES TOO QUICKLY but app doesn't paginate)" do
+  it "should get 100 'global' interests" do
     @data['interests'].length.should == 100
   end
 
@@ -219,7 +219,7 @@ describe "TRENDING API - Skip and Limit for Trending Interests" do
     @session_token = get_anon_token @bifrost_env
   end
 
-  xit "should limit 10 global interests (FAIL: LIMIT NOT RESPECTED FOR INTERESTS but app doesn't paginate)" do
+  it "should limit 10 global interests" do
     url = @bifrost_env+"/trending/interests/global?limit=10&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -241,7 +241,7 @@ describe "TRENDING API - Skip and Limit for Trending Interests" do
     data['interests'].length.should == 10
   end
 
-  xit "should correctly paginate global interests (FAIL: SORT CHANGES TOO QUICKLY but app doesn't paginate)" do
+  xit "should correctly paginate global interests (FAILS: Wordwall never the same)" do
     # get first page +1
     url = @bifrost_env+"/trending/interests/global?skip=0&limit=26&api_key="+@session_token
     begin
@@ -263,7 +263,7 @@ describe "TRENDING API - Skip and Limit for Trending Interests" do
     first_page['interests'].last['value'].should == second_page['interests'].first['value']
   end
   
-  xit "should correctly paginate me interests (FAILS IN PRD: But app doesn't paginate interests)" do
+  it "should correctly paginate me interests" do
     # get logged in session b/c anon only returns 25 interests
     user_token = get_token @bifrost_env, 'clay01', 'testpassword'
 
