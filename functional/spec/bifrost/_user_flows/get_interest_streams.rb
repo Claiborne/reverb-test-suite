@@ -38,7 +38,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.me.length.should == 25
   end
 
-  it 'should return at least 215 global interests (FAILS IN PRODUCTION RVB-4231)', :test => true do
+  it 'should return at least 215 global interests (FAILS IN PRODUCTION RVB-4231)' do
     url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
