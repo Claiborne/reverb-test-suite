@@ -56,7 +56,9 @@ module Token
     end
 
     data = JSON.parse response
-    data['userInfo']['token']
+    puts data['userInfo']
+    data['userInfo']['token'] if data['userInfo']
+    data['authSession']['token'] if data['authSession']
   end
 
   def get_token(base_url, login, password)
