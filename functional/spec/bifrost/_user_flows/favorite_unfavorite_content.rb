@@ -95,7 +95,7 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
   end
 end
 
-describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY IN PROD RVB-5295)", :fails => true do
+describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY IN PROD RVB-5295)" do
   
   class Fav_Interest_Helper
     @interest = nil
