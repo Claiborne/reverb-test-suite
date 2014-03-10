@@ -51,7 +51,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User" do
     end
   end
 
-  it 'should display the interest in me wordwall (FAILS INTERMITTENTLY IN PROD: RVB-5294)', :fails => true do
+  it 'should display the interest in me wordwall (FAILS INTERMITTENTLY IN PROD: RVB-5294)' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
@@ -91,7 +91,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User" do
     end
   end
 
-  it 'should not display the interest in me wordwall(FAILS INTERMITTENTLY IN PROD: RVB-5294)', :fails => true do
+  it 'should not display the interest in me wordwall(FAILS INTERMITTENTLY IN PROD: RVB-5294)' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
