@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER PROFILE API - Existing User"  do
+describe "USER PROFILE API - Existing User" do
   
   before(:all) do
     # Get bifrost environment
@@ -29,7 +29,6 @@ describe "USER PROFILE API - Existing User"  do
       raise StandardError.new(e.message+":\n"+profile_url)
     end
     @user_profile = JSON.parse res
-
   end
 
   it "should one favorited interest and one article" do
@@ -98,4 +97,13 @@ describe "USER PROFILE API - Existing User"  do
     end
   end
 
+  it 'should 401 when trying to get user without an auth token' do
+    url = @bifrost_env+"/userProfile/byUserId/#@user_id"
+    expect {RestClient.get url}.to raise_error(RestClient::Unauthorized)
+  end
+
+  it 'should 401 when trying to get a user with a bad auth token' do
+    url = @bifrost_env+"/userProfile/byUserId/#@user_id?api_key=123"
+    expect {RestClient.get url}.to raise_error(RestClient::Unauthorized)
+  end
 end
