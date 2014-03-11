@@ -383,4 +383,159 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     data = JSON.parse response
     data['tiles'].length.should > 0
   end
+
+  it 'should not return duplicate me tiles across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/me?skip=#{skip}&limit=24&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        tiles << tile['contentId']
+      end
+      skip = skip + data['tiles'].count
+    end
+
+    duplicates = []
+    temp = []
+    tiles.each do |t|
+      duplicates << t if temp.include? t
+      temp << t
+    end
+
+    duplicates.should == []
+    tiles.length.should > 60
+  end
+
+  it 'should sort me tiles by publish date across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/me?skip=#{skip}&limit=24&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        tiles << tile['publishDate'] unless tile['tileType'] == 'interest' || tile['tileType'] == 'person'
+      end
+      skip = skip + data['tiles'].count
+    end
+    tiles.sort{ |x,y| y <=> x }.should == tiles
+    tiles.length.should > 60
+  end
+
+  it 'should not return duplicate global tiles across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/global?skip=#{skip}&limit=24&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        tiles << tile['contentId']
+      end
+      skip = skip + data['tiles'].count
+    end
+
+    duplicates = []
+    temp = []
+    tiles.each do |t|
+      duplicates << t if temp.include? t
+      temp << t
+    end
+
+    duplicates.should == []
+    tiles.length.should > 60
+  end
+
+  it 'should sort global tiles by publish date across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/global?skip=#{skip}&limit=24&api_key="+@session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        tiles << tile['publishDate'] unless tile['tileType'] == 'interest' || tile['tileType'] == 'person'
+      end
+      skip = skip + data['tiles'].count
+    end
+    tiles.sort{ |x,y| y <=> x }.should == tiles
+    tiles.length.should > 60
+  end
+
+  it 'should not return duplicate social tiles across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/social?skip=#{skip}&limit=24&api_key="+@social_session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        tiles << tile['contentId']
+      end
+      skip = skip + data['tiles'].count
+    end
+
+    duplicates = []
+    temp = []
+    tiles.each do |t|
+      duplicates << t if temp.include? t
+      temp << t
+    end
+
+    duplicates.should == []
+    tiles.length.should > 60
+  end
+
+  it 'should sort social tiles by share date across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/social?skip=#{skip}&limit=24&api_key="+@social_session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        unless tile['tileType'] == 'interest' || tile['tileType'] == 'person' 
+          #share_date = tile['attribution'][0]['shareDate'].match(/\A.{15}/).to_s # hack because doesn't sort perfectly by second
+          share_date = tile['attribution'][0]['shareDate']
+          tiles << share_date 
+          puts share_date
+        end
+      end
+      skip = skip + data['tiles'].count
+    end
+    tiles.sort{ |x,y| y <=> x }.should == tiles
+    tiles.length.should > 60
+  end
 end
