@@ -54,7 +54,6 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
   it "should return 24 articles for each 'me' topic" do
     errors = []
     Interests_Helper.me.each do |interest|
-      puts interest
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
       begin
         response = RestClient.get url, @headers

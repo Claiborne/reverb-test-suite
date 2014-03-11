@@ -530,7 +530,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
           #share_date = tile['attribution'][0]['shareDate'].match(/\A.{15}/).to_s # hack because doesn't sort perfectly by second
           share_date = tile['attribution'][0]['shareDate']
           tiles << share_date 
-          puts share_date
         end
       end
       skip = skip + data['tiles'].count
