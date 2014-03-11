@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "TRENDING API - Get 'Me' Interests For Anon User" do
+describe "TRENDING - Get 'Me' Interests For Anon User" do
 
   before(:all) do
     # Get bifrost environment
@@ -61,7 +61,7 @@ describe "TRENDING API - Get 'Me' Interests For Anon User" do
   end
 end
 
-describe "TRENDING API - Get 'Global' Interests For Anon User" do
+describe "TRENDING - Get 'Global' Interests For Anon User" do
 
   before(:all) do
     # Get bifrost environment
@@ -117,7 +117,7 @@ describe "TRENDING API - Get 'Global' Interests For Anon User" do
   end
 end
 
-describe "TRENDING API - Get 'Me' Interests for Logged in User" do
+describe "TRENDING - Get 'Me' Interests for Logged in User" do
 
   before(:all) do
 
@@ -176,7 +176,7 @@ describe "TRENDING API - Get 'Me' Interests for Logged in User" do
   end
 end
 
-describe "TRENDING API - Get 'Social' Interests for Logged in Social User" do
+describe "TRENDING - Get 'Social' Interests for Logged in Social User" do
 
   before(:all) do
 
@@ -205,7 +205,7 @@ describe "TRENDING API - Get 'Social' Interests for Logged in Social User" do
   end
 end
 
-describe "TRENDING API - Skip and Limit for Trending Interests" do
+describe "TRENDING - Skip and Limit for Trending Interests" do
 
   before(:all) do
     # Get bifrost environment

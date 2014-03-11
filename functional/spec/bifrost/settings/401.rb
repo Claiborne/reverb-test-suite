@@ -3,7 +3,7 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 
-describe "SETTINGS API - GET /settings/homescreen with bad auth key" do
+describe "SETTINGS - GET /settings/homescreen with bad auth key" do
 
   before(:all) do
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"

@@ -2,7 +2,7 @@ require 'rspec'
 require 'config_path'
 require 'rest_client'
 
-describe "IMAGE API - GET Article Tile Image" do
+describe "IMAGES - GET Article Tile Image" do
 
   before(:all) do
     # Get bifrost environment

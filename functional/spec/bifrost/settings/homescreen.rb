@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "SETTINGS API - Get HomeScreen For Anon User" do
+describe "SETTINGS - Get HomeScreen For Anon User" do
 
   before(:all) do
     # Get bifrost environment

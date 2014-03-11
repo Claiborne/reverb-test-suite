@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 
-describe "ACCOUNT AND PROFILE API - CRUD User", :crud => true do
+describe "ACCOUNT AND PROFILE - CRUD User", :crud => true do
 
   class AccountFlowHelper
     class << self; attr_accessor :user_id, :user_token; end
