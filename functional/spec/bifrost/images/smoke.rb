@@ -1,33 +1,43 @@
 require 'rspec'
-#require 'config_path'
+require 'config_path'
 require 'rest_client'
-#require 'json'
 
-  describe "IMAGE API - GET Article Tile Image" do
+describe "IMAGE API - GET Article Tile Image" do
 
-    before(:all) do
-      # Get bifrost environment
-      ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/images.yml"
-      @image_env = "https://#{ConfigPath.new.options['baseurl']}"
+  before(:all) do
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
 
-      # Set headers
-      @headers = {:content_type => 'application/json', :accept => 'application/json'}
+    # Get image environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/images.yml"
+    @image_env = "http://#{ConfigPath.new.options['baseurl']}"
 
-      # Get anon session token
-      @session_token = get_anon_token(@bifrost_env)
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
-      @prd_article = 53671175
-      @stg_article = 43499877
-      @prd_article = 53671175
+    # Get anon session token
+    @session_token = get_anon_token(@bifrost_env)
+
+    case ENV['env']
+    when 'prd'
+      @article = 53671175
+    when 'stg'
+      @article = 43499877
+    when 'dev'
+      @article = 53671175
+    else
+      raise RuntimeError, 'No suitable env to run this spec (dev, stg, or prd)'
     end
+  end
 
-    it 'should return a 200' do
-      url = @image_env+"/interests/search/#{interest}?limit=10&api_key="+@session_token
-      begin
-        response = RestClient.get url, @headers
-      rescue => e
-        raise StandardError.new(e.message+":\n"+url)
-      end
+  it 'should return a 200' do
+    url = @image_env+"/api/image/article/#@article?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
     end
-
+    response.code.should == 200
+  end
 end
