@@ -1,8 +1,8 @@
 dev:
-  baseurl: dev-images.helloreverb.com/
+  baseurl: dev-images.helloreverb.com
 
 stg:
-  baseurl: stage-images.helloreverb.com/
+  baseurl: stage-images.helloreverb.com
 
 prd:
-  baseurl: images.helloreverb.com/
+  baseurl: images.helloreverb.com
