@@ -87,7 +87,7 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     @session = get_anon_token(@bifrost_env)
 
     # Click stream URL
-    @event_url = "#{@bifrost_env}/events/click?deviceId=load-test&api_key=#{@session}"
+    @event_url = "#{@bifrost_env}/events/click?deviceId=reverb-test-suite&api_key=#{@session}"
 
     # Define env data
     case ENV['env']
