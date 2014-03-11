@@ -8,7 +8,7 @@ require 'time'
 require 'api_checker.rb'; include APIChecker
 
 %w(0 25 50 75 100 125 150 175 200).each do |skip|
-  describe "TRENDING API - Get 'Me' Tiles For Anon User (skip #{skip})" do
+  describe "TRENDING - Get 'Me' Tiles For Anon User (skip #{skip})" do
 
     before(:all) do
       # Get bifrost environment
@@ -62,7 +62,7 @@ require 'api_checker.rb'; include APIChecker
 end
 
 %w(0 25 50 75 100 125 150 175 200).each do |skip|
-  describe "TRENDING API - Get 'Global' Tiles For Anon User (skip #{skip})" do
+  describe "TRENDING - Get 'Global' Tiles For Anon User (skip #{skip})" do
 
     before(:all) do
       # Get bifrost environment
@@ -115,7 +115,7 @@ end
   end
 end
 
-describe "TRENDING API - Get 'Me' Tiles for Logged in User" do
+describe "TRENDING - Get 'Me' Tiles for Logged in User" do
 
   before(:all) do
 
@@ -188,7 +188,7 @@ describe "TRENDING API - Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API - Get 'Social' Tiles for Logged in User" do
+describe "TRENDING - Get 'Social' Tiles for Logged in User" do
 
   before(:all) do
 
@@ -238,7 +238,7 @@ describe "TRENDING API - Get 'Social' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING API - Skip and Limit for Trending Tiles" do
+describe "TRENDING - Skip and Limit for Trending Tiles" do
   
   before(:all) do
     # Get bifrost environment

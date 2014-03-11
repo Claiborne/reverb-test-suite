@@ -7,7 +7,7 @@ require 'api_checker.rb'
 
 include APIChecker
 
-describe "COLLECTIONS API - CRUD Collections", :collections => true, :crud => true do
+describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true do
 
   class CollectionFlowHelper
     class << self; attr_accessor :collection; end

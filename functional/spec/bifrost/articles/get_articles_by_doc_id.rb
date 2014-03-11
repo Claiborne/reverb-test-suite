@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES API - GET Articles by docId" do
+describe "ARTICLES - GET Articles by docId" do
 
   before(:all) do
     # Get bifrost environment
