@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 
-describe "ACCOUNT API - CRUD User", :crud => true do
+describe "ACCOUNT API - CRUD User", :crud => true, :test => true do
 
   class AccountFlowHelper
     class << self; attr_accessor :user_id, :user_token; end
@@ -63,6 +63,32 @@ describe "ACCOUNT API - CRUD User", :crud => true do
     data['name'].should == @login
     data['email'].should == "#@login@reverbtest.com"
     data['profilePicture']['url'].match(/http/).should be_true
+  end
+
+  it "should moodify the user's bio" do
+    token = AccountFlowHelper.user_token
+    id = AccountFlowHelper.user_id
+    bio = "updated #{Random.rand 1000000}"
+    body = {:bio=>bio}.to_json
+
+    # update profile
+    url = @bifrost_env+"/userProfile/bio?api_key=#{token}"
+    begin 
+      response = RestClient.post url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+
+    # check profile updated   
+    sleep 1
+    url = @bifrost_env+"/userProfile/byUserId/#{id}?api_key=#{token}"
+    begin 
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['bio'].should == bio
   end
 
   it 'should delete the user' do
