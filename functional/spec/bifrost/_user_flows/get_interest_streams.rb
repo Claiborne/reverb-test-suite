@@ -51,22 +51,6 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.global.length.should > 214
   end
 
-  it 'should return at least 99 global interests' do
-    url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+":\n"+url)
-    end
-    interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.global << i['value']}
-    interests.count.should > 99
-    Interests_Helper.global.length.should > 99
-    #see above pending test
-    #interests.count.should > 214
-    #Interests_Helper.global.length.should > 214
-  end
-
   it "should return 24 articles for each 'me' interest" do
     errors = []
     Interests_Helper.me.each do |interest|
