@@ -66,10 +66,19 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
     time_difference.should < 60*60*2
   end
 
-  it 'should return first trending me article no more than 2 hours old for signed-in user' do
-    first_article = Time.parse(@signed_in_me_tiles['tiles'][0]['publishDate']).to_i
-    time_difference = Time.now.utc.to_i - first_article
-    time_difference.should < 60*60*2
+  it 'should return a trending me article, in the first page, no more than 1 day old for signed-in user' do
+    article_pub_dates = []
+    @signed_in_me_tiles['tiles'].each do |t|
+      article_pub_dates << Time.parse(t['publishDate']).to_i if t['publishDate']
+    end
+    article_pub_dates.length.should > 10
+
+    time_differences = []
+
+    article_pub_dates.each do |date|
+      time_differences << Time.now.utc.to_i - date
+    end
+    puts time_differences.sort.first.should < 60*60*24
   end
   
   it 'should return first trending social article no more than 2 hours old' do
