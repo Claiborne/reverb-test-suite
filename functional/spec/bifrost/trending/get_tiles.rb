@@ -384,6 +384,32 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     data['tiles'].length.should > 0
   end
 
+  it "should paginate me tiles past 450 for logged-in user" do
+    url = @bifrost_env+"/trending/tiles/me?skip=450&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['tiles'].length.should > 0
+  end
+
+  it "should still display article tiles after using skip=450 for logged-in user" do
+    url = @bifrost_env+"/trending/tiles/me?skip=450&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    tiles = []
+    data['tiles'].each do |tile|
+      tiles << tile['tileType']
+    end
+    tiles.include?('article').should be_true
+  end
+
   it 'should not return duplicate me tiles across pagination' do
     tiles = []
     skip = 0
