@@ -63,7 +63,11 @@ rss_feeds.each do |feed|
       end 
     end
   end
-  fail_percent = "#{(article_not_success/(article_success+article_not_success))*100}%"
+  if article_success+article_not_success > 0
+    fail_percent = "#{(article_not_success/(article_success+article_not_success))*100}%"
+  else 
+    fail_percent = ''
+  end
   puts article_success.to_s.green+' '+article_not_success.to_s.red+' '+"(#{fail_percent})".yellow+' '+feed
   total_success = total_success + article_success
   total_failure = total_failure + article_not_success
