@@ -7,7 +7,7 @@ raise StandardError, "\nNOTE: Command line argument is required: YYYY-MM-DD".yel
 
 date = ARGV[0].to_s
 
-domain = 'https://stage-insights.helloreverb.com'
+domain = 'https://insights.helloreverb.com'
 endpoint = 'api/rss.json/find-docs'
 
 rss_feeds = []
@@ -27,7 +27,7 @@ rss_feeds.each do |feed|
   article_success = 0
   article_not_success = 0
   success = ''
-  form_data = "skip=0&limit=500&feedUrl=#{feed}&sortOrderUp=undefined&env=stage"
+  form_data = "skip=0&limit=500&feedUrl=#{feed}&sortOrderUp=undefined&env=prod"
   url = "#{domain}/#{endpoint}?#{form_data}"
   begin
     response = RestClient.post url, '', :content_type => 'application/x-www-form-urlencoded', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
@@ -63,10 +63,12 @@ rss_feeds.each do |feed|
       end 
     end
   end
-  puts article_success.to_s.green+' '+article_not_success.to_s.red+' '+feed
+  fail_percent = "#{(article_not_success/(article_success+article_not_success))*100}%"
+  puts article_success.to_s.green+' '+article_not_success.to_s.red+' '+"(#{fail_percent})".yellow+' '+feed
   total_success = total_success + article_success
   total_failure = total_failure + article_not_success
 end
+puts ''
 puts "TOTAL SUCCESSES: #{total_success}"
 puts "TOTAL FAILURES: #{total_failure}"
 puts "FAILED FEEDS:\n#{failed_feeds}".yellow
