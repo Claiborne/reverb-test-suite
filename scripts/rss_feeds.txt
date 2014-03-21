@@ -87,6 +87,7 @@ http://feeds.feedburner.com/AtlanticPoliticsChannel
 http://feeds.feedburner.com/AtlanticChinaChannel
 http://feeds.feedburner.com/DerekThompsonTheAtlantic
 http://feeds.feedburner.com/theatlantic/infocus
+http://techcrunch.com/feed
 http://www.thedailybeast.com/voxbox/michael-tomasky.rss.xml
 http://www.thedailybeast.com/content/dailybeast/feed/david-frum.rss.xml
 http://www.thedailybeast.com/content/dailybeast/openzion.rss.xml
