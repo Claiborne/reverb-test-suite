@@ -67,7 +67,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User" do
     me_wall.include?(@interest).should be_true
   end
 
-  xit 'should display the interest in me tiles (FAILS IN PRODUCTION RVB-4658)' do
+  it 'should display the interest in me tiles (FAILS IN PRODUCTION RVB-4658)' do
     me_tiles = []
     url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
     begin
@@ -91,7 +91,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User" do
     end
   end
 
-  it 'should not display the interest in me wordwall(FAILS INTERMITTENTLY IN PROD: RVB-5294)' do
+  it 'should not display the interest in me wordwall (FAILS INTERMITTENTLY IN PROD: RVB-5294)' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
