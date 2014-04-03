@@ -16,6 +16,7 @@ module Token
   end
 
   def get_anon_token(base_url)
+    #johnthunder9000
     endpoint = "#{base_url}/account/ohai?clientId=#{get_client_id}&format=json"
     body = {"deviceId"=>"reverb-test-suite"}.to_json
     begin 
