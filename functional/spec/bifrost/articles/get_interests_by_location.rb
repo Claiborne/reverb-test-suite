@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 require 'api_checker.rb'; include APIChecker
 
-describe "ARTICLES - GET Interests By Location (San Francisco SOMA)" do
+describe "ARTICLES - GET Interests By Location (San Francisco SOMA)", :test => true do
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
@@ -61,10 +61,11 @@ describe "ARTICLES - GET Interests By Location (San Francisco SOMA)" do
     end
   end
 
-  ['San Francisco Ferry Building', 'AT&T Park'].each do |interest|
+  ['Twitter', 'AT&T Park'].each do |interest|
     it "should return a tile for #{interest}" do
       has_interest = false
       @data['tiles'].each do |tile|
+        puts tile['contentId']
         if tile['contentId'] == interest
           has_interest = true
           break
