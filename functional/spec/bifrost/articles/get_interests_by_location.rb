@@ -65,7 +65,6 @@ describe "ARTICLES - GET Interests By Location (San Francisco SOMA)", :test => t
     it "should return a tile for #{interest}" do
       has_interest = false
       @data['tiles'].each do |tile|
-        puts tile['contentId']
         if tile['contentId'] == interest
           has_interest = true
           break

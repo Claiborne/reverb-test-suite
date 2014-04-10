@@ -78,7 +78,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
     article_pub_dates.each do |date|
       time_differences << Time.now.utc.to_i - date
     end
-    puts time_differences.sort.first.should < 60*60*24
+    time_differences.sort.first.should < 60*60*24
   end
   
   it 'should return first trending social article no more than 2 hours old' do
