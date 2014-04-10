@@ -67,7 +67,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User", :add_remove_intere
     me_wall.include?(@interest).should be_true
   end
 
-  it 'should display the interest in me tiles (FAILS IN PRODUCTION RVB-4658)' do
+  it 'should display the interest in me tiles (FAILS INTERMITTENTLY IN PRODUCTION RVB-4658)' do
     me_tiles = []
     url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
     begin
