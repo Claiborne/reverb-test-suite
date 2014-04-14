@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "SETTINGS - Get HomeScreen For Anon User" do
+describe "SETTINGS - Get HomeScreen For Anon User", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -42,6 +42,21 @@ describe "SETTINGS - Get HomeScreen For Anon User" do
       @data['urlConstants'][key].should be_true
       check_not_blank @data['urlConstants'][key]
       check_not_nil @data['urlConstants'][key]
+    end
+  end
+
+  %w(myNews-FTUE-wordwall socialNews-FTUE-wordwall worldNews-FTUE-wordwall myNews-FTUE-mosaic socialNews-FTUE-mosaic
+    worldNews-FTUE-mosaic profile-FTUE addInterest-text aboutReverb-text myNews-label socialNews-label 
+    worldNews-label myProfile-label).each do |key|
+    it "should return an otherValues key os '#{key}'" do
+      @data['otherValues'].to_s.match("\"key\"=>\"#{key}").should be_true
+    end
+  end
+
+  it "should return a non-nil, non-blank value for each value in 'otherValues'" do
+    @data['otherValues'].each do |otherValue|
+      otherValue['value'].should_not be_nil
+      otherValue['value'].delete("^a-zA-Z").length.should > 0
     end
   end
 end
