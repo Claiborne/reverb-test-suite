@@ -15,6 +15,18 @@ module Token
     end
   end
 
+  def get_client_secret
+    if ENV['env'].downcase == 'dev'
+      return '45afe5fbf994aaa555324256b8e8f889b0c07158ed214f5bb7ca2bd5fa7dbfc8'
+    elsif ENV['env'].downcase == 'stg'
+      return '11aa9484b98878db013d8aae4ca293c8c63fbfff343e426f8a37549cf04bdfb4'
+    elsif ENV['env'].downcase == 'prd'
+      return '11aa9484b98878db013d8aae4ca293c8c63fbfff343e426f8a37549cf04bdfb4'
+    else
+      raise StandardError, "Unable to return a clientId value from lib/bifrost/token.rb"
+    end
+  end
+
   def get_anon_token(base_url)
     #johnthunder9000
     endpoint = "#{base_url}/account/ohai?clientId=#{get_client_id}&format=json"
