@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "SETTINGS - Get HomeScreen For Anon User" do
+describe "SETTINGS - Get Home Screen For Anon User" do
 
   before(:all) do
     # Get bifrost environment
@@ -47,9 +47,10 @@ describe "SETTINGS - Get HomeScreen For Anon User" do
 
   %w(myNews-FTUE-wordwall socialNews-FTUE-wordwall worldNews-FTUE-wordwall myNews-FTUE-mosaic socialNews-FTUE-mosaic
     worldNews-FTUE-mosaic profile-FTUE addInterest-text aboutReverb-text myNews-label socialNews-label 
-    worldNews-label myProfile-label).each do |key|
+    topNews-label myProfile-label).each do |key|
     it "should return an otherValues key os '#{key}'", :stg => true do
       @data['otherValues'].to_s.match("\"key\"=>\"#{key}").should be_true
+
     end
   end
 
