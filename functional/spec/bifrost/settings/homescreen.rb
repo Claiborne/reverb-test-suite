@@ -54,6 +54,64 @@ describe "SETTINGS - Get Home Screen For Anon User" do
     end
   end
 
+ it "should return an iPad homescreen image for portrait and landscape that returns a 200", :stg => true do
+    portrait_background = @data['homeImages'][0]['portraitUrl']
+    landscape_background = @data['homeImages'][0]['landscapeUrl']
+    check_not_blank portrait_background
+    check_not_nil portrait_background
+    check_not_blank landscape_background
+    check_not_nil landscape_background
+    RestClient.get portrait_background
+    RestClient.get landscape_background
+  end
+
+  it "should return at least 4 wordwall colors for the iPad", :stg => true do
+    @data['homeImages'][0]['wordColors'].length.should > 3
+    @data['homeImages'][0]['wordColors'].each do |color|
+      color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
+    end
+  end
+
+  it "should return at least 5 trending colors of the iPad", :stg => true do
+    @data['trendingColors'].length.should > 4
+    @data['trendingColors'].each do |color|
+      color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
+    end
+  end
+
+  it "should return an iPhone homescreen image for portrait and landscape that returns a 200", :stg => true do
+    portrait_background = @data['phoneHomeImages'][0]['portraitUrl']
+    landscape_background = @data['phoneHomeImages'][0]['landscapeUrl']
+    check_not_blank portrait_background
+    check_not_nil portrait_background
+    check_not_blank landscape_background
+    check_not_nil landscape_background
+    RestClient.get portrait_background
+    RestClient.get landscape_background
+  end
+
+  it "should return at least 4 wordwall colors for the iPhone", :stg => true do
+    @data['phoneHomeImages'][0]['wordColors'].length.should > 3
+    @data['phoneHomeImages'][0]['wordColors'].each do |color|
+      color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
+    end
+  end
+
+  it "should return at least 5 trending colors of the iPhone", :stg => true do
+    @data['phoneTrendingColors'].length.should > 4
+    @data['phoneTrendingColors'].each do |color|
+      color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
+      color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
+    end
+  end
+
   it "should return a non-nil, non-blank value for each value in 'otherValues'", :stg => true do
     @data['otherValues'].each do |otherValue|
       otherValue['value'].should_not be_nil
