@@ -89,15 +89,6 @@ describe "CHIRP - Get Chirp and Auth", :stg => true do
       end
     end
 
-    it "should return at least 5 trending colors of the iPad" do
-      @data['chirp']['settings']['trendingColors'].length.should > 4
-      @data['chirp']['settings']['trendingColors'].each do |color|
-        color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
-        color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
-        color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
-      end
-    end
-
     it "should return an iPhone homescreen image for portrait and landscape that returns a 200" do
       portrait_background = @data['chirp']['settings']['phoneHomeImages'][0]['portraitUrl']
       landscape_background = @data['chirp']['settings']['phoneHomeImages'][0]['landscapeUrl']
@@ -112,15 +103,6 @@ describe "CHIRP - Get Chirp and Auth", :stg => true do
     it "should return at least 4 wordwall colors for the iPhone" do
       @data['chirp']['settings']['phoneHomeImages'][0]['wordColors'].length.should > 3
       @data['chirp']['settings']['phoneHomeImages'][0]['wordColors'].each do |color|
-        color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
-        color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
-        color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
-      end
-    end
-
-    it "should return at least 5 trending colors of the iPhone" do
-      @data['chirp']['settings']['phoneTrendingColors'].length.should > 4
-      @data['chirp']['settings']['phoneTrendingColors'].each do |color|
         color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
         color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
         color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
@@ -181,15 +163,6 @@ describe "CHIRP - Get Chirp only", :stg => true do
     end
   end
 
-  it "should return at least 5 trending colors of the iPad" do
-    @data['settings']['trendingColors'].length.should > 4
-    @data['settings']['trendingColors'].each do |color|
-      color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
-      color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
-      color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
-    end
-  end
-
   it "should return an iPhone homescreen image for portrait and landscape that returns a 200" do
     portrait_background = @data['settings']['phoneHomeImages'][0]['portraitUrl']
     landscape_background = @data['settings']['phoneHomeImages'][0]['landscapeUrl']
@@ -204,15 +177,6 @@ describe "CHIRP - Get Chirp only", :stg => true do
   it "should return at least 4 wordwall colors for the iPhone" do
     @data['settings']['phoneHomeImages'][0]['wordColors'].length.should > 3
     @data['settings']['phoneHomeImages'][0]['wordColors'].each do |color|
-      color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
-      color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
-      color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
-    end
-  end
-
-  it "should return at least 5 trending colors of the iPhone" do
-    @data['settings']['phoneTrendingColors'].length.should > 4
-    @data['settings']['phoneTrendingColors'].each do |color|
       color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
       color.to_s.match(/green\"=>[0-9]{1,}/).should be_true
       color.to_s.match(/blue\"=>[0-9]{1,}/).should be_true
