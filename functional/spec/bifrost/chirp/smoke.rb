@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "CHIRP - Get Chirp and Auth", :stg => true do
+describe "CHIRP - Get Chirp and Auth" do
 
   before(:all) do
     # Get bifrost environment
@@ -111,7 +111,7 @@ describe "CHIRP - Get Chirp and Auth", :stg => true do
   end
 end
 
-describe "CHIRP - Get Chirp only", :stg => true do
+describe "CHIRP - Get Chirp only" do
 
   before(:all) do
     # Get bifrost environment

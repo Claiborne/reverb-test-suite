@@ -48,13 +48,13 @@ describe "SETTINGS - Get Home Screen For Anon User" do
   %w(myNews-FTUE-wordwall socialNews-FTUE-wordwall worldNews-FTUE-wordwall myNews-FTUE-mosaic socialNews-FTUE-mosaic
     worldNews-FTUE-mosaic profile-FTUE addInterest-text aboutReverb-text myNews-label socialNews-label 
     topNews-label myProfile-label).each do |key|
-    it "should return an otherValues key os '#{key}'", :stg => true do
+    it "should return an otherValues key os '#{key}'" do
       @data['otherValues'].to_s.match("\"key\"=>\"#{key}").should be_true
 
     end
   end
 
- it "should return an iPad homescreen image for portrait and landscape that returns a 200", :stg => true do
+ it "should return an iPad homescreen image for portrait and landscape that returns a 200" do
     portrait_background = @data['homeImages'][0]['portraitUrl']
     landscape_background = @data['homeImages'][0]['landscapeUrl']
     check_not_blank portrait_background
@@ -65,7 +65,7 @@ describe "SETTINGS - Get Home Screen For Anon User" do
     RestClient.get landscape_background
   end
 
-  it "should return at least 4 wordwall colors for the iPad", :stg => true do
+  it "should return at least 4 wordwall colors for the iPad" do
     @data['homeImages'][0]['wordColors'].length.should > 3
     @data['homeImages'][0]['wordColors'].each do |color|
       color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
@@ -74,7 +74,7 @@ describe "SETTINGS - Get Home Screen For Anon User" do
     end
   end
 
-  it "should return an iPhone homescreen image for portrait and landscape that returns a 200", :stg => true do
+  it "should return an iPhone homescreen image for portrait and landscape that returns a 200" do
     portrait_background = @data['phoneHomeImages'][0]['portraitUrl']
     landscape_background = @data['phoneHomeImages'][0]['landscapeUrl']
     check_not_blank portrait_background
@@ -85,7 +85,7 @@ describe "SETTINGS - Get Home Screen For Anon User" do
     RestClient.get landscape_background
   end
 
-  it "should return at least 4 wordwall colors for the iPhone", :stg => true do
+  it "should return at least 4 wordwall colors for the iPhone" do
     @data['phoneHomeImages'][0]['wordColors'].length.should > 3
     @data['phoneHomeImages'][0]['wordColors'].each do |color|
       color.to_s.match(/red\"=>[0-9]{1,}/).should be_true
@@ -94,7 +94,7 @@ describe "SETTINGS - Get Home Screen For Anon User" do
     end
   end
 
-  it "should return a non-nil, non-blank value for each value in 'otherValues'", :stg => true do
+  it "should return a non-nil, non-blank value for each value in 'otherValues'" do
     @data['otherValues'].each do |otherValue|
       otherValue['value'].should_not be_nil
       otherValue['value'].delete("^a-zA-Z").length.should > 0
