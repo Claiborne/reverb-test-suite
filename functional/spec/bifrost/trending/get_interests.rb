@@ -28,8 +28,12 @@ describe "TRENDING - Get 'Me' Interests For Anon User" do
     @data = JSON.parse response
   end
 
-  it "should get 24 'me' interests" do
-    @data['interests'].length.should == 25
+  it "should get 24 'me' topics" do
+    topics = []
+    @data['interests'].each do |interest|
+      topics << interest if interest['score'] == 0
+    end
+    topics.length.should == 24
   end
 
   it "should return a non-nil, non-blank 'value' value for each tile" do
@@ -46,9 +50,9 @@ describe "TRENDING - Get 'Me' Interests For Anon User" do
     end
   end
 
-  it "should only return interests of type 'interest'" do
+  it "should only return interests of type 'interest' or 'collection'" do
     @data['interests'].each do |i|
-      i['interestType'].should == 'interest'
+      ['interest','collection'].include?(i['interestType']).should be_true
     end
   end
 
@@ -102,9 +106,9 @@ describe "TRENDING - Get 'Global' Interests For Anon User" do
     end
   end
 
-  it "should only return interests of type 'interest'" do
+  it "should only return interests of type 'interest' or collection" do
     @data['interests'].each do |i|
-      i['interestType'].should == 'interest'
+      ['interest','collection'].include?(i['interestType']).should be_true
     end
   end
 
