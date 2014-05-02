@@ -33,13 +33,13 @@ require 'api_checker.rb'; include APIChecker
 
     include_examples "Trending Tiles Basic Checks"
 
-    it "should get 24 'me' articles" do
+    it "should get 24 'me' tiles" do
       @data['tiles'].length.should == 24
     end
 
-    it "should only return articles of type 'article'" do
+    it "should only return tiles of type 'article', 'interest', or 'collection'" do
       @data['tiles'].each do |i|
-        i['tileType'].should == 'article'
+        ['article','collection','interest'].include?(i['tileType']).should be_true
       end
     end
 
@@ -51,11 +51,12 @@ require 'api_checker.rb'; include APIChecker
       interest_values.should == interest_values.uniq
     end
 
-    it 'should sort by publish date' do
+    it 'should sort articles by publish date' do
       dates = []
       @data['tiles'].each do |tile|
-        dates << tile['publishDate']
+        dates << tile['publishDate'] if tile['tileType'] == 'article' 
       end
+      data.length.should > 0
       dates.should == dates.sort {|x,y| y <=> x }
     end
   end
@@ -91,9 +92,9 @@ end
       @data['tiles'].length.should == 24
     end
 
-    it "should only return tiles of type 'article'" do
+    it "should only return tiles of type 'article', 'interest', or 'colleciton'" do
       @data['tiles'].each do |i|
-        i['tileType'].should == 'article'
+        ['article','interest','collection'].include?(i['tileType']).should be_true
       end
     end
 
@@ -105,10 +106,10 @@ end
       interest_values.should == interest_values.uniq
     end
 
-    it 'should sort by publish date' do
+    it 'should sort articles by publish date' do
       dates = []
       @data['tiles'].each do |tile|
-        dates << tile['publishDate']
+        dates << tile['publishDate'] if tile['tileType'] == 'article'
       end
       dates.should == dates.sort {|x,y| y <=> x }
     end  
