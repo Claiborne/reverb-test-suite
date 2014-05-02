@@ -26,7 +26,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     @session_token = get_anon_token @bifrost_env
   end
 
-  it 'should return 25 (max allowed) me interests' do
+  it 'should return 24 me topics' do
     url = @bifrost_env+"/trending/interests/me?skip=0&limit=100&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -34,8 +34,8 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.me << i['value']}
-    Interests_Helper.me.length.should == 25
+    interests.each {|i| Interests_Helper.me << i['value'] if i['score'] == 0}
+    Interests_Helper.me.length.should == 24
   end
 
   it 'should return at least 215 global interests (FAILS IN PRODUCTION RVB-4231)' do
@@ -69,7 +69,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     errors.should == []
   end
 
-  it "should return at least 30 articles for each 'me' interest" do
+  it "should return at least 30 articles for each 'me' topic" do
     less_than_30_articles = []
     Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=24&limit=24&api_key="+@session_token
