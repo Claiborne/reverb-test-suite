@@ -56,7 +56,7 @@ require 'api_checker.rb'; include APIChecker
       @data['tiles'].each do |tile|
         dates << tile['publishDate'] if tile['tileType'] == 'article' 
       end
-      data.length.should > 0
+      @data.length.should > 0
       dates.should == dates.sort {|x,y| y <=> x }
     end
   end
@@ -453,7 +453,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       end
       data = JSON.parse response
       data['tiles'].each do |tile|
-        tiles << tile['publishDate'] unless tile['tileType'] == 'interest' || tile['tileType'] == 'person'
+        tiles << tile['publishDate'] if tile['tileType'] == 'article'
       end
       skip = skip + data['tiles'].count
     end
