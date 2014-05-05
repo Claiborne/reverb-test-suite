@@ -8,7 +8,7 @@ require 'time'
 require 'api_checker.rb'; include APIChecker
 
 %w(0 25 50 75 100 125 150 175 200).each do |skip|
-  describe "TRENDING - Get 'Me' Tiles For Anon User (skip #{skip})", :test => true do
+  describe "TRENDING - Get 'Me' Tiles For Anon User (skip #{skip})" do
 
     before(:all) do
       # Get bifrost environment
@@ -23,7 +23,6 @@ require 'api_checker.rb'; include APIChecker
 
       # Get Articles for Anon User
       url = @bifrost_env+"/trending/tiles/me?skip=#{skip}&limit=24&api_key="+@session_token
-      puts url
       begin
         response = RestClient.get url, @headers
       rescue => e
