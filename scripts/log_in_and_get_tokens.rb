@@ -7,9 +7,9 @@ id = '515b32b0e4b03f3544d60a15'
 
 list_of_sessions = []
 
-(0..2500).each do |n|
+(0..90).each do |n|
   body = {
-  "login" => "clayt3#{n}",
+  "login" => "loadtest01#{n}",
   "deviceId" => "reverb-test-suite",
   "allowMergeIntoExisting" => true,
   "password" => "testpassword",
@@ -22,13 +22,15 @@ list_of_sessions = []
     puts "#{n} failed"
     next
   end
+  puts data['token']
   data = JSON.parse res
   list_of_sessions << data['token']
-  puts data['token']
 end
 
+=begin
 File.open('/Users/willclaiborne/code/reverb-test-suite/scripts/stage-sessions.txt', 'w')  do |file|
   list_of_sessions.each do |s|
     file.write s+"\n"
   end
 end
+=end
