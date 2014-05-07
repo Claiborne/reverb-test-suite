@@ -1,7 +1,6 @@
 require 'rest-client'
 require 'json'
 require 'colorize'
-require 'pp'
 
 case ARGV[0]
 when 'prd'
