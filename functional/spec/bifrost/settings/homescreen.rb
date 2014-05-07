@@ -34,7 +34,7 @@ describe "SETTINGS - Get Home Screen For Anon User" do
     end
   end
 
-  %w(twitterLoveUrl facebookLoveUrl emailLoveUrl aboutusMoreAboutReverbUrl appstoreTwitterArticleShareUrl
+  %w(twitterLoveUrl facebookLoveUrl emailLoveUrl aboutusMoreAboutReverbUrl
     appstoreFacebookArticleShareUrl appstoreEmailArticleShareUrl appstoreMessageArticleShareUrl 
     appstoreEmailInterestCollectionShareUrl appLandingPageUrl officialAppstoreUrl caAppstoreUrl 
     appstoreLogoUrl).each do |key|
