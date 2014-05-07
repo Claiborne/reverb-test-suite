@@ -7,7 +7,7 @@ id = '515b32b0e4b03f3544d60a15'
 
 list_of_sessions = []
 
-(0..90).each do |n|
+(0..89).each do |n|
   body = {
   "login" => "loadtest01#{n}",
   "deviceId" => "reverb-test-suite",
@@ -22,8 +22,8 @@ list_of_sessions = []
     puts "#{n} failed"
     next
   end
-  puts data['token']
   data = JSON.parse res
+  puts data['token']
   list_of_sessions << data['token']
 end
 
