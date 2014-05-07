@@ -5,7 +5,7 @@ env = "https://stage-api.helloreverb.com/v2"
 endpoint = "/account/register?clientId=515b32b0e4b03f3544d60a15&format=json"
 name = 'loadtest01'
 
-(0..90).each do |n|
+(0..89).each do |n|
   body = {
     "login"=>"#{name}#{n}",
     "password"=>"testpassword",
@@ -22,4 +22,5 @@ name = 'loadtest01'
   end
   d = JSON.parse r
   puts d['userId']
+  sleep 1
 end

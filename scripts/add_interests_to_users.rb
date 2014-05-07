@@ -2,24 +2,33 @@ require 'rest-client'
 require 'json'
 require 'colorize'
 
-@x = 0
+tokens = []
+concepts = []
 
-@interests = "/Users/willclaiborne/code/reverb-test-suite/scripts/stg-interests.txt"
-sessions = "/Users/willclaiborne/code/reverb-test-suite/scripts/stg-sessions.txt"
-
-def random_interest
-  chosen_line = nil
-  File.foreach(@interests).each_with_index do |line, number|
-    chosen_line = line if rand < 1.0/(number+1)
-  end
-  chosen_line.strip
+File.open("/Users/wclaiborne/Documents/load_test_05_2014/prd_tokens.txt", "r").each_line do |line|
+  tokens << line.strip
 end
 
-File.open(sessions, "r").each_line do |session|
+tokens = ['631ff33d45c7b1ee813e2e1d9b404d6e913d9bb5665792d7']
+
+File.open("/Users/wclaiborne/Documents/load_test_05_2014/5k_stage_concepts.txt", "r").each_line do |line|
+  concepts << line.strip
+end
+
+tokens.each do |session|
+sleep 0.2
+puts session
+20.times do 
+
   url = "https://stage-api.helloreverb.com/v2/interests?api_key=#{session}"
-  95.times do 
-    RestClient.post url, {"value"=>random_interest,"interestType"=>"interest"}.to_json, :content_type => 'application/json'
+  concept = concepts[rand(concepts.length)]
+  puts concept
+
+  begin 
+    RestClient.post url, {"value"=>concept,"interestType"=>"interest"}.to_json, :content_type => 'application/json'
+  rescue => e
+    puts 'failed'
+    next
   end
-  puts @x
-  @x = @x+1
-end
+end; end
+
