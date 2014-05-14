@@ -7,7 +7,7 @@ require 'bifrost/trending_helper.rb'
 require 'time'
 require 'api_checker.rb'; include APIChecker
 
-%w(0 25 50 75 100 125 150 175 200).each do |skip|
+%w(0 25 50 75 100 125 150).each do |skip|
   describe "TRENDING - Get 'Me' Tiles For Anon User (skip #{skip})" do
 
     before(:all) do
