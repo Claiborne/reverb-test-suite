@@ -490,7 +490,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.length.should > 60
   end
 
-  it 'should sort global tiles by publish date across pagination' do
+  it 'should sort global articles by publish date across pagination' do
     tiles = []
     skip = 0
     4.times do 
@@ -503,7 +503,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       end
       data = JSON.parse response
       data['tiles'].each do |tile|
-        tiles << tile['publishDate'] unless tile['tileType'] == 'interest' || tile['tileType'] == 'person'
+        tiles << tile['publishDate'] if tile['tileType'] == 'article'
       end
       skip = skip + data['tiles'].count
     end
