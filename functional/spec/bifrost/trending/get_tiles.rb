@@ -363,7 +363,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     data['tiles'].length.should > 0
   end
 
-  it "should paginate me tiles past 200" do
+  it "should paginate me tiles past 120" do
     url = @bifrost_env+"/trending/tiles/me?skip=200&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
