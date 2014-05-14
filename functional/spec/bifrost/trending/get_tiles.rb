@@ -396,7 +396,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     data['tiles'].length.should > 0
   end
 
-  it "should still display article tiles after using skip=450 for logged-in user" do
+  it "should still display an article in me tiles after using skip=450 for logged-in user" do
     url = @bifrost_env+"/trending/tiles/me?skip=450&limit=24&api_key="+@social_session_token
     begin
       response = RestClient.get url, @headers
