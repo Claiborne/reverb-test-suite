@@ -411,7 +411,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.include?('article').should be_true
   end
 
-  it 'should not return duplicate me tiles across pagination' do
+  it 'should not return duplicate me tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
     tiles = []
     skip = 0
     4.times do 
@@ -461,7 +461,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.length.should > 60
   end
 
-  it 'should not return duplicate global tiles across pagination' do
+  it 'should not return duplicate global tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
     tiles = []
     skip = 0
     4.times do 
@@ -511,7 +511,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.length.should > 60
   end
 
-  it 'should not return duplicate social tiles across pagination' do
+  it 'should not return duplicate social tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
     tiles = []
     skip = 0
     4.times do 
