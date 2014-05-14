@@ -46,7 +46,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.global << i['value']}
+    interests.each {|i| Interests_Helper.global << i['value'] if i['tileType'] == 'interest'}
     interests.count.should > 129
     Interests_Helper.global.length.should > 129
   end
