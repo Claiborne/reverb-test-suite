@@ -54,10 +54,10 @@ describe "Trending articles" do
   before(:all) do
     ENV['env'] = 'prd'
 
-    @domain = 'https://stage-api.helloreverb.com/v2'
+    @domain = 'https://api.helloreverb.com/v2'
 
     @anon_token = get_anon_token @domain
-    @social_token = '6070006b495005cc287825b09883469fac9b40561f36fa64' #social_token = get_social_token @domain
+    @social_token = social_token = get_social_token @domain
 
   end
 
