@@ -458,10 +458,10 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       skip = skip + data['tiles'].count
     end
     tiles.sort{ |x,y| y <=> x }.should == tiles
-    tiles.length.should > 60
+    tiles.length.should > 80
   end
 
-  it 'should not return duplicate global tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
+  it 'should not return duplicate global tiles across pagination' do
     tiles = []
     skip = 0
     4.times do 
