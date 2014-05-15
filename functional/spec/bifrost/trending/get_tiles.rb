@@ -457,9 +457,8 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       end
       skip = skip + data['tiles'].count
     end
-    tiles.uniq! # bad hack for removing duplicates #todo
     tiles.sort{ |x,y| y <=> x }.should == tiles
-    tiles.length.should > 60
+    tiles.length.should > 80
   end
 
   it 'should not return duplicate global tiles across pagination' do
@@ -508,7 +507,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       end
       skip = skip + data['tiles'].count
     end
-    tiles.uniq! # bad hack for removing duplicates # todo
     tiles.sort{ |x,y| y <=> x }.should == tiles
     tiles.length.should > 60
   end
@@ -563,7 +561,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       end
       skip = skip + data['tiles'].count
     end
-    tiles.uniq! # bad hack for removing duplicates # todo
     tiles.sort{ |x,y| y <=> x }.should == tiles
     tiles.length.should > 60
   end
