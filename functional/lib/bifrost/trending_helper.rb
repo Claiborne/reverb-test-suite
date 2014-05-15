@@ -35,7 +35,7 @@ shared_examples 'Trending Tiles Basic Checks' do
       @data['tiles'].each do |tile|
         if tile['tileType'] == 'article'
           check_not_nil tile['header']['value']
-          check_not_blank tile['header']['value']
+          tile['header']['value'].delete(' ').length.should > 0
         end
       end
     end
