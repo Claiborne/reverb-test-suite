@@ -7,7 +7,7 @@ require 'bifrost/trending_helper.rb'
 
 include Token
 
-describe "INTERESTS - Get me interest", :test => true do
+describe "INTERESTS - Get me interest" do
 
   before(:all) do
     # Get bifrost environment
