@@ -71,7 +71,7 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
     data['tiles'][0]['contentId'].should == article
   end
 
-  xit "should remove an article from favorites" do
+  it "should remove an article from favorites" do
     article = Fav_Article_Helper.article
     url = @bifrost_env+"/userProfile/reverb?item=#{article}&type=article&api_key="+@session_token
     begin
