@@ -39,20 +39,38 @@ module Token
     data['token']
   end
 
-  def get_social_token(base_url)
-    #johnthunder9000
+  def get_social_token(base_url, name='johnthunder9000')
     client_id = get_client_id
-    endpoint = "#{base_url}/account/oauthLogin?clientId=#{client_id}"
-    if ENV['env'] == 'prd'
-      token = '2255573574-Xr7leYq5atAmXH9vG2Zi7dHKWzuHDJcDg4xosG1'
-      secret = 'nRR4j8rsjpPJFJupk7FaXVVzuXBtl8XS5qySzy7INRyNo'
-    elsif ENV['env'] == 'stg' 
-      token = '2255573574-R2jWpp2ntGa4EnQ9C47QsIWKo3dAwwivXeGYMTX'
-      secret = 'pHEQ4NNNGyph4U64T9KYOD88lvYQqRZy6SQm07j0HhggC'
-    elsif ENV['env'] == 'dev' 
-      token = '2255573574-5B1QGZ3esomOOylG6h5tcEdqb0W5bs9XY8SBlu3'
-      secret = 'ogykkiUJ98CzpM1Kd70VhEclQhzG34xKHlFQlfgWNujGw'
-    end              
+
+    case name
+    when 'johnthunder9000'
+      #johnthunder9000
+      endpoint = "#{base_url}/account/oauthLogin?clientId=#{client_id}"
+      if ENV['env'] == 'prd'
+        token = '2255573574-Xr7leYq5atAmXH9vG2Zi7dHKWzuHDJcDg4xosG1'
+        secret = 'nRR4j8rsjpPJFJupk7FaXVVzuXBtl8XS5qySzy7INRyNo'
+      elsif ENV['env'] == 'stg' 
+        token = '2255573574-R2jWpp2ntGa4EnQ9C47QsIWKo3dAwwivXeGYMTX'
+        secret = 'pHEQ4NNNGyph4U64T9KYOD88lvYQqRZy6SQm07j0HhggC'
+      elsif ENV['env'] == 'dev' 
+        token = '2255573574-5B1QGZ3esomOOylG6h5tcEdqb0W5bs9XY8SBlu3'
+        secret = 'ogykkiUJ98CzpM1Kd70VhEclQhzG34xKHlFQlfgWNujGw'
+      end
+    when 'johnthunderghost'
+      #johnthunderghost
+      endpoint = "#{base_url}/account/oauthLogin?clientId=#{client_id}"
+      if ENV['env'] == 'prd'
+        token = '2388402080-5JSbjQgxUl2e7fS97cqrELn5QYPdAwLOChkC4M5'
+        secret = 'cRH4zf9E5nuMKSKWIULoDC2aYyAnmnKf60CaV9jaAiZ7S'
+      elsif ENV['env'] == 'stg' 
+        token = '2388402080-5JSbjQgxUl2e7fS97cqrELn5QYPdAwLOChkC4M5'
+        secret = 'cRH4zf9E5nuMKSKWIULoDC2aYyAnmnKf60CaV9jaAiZ7S'
+      elsif ENV['env'] == 'dev' 
+        token = '2388402080-DgSkkai6YrGIPjyGIynCFNKwS60ZgaUYoDbFOrM'
+        secret = 'vlH6n8Wkx9RSnHqU2xQeaIWX514uIy43dpQSYYk0T8oHX'
+      end   
+    else; raise "Can't get a social token because no valid user was provided"
+    end
 
     body = {
       "deviceId"=>"reverb-test-suite",
