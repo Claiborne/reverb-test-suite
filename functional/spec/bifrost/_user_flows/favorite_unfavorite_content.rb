@@ -71,7 +71,7 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
     data['tiles'][0]['contentId'].should == article
   end
 
-  it "should remove an article from favorites" do
+  xit "should remove an article from favorites" do
     article = Fav_Article_Helper.article
     url = @bifrost_env+"/userProfile/reverb?item=#{article}&type=article&api_key="+@session_token
     begin
@@ -91,7 +91,7 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
       raise StandardError.new(e.message+":\n"+url)
     end
     data = JSON.parse response
-    data['tiles'][0].should_not == article
+    data['tiles'][0]['contentId'].should_not == article
   end
 end
 
@@ -143,6 +143,29 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
       raise StandardError.new(e.message+":\n"+url)
     end
     sleep 2
+  end
+
+  it 'should appear favorited in the interest streams (me & global)' do
+    interest = Fav_Interest_Helper.interest
+    url = @bifrost_env+"/interests/stream/me?interest=#{interest}&api_key="+@session_token
+    body = {:contentId=>"#{interest}",:contentType=>'interest'}.to_json
+    begin
+      res = response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse res
+    data['known'].to_s.should == 'true'
+
+    url = @bifrost_env+"/interests/stream/global?interest=#{interest}&api_key="+@session_token
+    body = {:contentId=>"#{interest}",:contentType=>'interest'}.to_json
+    begin
+      res = response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse res
+    data['known'].to_s.should == 'true'
   end
 
   it "should return favorited interest" do 
