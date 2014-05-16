@@ -352,8 +352,8 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
 
-  it "should paginate global tiles past 450" do
-    url = @bifrost_env+"/trending/tiles/global?skip=450&limit=24&api_key="+@session_token
+  it "should paginate global tiles past 700" do
+    url = @bifrost_env+"/trending/tiles/global?skip=700&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -385,8 +385,8 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     data['tiles'].length.should > 0
   end
 
-  it "should paginate me tiles past 700 for logged-in user" do
-    url = @bifrost_env+"/trending/tiles/me?skip=700&limit=24&api_key="+@social_session_token
+  it "should paginate me tiles past 200 for logged-in user" do
+    url = @bifrost_env+"/trending/tiles/me?skip=200&limit=24&api_key="+@social_session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
