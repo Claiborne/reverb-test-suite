@@ -60,8 +60,8 @@ module Token
       #johnthunderghost
       endpoint = "#{base_url}/account/oauthLogin?clientId=#{client_id}"
       if ENV['env'] == 'prd'
-        token = '2388402080-5JSbjQgxUl2e7fS97cqrELn5QYPdAwLOChkC4M5'
-        secret = 'cRH4zf9E5nuMKSKWIULoDC2aYyAnmnKf60CaV9jaAiZ7S'
+        token = '2388402080-GYxRXjwvXa8qCnLGvqq95Zbd6cbjYw6HPBbTlFs'
+        secret = 'yDsER8JZjSSJSwfPwS1j4XzPhzepGz2VWu2aStMgrKNfz'
       elsif ENV['env'] == 'stg' 
         token = '2388402080-5JSbjQgxUl2e7fS97cqrELn5QYPdAwLOChkC4M5'
         secret = 'cRH4zf9E5nuMKSKWIULoDC2aYyAnmnKf60CaV9jaAiZ7S'
