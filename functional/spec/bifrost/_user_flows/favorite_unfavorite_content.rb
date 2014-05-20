@@ -7,11 +7,10 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Favorite and unfavorite an article" do
+describe "USER FLOWS - Favorite and unfavorite an article", :test => true do
   
   class Fav_Article_Helper
-    @article = nil
-    class << self; attr_accessor :article; end
+    class << self; attr_accessor :article, :favorite_count; end
   end
 
   before(:all) do
@@ -46,6 +45,17 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
     Fav_Article_Helper.article.should_not be_nil
   end
 
+  it 'should get favorite count from profile' do
+    url = @bifrost_env+"/userProfile/mine?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    Fav_Article_Helper.favorite_count = data['stats']['reverbedItems']
+  end
+
   it 'should favorite an article' do
     article = Fav_Article_Helper.article
     article.should_not be_nil
@@ -71,6 +81,17 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
     data['tiles'][0]['contentId'].should == article
   end
 
+  it 'should increase favorite count from profile by one' do
+    url = @bifrost_env+"/userProfile/mine?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    data['stats']['reverbedItems'].should == Fav_Article_Helper.favorite_count+1
+  end
+
   it "should remove an article from favorites" do
     article = Fav_Article_Helper.article
     url = @bifrost_env+"/userProfile/reverb?item=#{article}&type=article&api_key="+@session_token
@@ -92,6 +113,17 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
     end
     data = JSON.parse response
     data['tiles'][0]['contentId'].should_not == article
+  end
+
+  it 'should descrease favorite count from profile by one' do
+    url = @bifrost_env+"/userProfile/mine?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    data['stats']['reverbedItems'].should == Fav_Article_Helper.favorite_count
   end
 end
 
