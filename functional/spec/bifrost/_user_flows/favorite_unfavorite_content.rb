@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Favorite and unfavorite an article", :test => true do
+describe "USER FLOWS - Favorite and unfavorite an article" do
   
   class Fav_Article_Helper
     class << self; attr_accessor :article, :favorite_count; end
@@ -130,8 +130,7 @@ end
 describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY IN PROD RVB-5295)" do
   
   class Fav_Interest_Helper
-    @interest = nil
-    class << self; attr_accessor :interest; end
+    class << self; attr_accessor :interest, :favorite_count; end
   end
 
   before(:all) do
@@ -146,6 +145,17 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     login = get_token_and_login @bifrost_env, 'clay01', 'testpassword'
     @session_token = login[0]
     @user_id = login[1]
+  end
+
+  it 'should get favorite count from profile' do
+    url = @bifrost_env+"/userProfile/mine?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    Fav_Interest_Helper.favorite_count = data['stats']['reverbedItems']
   end
 
   it 'should get an interest' do
@@ -212,6 +222,17 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     data['tiles'][0]['contentId'].should == interest
   end
 
+  it 'should increase favorite count from profile by one' do
+    url = @bifrost_env+"/userProfile/mine?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    data['stats']['reverbedItems'].should == Fav_Interest_Helper.favorite_count+1
+  end
+
   it "should remove an interest from favorites" do
     interest = Fav_Interest_Helper.interest
     url = @bifrost_env+"/userProfile/reverb?item=#{interest}&type=interest&api_key="+@session_token
@@ -233,5 +254,16 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     end
     data = JSON.parse response
     data['tiles'][0].should_not == interest
+  end
+
+  it 'should descrease favorite count from profile by one' do
+    url = @bifrost_env+"/userProfile/mine?api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    data = JSON.parse response
+    data['stats']['reverbedItems'].should == Fav_Interest_Helper.favorite_count
   end
 end
