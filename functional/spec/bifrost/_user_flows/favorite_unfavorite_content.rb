@@ -127,7 +127,7 @@ describe "USER FLOWS - Favorite and unfavorite an article" do
   end
 end
 
-describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY IN PROD RVB-5295)" do
+describe "USER FLOWS - Favorite and unfavorite an interest" do
   
   class Fav_Interest_Helper
     class << self; attr_accessor :interest, :favorite_count; end
@@ -167,9 +167,11 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     end
     data = JSON.parse response
     begin
-      Fav_Interest_Helper.interest = CGI::escape data['interests'][Random.rand(100)]['value']
+      interest = data['interests'][Random.rand(100)]['value']
+      Fav_Interest_Helper.interest = [CGI::escape(interest), interest]
     rescue
-      Fav_Interest_Helper.interest = CGI::escape data['interests'][Random.rand(23)]['value']
+      interest = data['interests'][Random.rand(23)]['value']
+      Fav_Interest_Helper.interest = [CGI::escape(interest), interest]
     end
     Fav_Interest_Helper.interest.should_not be_nil
   end
@@ -178,7 +180,7 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     interest = Fav_Interest_Helper.interest
     interest.should_not be_nil
     url = @bifrost_env+"/userProfile/reverb?api_key="+@session_token
-    body = {:contentId=>"#{interest}",:contentType=>'interest'}.to_json
+    body = {:contentId=>"#{interest[1]}",:contentType=>'interest'}.to_json
     begin
       response = RestClient.post url, body, @headers
     rescue => e
@@ -189,8 +191,7 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
 
   it 'should appear favorited in the interest streams (me & global)' do
     interest = Fav_Interest_Helper.interest
-    url = @bifrost_env+"/interests/stream/me?interest=#{interest}&api_key="+@session_token
-    body = {:contentId=>"#{interest}",:contentType=>'interest'}.to_json
+    url = @bifrost_env+"/interests/stream/me?interest=#{interest[0]}&api_key="+@session_token
     begin
       res = response = RestClient.get url, @headers
     rescue => e
@@ -199,8 +200,7 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     data = JSON.parse res
     data['known'].to_s.should == 'true'
 
-    url = @bifrost_env+"/interests/stream/global?interest=#{interest}&api_key="+@session_token
-    body = {:contentId=>"#{interest}",:contentType=>'interest'}.to_json
+    url = @bifrost_env+"/interests/stream/global?interest=#{interest[0]}&api_key="+@session_token
     begin
       res = response = RestClient.get url, @headers
     rescue => e
@@ -210,8 +210,8 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
     data['known'].to_s.should == 'true'
   end
 
-  it "should return favorited interest" do 
-    interest = Fav_Interest_Helper.interest
+  it "should return favorited interest (FAILS INTERMITTENTLY IN PROD RVB-5295)" do 
+    interest = Fav_Interest_Helper.interest[1]
     url = @bifrost_env+"/userProfile/reverbs/#@user_id?api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -234,7 +234,7 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
   end
 
   it "should remove an interest from favorites" do
-    interest = Fav_Interest_Helper.interest
+    interest = Fav_Interest_Helper.interest[0]
     url = @bifrost_env+"/userProfile/reverb?item=#{interest}&type=interest&api_key="+@session_token
     begin
       response = RestClient.delete url, @headers
@@ -245,7 +245,7 @@ describe "USER FLOWS - Favorite and unfavorite an interest (FAILS INTERMITTENTLY
   end
 
   it "should not return unfavorited interest" do
-    interest = Fav_Interest_Helper.interest
+    interest = Fav_Interest_Helper.interest[1]
     url = @bifrost_env+"/userProfile/reverbs/#@user_id?api_key="+@session_token
     begin
       response = RestClient.get url, @headers
