@@ -92,9 +92,9 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     # Define env data
     case ENV['env']
     when 'prd'
-      @article_data = {:article_id => '40935535', :concepts => ["Eric Reid", "Free agent", "National Football League Draft"]}
+      @article_data = {:article_id => '40935535', :concepts => ["Eric Reid", "National Football League Draft"]}
     when 'stg'
-      @article_data = {:article_id => '38515770', :concepts => ["California", "San Francisco 49ers", "West Sacramento, California", "Oakland Raiders", "Letter box", "National Football League", "Showdown (poker)"]}
+      @article_data = {:article_id => '38515770', :concepts => ["California", "West Sacramento, California", "Oakland Raiders", "Letter box", "National Football League", "Showdown (poker)"]}
     when 'dev'
       @article_data = {:article_id => '1888584', :concepts => ["San Francisco", "Kansas City, Missouri"]}
     else
@@ -114,12 +114,12 @@ describe "USER FLOWS - Read an Article and Personalize", :read_article => true d
     RestClient.post @event_url, read_article(Time.now.utc.to_i-30, @article_data[:article_id]), 'Content-Type' => 'application/json'
   end
 
-  it 'should exit an article after 15 seconds' do
-    sleep 15
+  it 'should exit an article after 5 seconds' do
+    sleep 5
     RestClient.post @event_url, exit_article(Time.now.utc.to_i-30), 'Content-Type' => 'application/json' 
   end
 
-  it 'should update me wordwall (FAILS INTERMITTENTLY IN PRODUCTION RVB-5209)' do
+  it 'should update me wordwall' do
     sleep 3
     url = "#{@bifrost_env}/trending/interests/me?api_key=#{@session}"
     res = RestClient.get url, @headers
