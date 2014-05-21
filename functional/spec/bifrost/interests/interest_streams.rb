@@ -7,7 +7,7 @@ require 'bifrost/trending_helper.rb'
 
 include Token
 
-describe "INTERESTS - Get me interest" do
+describe "INTERESTS - Get me interest", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -45,4 +45,22 @@ describe "INTERESTS - Get me interest" do
     @data['shareUrl'].match("/share/interest/#@interest").should be_true
   end
 
+  it "should return less than 5 exact dups for 'Cake'" do
+    skip = 0
+    limit = 24
+    ids = []
+
+    40.times do
+      url = @bifrost_env+"/interests/stream/me?interest=#@interest&skip=#{skip}&api_key="+@session
+      res = RestClient.get url, {:content_type => 'application/json', :accept => 'application/json'}
+      data = JSON.parse res
+      break if data['tiles'].count == 0
+      skip = skip + data['tiles'].count
+      data['tiles'].each do |d|
+        ids << d['contentId']
+      end
+    end
+    number_of_non_uniques = ids.length-ids.uniq.length
+    number_of_non_uniques.should < 5
+  end
 end
