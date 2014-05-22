@@ -144,7 +144,7 @@ describe "USER FLOWS - Get Trending interests For an Social User" do
     Interests_Helper.social.length.should == 500
   end
 
-  it "should return at least two articles for each 'social' interest" do
+  it "should return at least one article for each 'social' interest" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.social.each do |interest|
@@ -154,18 +154,11 @@ describe "USER FLOWS - Get Trending interests For an Social User" do
       rescue RestClient::ResourceNotFound => e
         blank_tiles << "#{url} 404 Not Found"
       rescue => e
-        raise StandardError.new(e.message+":\n"+url)
+        blank_tiles << StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
       (blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 1) unless interest.match(/\d{4}/)
     end
-
-    if blank_tiles.count < 1
-      blank_tiles.should == []
-    elsif blank_tiles.count > 2
-      blank_tiles.should == []
-    else
-      blank_tiles.count.should < 3
-    end
+    blank_tiles.should == []
   end
 end
