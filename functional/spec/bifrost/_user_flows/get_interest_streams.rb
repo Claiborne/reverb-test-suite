@@ -64,7 +64,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
-      errors << interest if data['tiles'].length != 24
+      errors << "#{interest} retured only #{data['tiles'].length} tiles" if data['tiles'].length != 24
     end
     errors.should == []
   end
