@@ -4,10 +4,12 @@ require 'rest_client'
 require 'json'
 require 'bifrost/token.rb'
 require 'colorize'
-
-include Token
+require 'bifrost/read_article.rb'
 
 describe "CONCEPT LISTS - Black-listed Concepts" do
+
+  include Token
+  include ReadArticle
 
   before(:all) do
     # Get bifrost environment
@@ -38,4 +40,62 @@ describe "CONCEPT LISTS - Black-listed Concepts" do
     end
     search_results.include?(blocked_interest).should be_false
   end
+
+  it 'should be excluded from me tiles if an article with a blacklisted concept it read' do
+    case ENV['env']
+    when 'prd'
+      article_data = {:article_id => '63255202', :blacklisted => '' }
+    when 'stg'
+      article_data = {:article_id => '43988905', :blacklisted => '' }
+    when 'dev'
+      article_data = {:article_id => '2872151', :blacklisted => '' }
+    else
+      raise StandardError, 'No compatable env for this test group'
+    end
+
+    event_url = "#{@bifrost_env}/events/click?deviceId=reverb-test-suite&api_key=#{@session_token}"
+
+    RestClient.post event_url, read_article(Time.now.utc.to_i-30, article_data[:article_id]), 'Content-Type' => 'application/json'
+    sleep 5
+    RestClient.post event_url, exit_article(Time.now.utc.to_i-30), 'Content-Type' => 'application/json' 
+    sleep 2
+
+    me_inferred_concepts = []
+
+    [0,24].each do |skip|
+      me_tiles_url = @bifrost_env+"/trending/tiles/me?skip=#{skip}&api_key="+@session_token
+      begin
+        me_tiles_response = RestClient.get me_tiles_url, @headers
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      me_tiles = JSON.parse me_tiles_response
+
+      me_tiles['tiles'].each do |me_tile|
+        me_inferred_concepts << me_tile['contentId'] if me_tile['tileType'] == 'interest'
+      end
+    end
+
+    me_inferred_concepts.each do |me_inferred_concept|
+      me_inferred_concept.downcase.match(/prostitution/).should be_false
+    end
+  end
+
+  it 'should be excluded from me interests if an article with a blacklisted concept it read' do
+    me_interests_url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
+    begin
+      me_interests_response = RestClient.get me_interests_url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    me_interests = JSON.parse me_interests_response
+    me_inferred_concepts = []
+    me_interests['interests'].each do |me_interest|
+      me_inferred_concepts << me_interest['value']
+    end
+    me_inferred_concepts.each do |me_inferred_concept|
+      me_inferred_concept.downcase.match(/prostitution/).should be_false
+    end
+  end
+
 end
