@@ -153,8 +153,10 @@ describe "USER FLOWS - Get Trending interests For an Social User" do
         response = RestClient.get url, @headers
       rescue RestClient::ResourceNotFound => e
         blank_tiles << "#{url} 404 Not Found"
+        next
       rescue => e
         blank_tiles << StandardError.new(e.message+":\n"+url)
+        next
       end
       data = JSON.parse response
       (blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 1) unless interest.match(/\d{4}/)
