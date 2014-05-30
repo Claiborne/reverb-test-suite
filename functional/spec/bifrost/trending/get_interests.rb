@@ -112,7 +112,7 @@ describe "TRENDING - Get 'Global' Interests For Anon User" do
     end
   end
 
-  it 'should not return any duplicates' do
+  it 'should not return any duplicates (FAILS IN PROD ONLY IF RVB-6540)' do
     interest_values = []
     @data['interests'].each do |i|
       interest_values << i['value']
