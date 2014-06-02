@@ -1,7 +1,9 @@
 require 'json'
 require 'colorize'
 
-file = File.open("/Users/wclaiborne/Desktop/bifrost_stage_06_01_2014.json", "rb")
+raise StandardError, "Need an ARGV[0] for name of .json file on your desktop" unless ARGV[0]
+file_name = ARGV[0]
+file = File.open("/Users/wclaiborne/Desktop/#{file_name}.json", "rb")
 @contents = JSON.parse file.read
 
 def news_wordwall(t); begin; @contents['com.wordnik.bifrost.apis.TrendingApi']['/trending/interests/global']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
