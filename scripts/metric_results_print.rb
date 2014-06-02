@@ -1,7 +1,7 @@
 require 'json'
 require 'colorize'
 
-file = File.open("/Users/wclaiborne/Desktop/metrics2.json", "rb")
+file = File.open("/Users/wclaiborne/Desktop/bifrost_stage_06_01_2014.json", "rb")
 @contents = JSON.parse file.read
 
 def news_wordwall(t); begin; @contents['com.wordnik.bifrost.apis.TrendingApi']['/trending/interests/global']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
@@ -18,7 +18,7 @@ def user_collections(t) begin; @contents['com.wordnik.bifrost.apis.CollectionsAp
 def collection_recs(t) begin; @contents['com.wordnik.bifrost.apis.CollectionsApi']['/collection/recommendations']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
 def interest_stream(t) begin; @contents['com.wordnik.bifrost.apis.InterestsApi']['/interests/stream']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
 def interest_search(t) begin; @contents['com.wordnik.bifrost.apis.InterestsApi']['/interests/search']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
-
+def heimdall(t) begin; @contents['com.reverb.clients.heimdall.apis.AuthClient']['simpleTokenAuthentication']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
 
 
 
@@ -78,5 +78,8 @@ puts 'Interest Search' .yellow
 ['median','p75','p95'].each do |t|
   puts "\t#{interest_search(t)}".green+"\t#{t}"
 end
-
+puts 'Heimdall' .yellow
+['median','p75','p95'].each do |t|
+  puts "\t#{heimdall(t)}".green+"\t#{t}"
+end
 
