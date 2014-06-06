@@ -113,7 +113,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
   end
 end
 
-describe "USER FLOWS - Get Trending interests For an Social User" do
+describe "USER FLOWS - Get Trending interests For a Social User" do
 
   class Interests_Helper
     @social = []
