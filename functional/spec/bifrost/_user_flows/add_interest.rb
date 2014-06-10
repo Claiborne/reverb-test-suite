@@ -25,8 +25,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User", :add_remove_intere
   end
 
   it 'should search for an interest' do
-    interest = @interest.downcase
-    url = @bifrost_env+"/interests/search/#{interest}?limit=10&api_key="+@session_token
+    url = @bifrost_env+"/interests/search/#@interest?limit=10&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -42,16 +41,29 @@ describe "USER FLOWS - Add and Remove Interest to Anon User", :add_remove_intere
   end
 
   it 'should add an interest' do
-    # add interest
+    # two steps: an event then interest POST
+
+    event_url = @bifrost_env+"/events/click?deviceId=reverb-test-suite&api_key=#@session_token"
+    event_body = {"events"=>[{"eventArgs"=>[{"name"=>"interestName","value"=>@interest},
+    {"name"=>"wasEntered","value"=>@interest}],"eventType"=>"uAddedInterest","location"=>{"lat"=>37.785852,"lon"=>-122.406529},
+    "startTime"=>Time.now.to_i*1000}]}.to_json
+    begin
+      response = RestClient.post event_url, event_body, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+event_url)
+    end
+    sleep 1
+
     url = @bifrost_env+"/interests?api_key="+@session_token
     begin
       response = RestClient.post url, {:value=>@interest,:interestType=>:interest}.to_json, @headers
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
+    sleep 1
   end
 
-  it 'should display the interest in me wordwall (FAILS INTERMITTENTLY IN PROD: RVB-5294)' do
+  it 'should display the interest in me wordwall' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
@@ -67,7 +79,7 @@ describe "USER FLOWS - Add and Remove Interest to Anon User", :add_remove_intere
     me_wall.include?(@interest).should be_true
   end
 
-  it 'should display the interest in me tiles (FAILS INTERMITTENTLY IN PRODUCTION RVB-4658)' do
+  it 'should display the interest in me tiles' do
     me_tiles = []
     url = @bifrost_env+"/trending/tiles/me?api_key="+@session_token
     begin
