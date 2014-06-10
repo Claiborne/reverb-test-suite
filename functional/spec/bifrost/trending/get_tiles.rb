@@ -330,7 +330,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
 
-  xit "should correctly paginate social tiles (FAILS IN PRODUCTION RVB-5557)" do
+  it "should correctly paginate social tiles (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)" do
     # get first page
     url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@social_session_token
     begin
@@ -461,7 +461,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.length.should > 80
   end
 
-  it 'should not return duplicate global tiles across pagination' do
+  it 'should not return duplicate global tiles across pagination (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)' do
     tiles = []
     skip = 0
     4.times do 
