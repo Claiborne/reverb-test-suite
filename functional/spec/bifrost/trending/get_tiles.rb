@@ -440,14 +440,13 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.length.should > 60
   end
 
-  it 'should sort me tiles by publish date across pagination', :test => true do
+  it 'should sort me tiles by publish date across pagination' do
     tiles = []
     skip = 0
     4.times do 
       url = @bifrost_env+"/trending/tiles/me?skip=#{skip}&limit=24&api_key="+@session_token
       begin
         response = RestClient.get url, @headers
-        puts ''
       rescue => e
         skip = skip + 24
         next
@@ -455,7 +454,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
       data = JSON.parse response
       data['tiles'].each do |tile|
         tiles << tile['publishDate'] if tile['tileType'] == 'article'
-        puts tile['publishDate'] if tile['tileType'] == 'article'
       end
       skip = skip + data['tiles'].count
     end
