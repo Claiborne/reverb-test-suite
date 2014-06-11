@@ -144,7 +144,7 @@ describe "USER FLOWS - Get Trending interests For a Social User" do
     Interests_Helper.social.length.should == 500
   end
 
-  it "should return at least one article for each 'social' interest" do
+  it "should return at least one article for each 'social' interest (FAILS IN PRODUCTION RVB-6498)" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.social.each do |interest|
