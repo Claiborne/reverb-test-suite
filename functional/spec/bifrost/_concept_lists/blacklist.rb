@@ -6,7 +6,7 @@ require 'bifrost/token.rb'
 require 'colorize'
 require 'bifrost/read_article.rb'
 
-describe "CONCEPT LISTS - Black-listed Concepts" do
+describe "CONCEPT LISTS - Black-listed Concepts", :concept_lists => true do
 
   include Token
   include ReadArticle
