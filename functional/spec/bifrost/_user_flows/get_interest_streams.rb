@@ -87,7 +87,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     less_than_30_articles.should == []
   end
 
-  it "should return at least two articles for each 'global' interest" do
+  it "should return at least two articles for each 'global' interest (FAILS IN PRODUCTION RVB-6619)" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
