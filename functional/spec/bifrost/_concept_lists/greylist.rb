@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "CONCEPT LISTS - Grey-listed Concepts", :concept_lists => true, :test => true do
+describe "CONCEPT LISTS - Grey-listed Concepts", :concept_lists => true do
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
