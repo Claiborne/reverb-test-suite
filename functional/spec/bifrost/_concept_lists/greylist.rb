@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "CONCEPT LISTS - Grey-listed Concepts", :concept_lists => true do
+describe "CONCEPT LISTS - Grey-listed Concepts", :concept_lists => true, :test => true do
   before(:all) do
     # Get bifrost environment
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
@@ -39,16 +39,29 @@ describe "CONCEPT LISTS - Grey-listed Concepts", :concept_lists => true do
   end
 
   it 'should add the grey-listed interest' do
-    # add interest
+    # two steps: an event then interest POST
+
+    event_url = @bifrost_env+"/events/click?deviceId=reverb-test-suite&api_key=#@session_token"
+    event_body = {"events"=>[{"eventArgs"=>[{"name"=>"interestName","value"=>@grey_listed_word},
+    {"name"=>"wasEntered","value"=>@grey_listed_word}],"eventType"=>"uAddedInterest","location"=>{"lat"=>37.785852,"lon"=>-122.406529},
+    "startTime"=>Time.now.to_i*1000}]}.to_json
+    begin
+      response = RestClient.post event_url, event_body, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+event_url)
+    end
+    sleep 1
+
     url = @bifrost_env+"/interests?api_key="+@session_token
     begin
       response = RestClient.post url, {:value=>@grey_listed_word,:interestType=>:interest}.to_json, @headers
     rescue => e
       raise StandardError.new(e.message+":\n"+url)
     end
+    sleep 1
   end
 
-  xit 'should display the interest in me wordwall (TODO)' do
+  it 'should display the interest in me wordwall' do
     # check interest added to me wall
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
