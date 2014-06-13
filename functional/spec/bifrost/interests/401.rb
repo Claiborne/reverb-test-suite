@@ -17,11 +17,11 @@ require 'json'
       end
     end
 
-    xit "should 401 when no auth key (FAIL: RETURNS 404)" do
+    it "should 401 when no auth key (FAILS IN PRODUCTION RVB-6676)", :fails => true do
       expect {RestClient.get @url_no_key}.to raise_error(RestClient::Unauthorized)
     end
   
-    xit "should 401 when invalid auth key (FAIL: RETURNS 404)" do
+    it "should 401 when invalid auth key (FAILS IN PRODUCTION RVB-6676)", :fails => true do
       expect {RestClient.get @url_invalid_key}.to raise_error(RestClient::Unauthorized)
     end
   end
