@@ -116,8 +116,8 @@ end
 describe "USER FLOWS - Get Trending interests For a Social User" do
 
   class Interests_Helper
-    @social = []
-    class << self; attr_accessor :social; end
+    @social = []; @social_tiles = []
+    class << self; attr_accessor :social, :social_tiles; end
   end
 
   before(:all) do
@@ -159,8 +159,20 @@ describe "USER FLOWS - Get Trending interests For a Social User" do
         next
       end
       data = JSON.parse response
+      Interests_Helper.social_tiles << data['tiles']
       (blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 1) unless interest.match(/\d{4}/)
     end
     blank_tiles.should == []
+  end
+
+  it 'should sort social interest streams by share date' do
+    Interests_Helper.social_tiles.each do |social_tiles|
+      tiles = []
+      social_tiles.each do |social_tile|
+        tiles << social_tile['attribution'][0]['shareDate']
+      end
+      tiles.count.should > 0
+      tiles.sort { |x,y| y <=> x }.should == tiles
+    end
   end
 end
