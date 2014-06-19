@@ -10,8 +10,8 @@ include Token
 
 describe "USER FLOWS - Get Trending interests For an Anon User" do
   class Interests_Helper
-    @me = []; @global = []
-    class << self; attr_accessor :me, :global; end
+    @me = []; @global = []; @global_interest_stream_tiles_count = 0;
+    class << self; attr_accessor :me, :global, :global_interest_stream_tiles_count; end
   end
 
   before(:all) do
@@ -100,6 +100,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
+      Interests_Helper.global_interest_stream_tiles_count += data['tiles'].length
       blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 2
     end
 
@@ -110,6 +111,11 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     else
       blank_tiles.count.should < 5
     end
+  end
+
+  it 'should return at least 1500 tiles across all global interests' do
+    Interests_Helper.global_interest_stream_tiles_count.should > 1499
+    # curretly returns 1700 in prod and 1900 in stage
   end
 end
 
