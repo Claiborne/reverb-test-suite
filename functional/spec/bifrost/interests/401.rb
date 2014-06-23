@@ -3,8 +3,8 @@ require 'config_path'
 require 'rest_client'
 require 'json'
 
-%w(/interests/search/love?limit=10 /interests/stream?interest=love&skip=0&limit=20).each do |endpoint|
-  describe "INTERESTS - GET #{endpoint} with bad auth key" do
+%w(/interests/search/love?limit=10 /interests/stream/me?interest=love&skip=0&limit=20).each do |endpoint|
+  describe "INTERESTS - GET #{endpoint} with bad auth key", :test => true do
 
     before(:all) do
       ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
