@@ -172,13 +172,15 @@ describe "USER FLOWS - Get Trending interests For a Social User" do
   end
 
   it 'should sort social interest streams by share date' do
+    interest_streams_checked = 0
     Interests_Helper.social_tiles.each do |social_tiles|
       tiles = []
       social_tiles.each do |social_tile|
         tiles << social_tile['attribution'][0]['shareDate']
       end
-      tiles.count.should > 0
+      interest_streams_checked += 1
       tiles.sort { |x,y| y <=> x }.should == tiles
     end
+    interest_streams_checked.should > 450
   end
 end
