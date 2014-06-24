@@ -48,6 +48,7 @@ describe "USER FLOWS - Me Wordwall Algorithm", :me_wordwall_ranking => true do
 
   it 'should add Toast to the me the top of the me wordwall' do
     iphone_add_interest(@bifrost_env, @session_token, @interest_two)
+    sleep 2
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -60,6 +61,7 @@ describe "USER FLOWS - Me Wordwall Algorithm", :me_wordwall_ranking => true do
 
   it 'should tap Apple and cause it to go to the top of the me wordwall' do
     iphone_tap_interest @bifrost_env, @session_token, @interest_one
+    sleep 2
     url = @bifrost_env+"/trending/interests/me?api_key="+@session_token
     begin
       response = RestClient.get url, @headers
