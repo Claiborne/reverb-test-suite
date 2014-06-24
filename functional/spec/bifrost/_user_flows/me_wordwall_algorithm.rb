@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'; include Token
 require 'bifrost/app_actions.rb'; include AppActions
 
-describe "USER FLOWS - Me Wordwall Algorithm" do
+describe "USER FLOWS - Me Wordwall Algorithm", :me_wordwall_ranking => true do
 
   before(:all) do
     # Get bifrost environment
@@ -23,12 +23,12 @@ describe "USER FLOWS - Me Wordwall Algorithm" do
     case ENV['env']
     when 'prd'
       @cake_articles = ['66582474','66653851','66555978','66608386','66672048']
-      @rose_articles = ['66561888', '66636756', '66664974', '66618968', '66685731']
+      @rose_articles = ['66561888', '66636756', '66664974', '66685731', '68524563']
     when 'stg'
       @cake_articles = ['43927335','43872413','43872454','43901305','43906389']
-      @rose_articles = ['43925386', '43901483', '43916689', '43908347', '43911741']
+      @rose_articles = ['43925386', '43901483', '43916689', '43908347', '43901483']
     when 'dev'
-      raise StandardError, 'No compatable env for this test group'
+      raise StandardError, 'DEV is currently not supported for this test group'
     else
       raise StandardError, 'No compatable env for this test group'
     end
