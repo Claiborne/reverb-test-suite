@@ -2,7 +2,7 @@ dev:
   baseurl: bluesteel.helloreverb.com
   clientId: 5159f7fae4b073a8ae481bc3
   clientSecret: 0afa3ae25c13394d4cd61198f98198c2897e7176e10e45cb9f6df82367adb149
-  
+
 stg:
   baseurl: TODO but below creds are valid
   clientId: 515b32c2e4b03f3544d60a16
