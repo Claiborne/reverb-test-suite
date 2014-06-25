@@ -81,7 +81,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
     time_differences.sort.first.should < 60*60*2
   end
   
-  it 'should return first trending social article no more than 2 hours old' do
+  it 'should return first trending social article no more than 30 minutes old' do
     social_token = get_social_token @bifrost_env
 
     url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token
@@ -94,7 +94,7 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
 
     first_article = Time.parse(@social_tiles['tiles'][0]['attribution'][0]['shareDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
-    time_difference.should < 60*60*2
+    time_difference.should < 60*30
   end
 
   it 'should return first trending global article no more than 2 hours old for anon user' do
