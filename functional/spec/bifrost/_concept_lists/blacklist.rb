@@ -98,4 +98,23 @@ describe "CONCEPT LISTS - Black-listed Concepts", :concept_lists => true do
     end
   end
 
+
+  it 'should not return a black-listed concept tiles in interest streams' do
+    interest_tiles = []
+    %w(0 24 48 60).each do |skip|
+      url = "https://api.helloreverb.com/v2/interests/stream/me?skip=#{skip}&interest=Pejorative&api_key=cd497bc3a6702a04d53438fe5a174fa8827bb9010ab22a6c"
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        interest_tiles << tile['contentId'] if tile['tileType'] == 'interest'
+      end
+    end # end for each loop
+    interest_tiles.count.should > 3
+    interest_tiles.should_not include 'Nigger'
+  end
+
 end
