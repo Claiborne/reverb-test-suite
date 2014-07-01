@@ -4,6 +4,7 @@ require 'json'
 module Token
 
   def get_client_id
+    return '515b32b0e4b03f3544d60a15' unless ENV['env']
     if ENV['env'].downcase == 'dev'
       return '51561484e4b0edfcfec11627'
     elsif ENV['env'].downcase == 'stg'
@@ -16,6 +17,7 @@ module Token
   end
 
   def get_client_secret
+    return '11aa9484b98878db013d8aae4ca293c8c63fbfff343e426f8a37549cf04bdfb4' unless ENV['env']
     if ENV['env'].downcase == 'dev'
       return '45afe5fbf994aaa555324256b8e8f889b0c07158ed214f5bb7ca2bd5fa7dbfc8'
     elsif ENV['env'].downcase == 'stg'
