@@ -21,7 +21,7 @@ ensure
 	conn.close
 end
 
-# Receiving IngestionNotification messages from Odin 
+# Receiving IngestionNotification messages from Odin:
 # create a queue with the name global.urlIngestionResult.itd-service
 # create a binding from the exchange online-messaging and the routing key global.urlIngestionResult
 # create a consumer for the queue
