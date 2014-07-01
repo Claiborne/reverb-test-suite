@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'; include Token
 require 'bifrost/app_actions.rb'; include AppActions
 
-describe "USER FLOWS - Me Wordwall Algorithm", :me_wordwall_ranking => true do
+describe "USER FLOWS - Me Wordwall Algorithm", :me_wordwall_ranking => true, :strict => true do
 
   before(:all) do
     # Get bifrost environment

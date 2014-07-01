@@ -4,7 +4,7 @@ require 'rest_client'
 require 'thread'
 require 'bifrost/read_article.rb'
 
-describe "USER FLOWS - Read an Article and Personalize", :read_article => true do
+describe "USER FLOWS - Read an Article and Personalize", :read_article => true, :strict => true do
 
   include ReadArticle
 

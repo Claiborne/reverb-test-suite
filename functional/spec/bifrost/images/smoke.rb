@@ -26,6 +26,14 @@ describe "IMAGES - GET Article Tile Image" do
       @article = 43499877
     when 'dev'
       @article = 53671175
+    when 'basil'
+      @article = 9452
+    when 'anise'
+      @article = 22034
+    when 'thyme'
+      @article = 100023
+    when 'nutmeg'
+      @article = 3037
     else
       raise RuntimeError, 'No suitable env to run this spec (dev, stg, or prd)'
     end

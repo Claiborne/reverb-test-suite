@@ -189,7 +189,7 @@ describe "TRENDING - Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING - Get 'Social' Tiles for Logged in User" do
+describe "TRENDING - Get 'Social' Tiles for Logged in User", :strict => true do
 
   before(:all) do
 
@@ -239,7 +239,7 @@ describe "TRENDING - Get 'Social' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING - Skip and Limit for Trending Tiles" do
+describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
   
   before(:all) do
     # Get bifrost environment
@@ -249,9 +249,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     # Set headers
     @headers = {:content_type => 'application/json', :accept => 'application/json'}
 
-    # Get anon and social tokens
     @session_token = get_anon_token @bifrost_env
-    @social_session_token = get_social_token @bifrost_env
   end
 
   it "should limit 10 global tiles" do
@@ -267,17 +265,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
 
   it "should limit 10 me tiles" do
     url = @bifrost_env+"/trending/tiles/me?limit=10&api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response  
-    data['tiles'].length.should == 10
-  end
-
-  it "should limit 10 social tiles" do
-    url = @bifrost_env+"/trending/tiles/social?limit=10&api_key="+@social_session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -330,28 +317,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
 
-  it "should correctly paginate social tiles (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)" do
-    # get first page
-    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@social_session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    first_page = JSON.parse response 
-
-    # get second page
-    url = @bifrost_env+"/trending/tiles/social?skip=#{first_page['tiles'].count-1}&limit=24&api_key="+@social_session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    second_page = JSON.parse response 
-
-    first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
-  end
-
   it "should paginate global tiles past 700" do
     url = @bifrost_env+"/trending/tiles/global?skip=700&limit=24&api_key="+@session_token
     begin
@@ -372,43 +337,6 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     end
     data = JSON.parse response
     data['tiles'].length.should > 0
-  end
-
-  it "should paginate social tiles past 200" do
-    url = @bifrost_env+"/trending/tiles/social?skip=200&limit=24&api_key="+@social_session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response
-    data['tiles'].length.should > 0
-  end
-
-  it "should paginate me tiles past 200 for logged-in user" do
-    url = @bifrost_env+"/trending/tiles/me?skip=200&limit=24&api_key="+@social_session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response
-    data['tiles'].length.should > 0
-  end
-
-  it "should still display an article in me tiles after using skip=450 for logged-in user" do
-    url = @bifrost_env+"/trending/tiles/me?skip=450&limit=24&api_key="+@social_session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+" "+url)
-    end
-    data = JSON.parse response
-    tiles = []
-    data['tiles'].each do |tile|
-      tiles << tile['tileType']
-    end
-    tiles.include?('article').should be_true
   end
 
   it 'should not return duplicate me tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
@@ -510,6 +438,100 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
     tiles.sort{ |x,y| y <=> x }.should == tiles
     tiles.length.should > 60
   end
+end
+
+describe "TRENDING - Skip and Limit for Trending Tiles (social)", :strict => true do
+  
+  before(:all) do
+    # Get bifrost environment
+    ConfigPath.config_path = File.dirname(__FILE__) + "/../../../config/bifrost.yml"
+    @bifrost_env = "https://#{ConfigPath.new.options['baseurl']}"
+
+    # Set headers
+    @headers = {:content_type => 'application/json', :accept => 'application/json'}
+
+    @social_session_token = get_social_token @bifrost_env
+  end
+
+  it "should limit 10 social tiles" do
+    url = @bifrost_env+"/trending/tiles/social?limit=10&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response  
+    data['tiles'].length.should == 10
+  end
+
+  it "should correctly paginate social tiles (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)" do
+    # get first page
+    url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    first_page = JSON.parse response 
+
+    # get second page
+    url = @bifrost_env+"/trending/tiles/social?skip=#{first_page['tiles'].count-1}&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    second_page = JSON.parse response 
+
+    first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
+  end
+
+  it "should paginate social tiles past 200" do
+    url = @bifrost_env+"/trending/tiles/social?skip=200&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['tiles'].length.should > 0
+  end
+
+  it "should paginate me tiles past 200 for logged-in user" do
+    url = @bifrost_env+"/trending/tiles/me?skip=200&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    data['tiles'].length.should > 0
+  end
+
+  it 'should sort social tiles by share date across pagination' do
+    tiles = []
+    skip = 0
+    4.times do 
+      url = @bifrost_env+"/trending/tiles/social?skip=#{skip}&limit=24&api_key="+@social_session_token
+      begin
+        response = RestClient.get url, @headers
+      rescue => e
+        skip = skip + 24
+        next
+      end
+      data = JSON.parse response
+      data['tiles'].each do |tile|
+        unless tile['tileType'] == 'interest' || tile['tileType'] == 'person' 
+          #share_date = tile['attribution'][0]['shareDate'].match(/\A.{15}/).to_s # hack because doesn't sort perfectly by second
+          share_date = tile['attribution'][0]['shareDate']
+          tiles << share_date 
+        end
+      end
+      skip = skip + data['tiles'].count
+    end
+    tiles.sort{ |x,y| y <=> x }.should == tiles
+    tiles.length.should > 60
+  end
 
   it 'should not return duplicate social tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
     tiles = []
@@ -538,30 +560,21 @@ describe "TRENDING - Skip and Limit for Trending Tiles" do
 
     duplicates.should == []
     tiles.length.should > 60
+  end 
+
+  it "should still display an article in me tiles after using skip=450 for logged-in user" do
+    url = @bifrost_env+"/trending/tiles/me?skip=450&limit=24&api_key="+@social_session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+    tiles = []
+    data['tiles'].each do |tile|
+      tiles << tile['tileType']
+    end
+    tiles.include?('article').should be_true
   end
 
-  it 'should sort social tiles by share date across pagination' do
-    tiles = []
-    skip = 0
-    4.times do 
-      url = @bifrost_env+"/trending/tiles/social?skip=#{skip}&limit=24&api_key="+@social_session_token
-      begin
-        response = RestClient.get url, @headers
-      rescue => e
-        skip = skip + 24
-        next
-      end
-      data = JSON.parse response
-      data['tiles'].each do |tile|
-        unless tile['tileType'] == 'interest' || tile['tileType'] == 'person' 
-          #share_date = tile['attribution'][0]['shareDate'].match(/\A.{15}/).to_s # hack because doesn't sort perfectly by second
-          share_date = tile['attribution'][0]['shareDate']
-          tiles << share_date 
-        end
-      end
-      skip = skip + data['tiles'].count
-    end
-    tiles.sort{ |x,y| y <=> x }.should == tiles
-    tiles.length.should > 60
-  end
 end

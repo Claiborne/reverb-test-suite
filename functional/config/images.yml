@@ -6,3 +6,15 @@ stg:
 
 prd:
   baseurl: images.helloreverb.com
+
+basil:
+  baseurl: basil-images.helloreverb.com
+
+anise:
+  baseurl: anise-images.helloreverb.com
+
+thyme:
+  baseurl: thyme-images.helloreverb.com
+
+nutmeg:
+  baseurl: nutmeg-images.helloreverb.com/v2

@@ -41,7 +41,7 @@ describe "CONCEPT LISTS - Black-listed Concepts", :concept_lists => true do
     search_results.include?(blocked_interest).should be_false
   end
 
-  it 'should be excluded from me tiles if an article with a blacklisted concept it read' do
+  it 'should be excluded from me tiles if an article with a blacklisted concept it read', :strict => true do
     case ENV['env']
     when 'prd'
       article_data = {:article_id => '63255202', :blacklisted => '' }

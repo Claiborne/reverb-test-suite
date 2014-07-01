@@ -180,7 +180,7 @@ describe "TRENDING - Get 'Me' Interests for Logged in User" do
   end
 end
 
-describe "TRENDING - Get 'Social' Interests for Logged in Social User" do
+describe "TRENDING - Get 'Social' Interests for Logged in Social User", :strict => true do
 
   before(:all) do
 
