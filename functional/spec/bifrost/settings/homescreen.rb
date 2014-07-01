@@ -48,7 +48,7 @@ describe "SETTINGS - Get Home Screen For Anon User" do
   %w(myNews-FTUE-wordwall socialNews-FTUE-wordwall topNews-FTUE-wordwall myNews-FTUE-mosaic socialNews-FTUE-mosaic
     topNews-FTUE-mosaic profile-FTUE addInterest-text aboutReverb-text myNews-label socialNews-label 
     topNews-label myProfile-label).each do |key|
-    it "should return an otherValues key, '#{key}'" do
+    it "should return an otherValues key, '#{key}'", :strict => true do
       @data['otherValues'].to_s.match("\"key\"=>\"#{key}").should be_true
 
     end

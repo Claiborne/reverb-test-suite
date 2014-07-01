@@ -60,13 +60,19 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
     @user_id = login[1]
   end
 
-  it 'should return first trending me article no more than 2 hours old for anon user' do
+  it 'should return first trending me article no more than 2 hours old for anon user', :strict => true do
     first_article = Time.parse(@anon_me_tiles['tiles'][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
     time_difference.should < 60*60*2
   end
 
-  it 'should return a trending me article, in the first page, no more than 2 hours old for signed-in user' do
+  it 'should return first trending me article no more than 8 hours old for anon user' do
+    first_article = Time.parse(@anon_me_tiles['tiles'][0]['publishDate']).to_i
+    time_difference = Time.now.utc.to_i - first_article
+    time_difference.should < 60*60*8
+  end
+
+  it 'should return a trending me article, in the first page, no more than 2 hours old for signed-in user', :strict => true do
     article_pub_dates = []
     @signed_in_me_tiles['tiles'].each do |t|
       article_pub_dates << Time.parse(t['publishDate']).to_i if t['publishDate']
@@ -80,8 +86,23 @@ describe "USER FLOWS - Check Trending Tiles Are Updating", :tiles_updating => tr
     end
     time_differences.sort.first.should < 60*60*2
   end
+
+  it 'should return a trending me article, in the first page, no more than 8 hours old for signed-in user' do
+    article_pub_dates = []
+    @signed_in_me_tiles['tiles'].each do |t|
+      article_pub_dates << Time.parse(t['publishDate']).to_i if t['publishDate']
+    end
+    article_pub_dates.length.should > 10
+
+    time_differences = []
+
+    article_pub_dates.each do |date|
+      time_differences << Time.now.utc.to_i - date
+    end
+    time_differences.sort.first.should < 60*60*8
+  end
   
-  it 'should return first trending social article no more than 30 minutes old' do
+  it 'should return first trending social article no more than 30 minutes old', :strict => true do
     social_token = get_social_token @bifrost_env
 
     url = @bifrost_env+"/trending/tiles/social?skip=0&limit=24&api_key="+social_token

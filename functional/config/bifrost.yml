@@ -9,3 +9,12 @@ prd:
 
 basil:
   baseurl: basil-api.helloreverb.com/v2
+
+anise:
+  baseurl: anise-api.helloreverb.com/v2
+
+thyme:
+  baseurl: thyme-api.helloreverb.com/v2
+
+nutmeg:
+  baseurl: nutmeg-api.helloreverb.com/v2

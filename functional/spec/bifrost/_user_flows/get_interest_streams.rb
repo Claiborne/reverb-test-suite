@@ -38,7 +38,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.me.length.should == 24
   end
 
-  it 'should return at least 175 global interests' do
+  it 'should return at least 175 global interests', :strict => true do
     url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -51,7 +51,20 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.global.length.should > 174
   end
 
-  it "should return 24 articles for each 'me' topic" do
+  it 'should return at least 100 global interests' do
+    url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+":\n"+url)
+    end
+    interests = (JSON.parse response)['interests']
+    interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest' && i['score'] < 1} # 'score < 1' means not featured
+    interests.count.should > 99
+    Interests_Helper.global.length.should > 99
+  end
+
+  it "should return 24 articles for each 'me' topic", :strict => true do
     errors = []
     Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
@@ -69,7 +82,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     errors.should == []
   end
 
-  it "should return at least 30 articles for each 'me' topic" do
+  it "should return at least 30 articles for each 'me' topic", :strict => true do
     less_than_30_articles = []
     Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=24&limit=24&api_key="+@session_token
@@ -119,7 +132,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
   end
 end
 
-describe "USER FLOWS - Get Trending interests For a Social User" do
+describe "USER FLOWS - Get Trending interests For a Social User", :strict => true do
 
   class Interests_Helper
     @social = []; @social_tiles = []

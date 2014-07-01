@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "TRENDING - Ghost Users" do
+describe "TRENDING - Ghost Users", :strict => true do
 
   before(:all) do
     # Get bifrost environment

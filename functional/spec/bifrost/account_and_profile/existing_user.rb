@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER PROFILE - Existing User" do
+describe "USER PROFILE - Existing User", :strict => true do
   
   before(:all) do
     # Get bifrost environment
