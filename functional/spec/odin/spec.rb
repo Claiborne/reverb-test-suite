@@ -4,21 +4,21 @@ require 'json'
 conn = Bunny.new(:host => "localhost", :port => 5672)
 
 begin
-	conn.start
-	ch = conn.create_channel
+  conn.start
+  ch = conn.create_channel
 
   message = {
-	  "eventName" => "com.reverb.events.odin.package$Submission",
-	  "requestId" => '350',
-	  "url" => 'http://www.reuters.com/article/2014/06/30/us-usa-immigration-idUSKBN0F52GY20140630',
-	  "source" => "ReverbTestSuite"
+    "eventName" => "com.reverb.events.odin.package$Submission",
+    "requestId" => '350',
+    "url" => 'http://www.reuters.com/article/2014/06/30/us-usa-immigration-idUSKBN0F52GY20140630',
+    "source" => "ReverbTestSuite"
   }.to_json
 
-	ch.direct('online-messaging', :durable => true).publish(message, :routing_key => 'global.urlSubmission')
+  ch.direct('online-messaging', :durable => true).publish(message, :routing_key => 'global.urlSubmission')
 rescue => e
-	raise e
+  raise e
 ensure
-	conn.close
+  conn.close
 end
 
 # Receiving IngestionNotification messages from Odin:
