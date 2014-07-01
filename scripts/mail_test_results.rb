@@ -1,6 +1,8 @@
 require 'net/smtp'
 
-file = File.open("/home/wclaiborne/bifrost-prd-results.txt")
+name = ARGV[0]
+
+file = File.open("/home/wclaiborne/#{name}-prd-results.txt")
 contents = ""
 file.each {|line|
   contents << line
@@ -13,7 +15,7 @@ TO_EMAIL = ["qa@helloreverb.com","marco@helloreverb.com"]
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
 To: QA <#{TO_EMAIL}>
-Subject: Bifrost Results in Production
+Subject: #{name.capitalize} Results in Production
 #{contents}
 END_OF_MESSAGE
 
