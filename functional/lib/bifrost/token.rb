@@ -11,7 +11,7 @@ module Token
     elsif ENV['env'].downcase == 'prd'
       return '515b32b0e4b03f3544d60a15'
     else
-      raise StandardError, "Unable to return a clientId value from lib/bifrost/token.rb"
+      return '515b32b0e4b03f3544d60a15'
     end
   end
 
@@ -23,7 +23,7 @@ module Token
     elsif ENV['env'].downcase == 'prd'
       return '11aa9484b98878db013d8aae4ca293c8c63fbfff343e426f8a37549cf04bdfb4'
     else
-      raise StandardError, "Unable to return a clientId value from lib/bifrost/token.rb"
+      return '11aa9484b98878db013d8aae4ca293c8c63fbfff343e426f8a37549cf04bdfb4'
     end
   end
 
