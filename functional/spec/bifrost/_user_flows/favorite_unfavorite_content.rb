@@ -127,7 +127,7 @@ describe "USER FLOWS - Favorite and unfavorite an article", :favs => true do
   end
 end
 
-describe "USER FLOWS - Favorite and unfavorite an interest" do
+describe "USER FLOWS - Favorite and unfavorite an interest", :favs => true do
   
   class Fav_Interest_Helper
     class << self; attr_accessor :interest, :favorite_count; end
