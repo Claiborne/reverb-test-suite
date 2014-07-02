@@ -385,6 +385,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
       end
       skip = skip + data['tiles'].count
     end
+    tiles.uniq!
     tiles.sort{ |x,y| y <=> x }.should == tiles
     tiles.length.should > 80
   end
@@ -435,6 +436,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
       end
       skip = skip + data['tiles'].count
     end
+    tiles.uniq!
     tiles.sort{ |x,y| y <=> x }.should == tiles
     tiles.length.should > 60
   end
@@ -529,6 +531,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (social)", :strict => tru
       end
       skip = skip + data['tiles'].count
     end
+    tiles.uniq!
     tiles.sort{ |x,y| y <=> x }.should == tiles
     tiles.length.should > 60
   end
