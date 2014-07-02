@@ -5,7 +5,7 @@ name = ARGV[0]
 file = File.open("/home/wclaiborne/#{name}-prd-results.txt")
 contents = ""
 contents << Time.now.to_s
-contents = ""
+contents << ""
 file.each {|line|
   contents << line
 }
