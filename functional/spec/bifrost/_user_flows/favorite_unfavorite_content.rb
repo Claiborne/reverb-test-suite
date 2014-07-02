@@ -7,7 +7,7 @@ require 'colorize'
 
 include Token
 
-describe "USER FLOWS - Favorite and unfavorite an article" do
+describe "USER FLOWS - Favorite and unfavorite an article", :favs => true do
   
   class Fav_Article_Helper
     class << self; attr_accessor :article, :favorite_count; end
