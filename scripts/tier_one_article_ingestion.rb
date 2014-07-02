@@ -14,7 +14,7 @@ contents << "\n"
 thyme-api.helloreverb.com nutmeg-api.helloreverb.com).each do |bifrost_env|
 
   token = get_anon_token "#{bifrost_env}/v2"
-  url = "https://"+bifrost_env+"/v2/trending/tiles/me?skip=0&limit=24&api_key="+token
+  url = "https://"+bifrost_env+"/v2/trending/tiles/global?skip=0&limit=24&api_key="+token
 
   begin
     r = RestClient.get url, {:content_type => 'application/json', :accept => 'application/json'}
