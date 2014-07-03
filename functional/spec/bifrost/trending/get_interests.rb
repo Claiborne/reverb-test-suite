@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "TRENDING - Get 'Me' Interests For Anon User" do
+describe "TRENDING - Get Me Interests For Anon User" do
 
   before(:all) do
     # Get bifrost environment
@@ -28,7 +28,7 @@ describe "TRENDING - Get 'Me' Interests For Anon User" do
     @data = JSON.parse response
   end
 
-  it "should get 24 'me' topics" do
+  it "should get 24 me topics" do
     topics = []
     @data['interests'].each do |interest|
       topics << interest if interest['score'] == 0
@@ -65,7 +65,7 @@ describe "TRENDING - Get 'Me' Interests For Anon User" do
   end
 end
 
-describe "TRENDING - Get 'Global' Interests For Anon User" do
+describe "TRENDING - Get News Interests For Anon User" do
 
   before(:all) do
     # Get bifrost environment
@@ -88,7 +88,7 @@ describe "TRENDING - Get 'Global' Interests For Anon User" do
     @data = JSON.parse response
   end
 
-  it "should get 100 'global' interests" do
+  it "should get 100 news interests" do
     @data['interests'].length.should == 100
   end
 
@@ -121,7 +121,7 @@ describe "TRENDING - Get 'Global' Interests For Anon User" do
   end
 end
 
-describe "TRENDING - Get 'Me' Interests for Logged in User" do
+describe "TRENDING - Get Me Interests for Logged in User" do
 
   before(:all) do
 
@@ -157,7 +157,7 @@ describe "TRENDING - Get 'Me' Interests for Logged in User" do
     @data_anon = JSON.parse response
   end
 
-  it "should get 25 'me' interests" do
+  it "should get 25 me interests" do
     @data_logged_in['interests'].length.should == 25  
   end
 
@@ -180,7 +180,7 @@ describe "TRENDING - Get 'Me' Interests for Logged in User" do
   end
 end
 
-describe "TRENDING - Get 'Social' Interests for Logged in Social User", :strict => true do
+describe "TRENDING - Get Social Interests for Logged in Social User", :strict => true do
 
   before(:all) do
 
@@ -204,7 +204,7 @@ describe "TRENDING - Get 'Social' Interests for Logged in Social User", :strict 
     @data_logged_in = JSON.parse response
   end
 
-  it "should get 500 'social' interests" do
+  it "should get 500 social interests" do
     @data_logged_in['interests'].length.should == 500  
   end
 end
