@@ -140,7 +140,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
         tiles << news_tile['publishDate']
       end
       interest_streams_checked += 1
-      tiles { |x,y| y <=> x }.should == tiles.sort
+      tiles.should == tiles.sort { |x,y| y <=> x }
     end
     interest_streams_checked.should > 450
   end
@@ -206,7 +206,7 @@ describe "USER FLOWS - Get Trending Interests for a Social User", :strict => tru
         tiles << social_tile['attribution'][0]['shareDate']
       end
       interest_streams_checked += 1
-      tiles { |x,y| y <=> x }.should == tiles.sort
+      tiles.should == tiles.sort { |x,y| y <=> x }
     end
     interest_streams_checked.should > 450
   end
