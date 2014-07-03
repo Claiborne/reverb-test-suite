@@ -387,7 +387,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     end
     tiles.uniq!
     tiles.sort{ |x,y| y <=> x }.should == tiles
-    tiles.length.should > 80
+    tiles.length.should > 20
   end
 
   it 'should not return duplicate global tiles across pagination (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)' do
@@ -438,7 +438,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     end
     tiles.uniq!
     tiles.sort{ |x,y| y <=> x }.should == tiles
-    tiles.length.should > 60
+    tiles.length.should > 20
   end
 end
 
@@ -533,7 +533,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (social)", :strict => tru
     end
     tiles.uniq!
     tiles.sort{ |x,y| y <=> x }.should == tiles
-    tiles.length.should > 60
+    tiles.length.should > 20
   end
 
   it 'should not return duplicate social tiles across pagination (INTERMITTENTLY FAILS IN PROD RVB-5557)' do
