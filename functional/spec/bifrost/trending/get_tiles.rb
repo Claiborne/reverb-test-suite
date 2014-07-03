@@ -8,7 +8,7 @@ require 'time'
 require 'api_checker.rb'; include APIChecker
 
 %w(0 25 50 75 100 125 150).each do |skip|
-  describe "TRENDING - Get 'Me' Tiles For Anon User (skip #{skip})" do
+  describe "TRENDING - Get Me Tiles For Anon User (skip #{skip})" do
 
     before(:all) do
       # Get bifrost environment
@@ -33,11 +33,11 @@ require 'api_checker.rb'; include APIChecker
 
     include_examples "Trending Tiles Basic Checks"
 
-    it "should get 24 'me' tiles" do
+    it "should get 24 me tiles" do
       @data['tiles'].length.should == 24
     end
 
-    it "should only return tiles of type 'article', 'interest', or 'collection'" do
+    it "should only return tiles of type article, interest, or collection" do
       @data['tiles'].each do |i|
         ['article','collection','interest'].include?(i['tileType']).should be_true
       end
@@ -63,7 +63,7 @@ require 'api_checker.rb'; include APIChecker
 end
 
 %w(0 25 50 75 100 125 150 175 200).each do |skip|
-  describe "TRENDING - Get 'Global' Tiles For Anon User (skip #{skip})" do
+  describe "TRENDING - Get News Tiles For Anon User (skip #{skip})" do
 
     before(:all) do
       # Get bifrost environment
@@ -88,11 +88,11 @@ end
 
     include_examples "Trending Tiles Basic Checks"
 
-    it "should get 24 'global' articles" do
+    it "should get 24 news articles" do
       @data['tiles'].length.should == 24
     end
 
-    it "should only return tiles of type 'article', 'interest', or 'colleciton'" do
+    it "should only return tiles of type article, interest, or colleciton" do
       @data['tiles'].each do |i|
         ['article','interest','collection'].include?(i['tileType']).should be_true
       end
@@ -116,7 +116,7 @@ end
   end
 end
 
-describe "TRENDING - Get 'Me' Tiles for Logged in User" do
+describe "TRENDING - Get Me Tiles for Logged in User" do
 
   before(:all) do
 
@@ -166,7 +166,7 @@ describe "TRENDING - Get 'Me' Tiles for Logged in User" do
     interests.count.should > 0
   end
 
-  it "should get 24 'me' tiles" do
+  it "should get 24 me tiles" do
     @data_logged_in['tiles'].length.should == 24  
   end
 
@@ -189,7 +189,7 @@ describe "TRENDING - Get 'Me' Tiles for Logged in User" do
   end
 end
 
-describe "TRENDING - Get 'Social' Tiles for Logged in User", :strict => true do
+describe "TRENDING - Get Social Tiles for Logged in User", :strict => true do
 
   before(:all) do
 
@@ -216,7 +216,7 @@ describe "TRENDING - Get 'Social' Tiles for Logged in User", :strict => true do
 
   include_examples "Trending Tiles Basic Checks"
 
-  it "should get 24 'social' tiles" do
+  it "should get 24 social tiles" do
     @data_logged_in['tiles'].length.should == 24  
   end
 
@@ -252,7 +252,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     @session_token = get_anon_token @bifrost_env
   end
 
-  it "should limit 10 global tiles" do
+  it "should limit 10 news tiles" do
     url = @bifrost_env+"/trending/tiles/global?limit=10&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -274,7 +274,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     data['tiles'].length.should == 10
   end
 
-  it "should correctly paginate global tiles" do
+  it "should correctly paginate news tiles" do
     # get first page
     url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session_token
     begin
@@ -317,7 +317,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     first_page['tiles'].last['contentId'].should == second_page['tiles'].first['contentId']
   end
 
-  it "should paginate global tiles past 700" do
+  it "should paginate news tiles past 700" do
     url = @bifrost_env+"/trending/tiles/global?skip=700&limit=24&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -390,7 +390,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     tiles.length.should > 20
   end
 
-  it 'should not return duplicate global tiles across pagination (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)' do
+  it 'should not return duplicate news tiles across pagination (INTERMITTENTLY FAILS IN PRODUCTION RVB-5557)' do
     tiles = []
     skip = 0
     4.times do 
@@ -419,7 +419,7 @@ describe "TRENDING - Skip and Limit for Trending Tiles (me & news)" do
     tiles.length.should > 60
   end
 
-  it 'should sort global articles by publish date across pagination' do
+  it 'should sort news articles by publish date across pagination' do
     tiles = []
     skip = 0
     4.times do 
