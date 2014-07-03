@@ -38,7 +38,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.me.length.should == 24
   end
 
-  it 'should return at least 175 global interests', :strict => true do
+  it 'should return at least 175 news interests', :strict => true do
     url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -51,7 +51,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.global.length.should > 174
   end
 
-  it 'should return at least 100 global interests' do
+  it 'should return at least 100 news interests' do
     url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -64,7 +64,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     Interests_Helper.global.length.should > 99
   end
 
-  it "should return 24 articles for each 'me' topic", :strict => true do
+  it "should return 24 articles for each me topic", :strict => true do
     errors = []
     Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
@@ -82,7 +82,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     errors.should == []
   end
 
-  it "should return at least 30 articles for each 'me' topic", :strict => true do
+  it "should return at least 30 articles for each me topic", :strict => true do
     less_than_30_articles = []
     Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=24&limit=24&api_key="+@session_token
@@ -100,7 +100,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     less_than_30_articles.should == []
   end
 
-  it "should return at least two articles for each 'global' interest (FAILS IN PRODUCTION RVB-6619)" do
+  it "should return at least two articles for each mews interest (FAILS IN PRODUCTION RVB-6619)" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
@@ -126,13 +126,13 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
     end
   end
 
-  it 'should return at least 1500 tiles across all global interests' do
+  it 'should return at least 1500 tiles across all news interests' do
     Interests_Helper.global_interest_stream_tiles_count.should > 1499
     # curretly returns 1700 in prod and 1900 in stage
   end
 end
 
-describe "USER FLOWS - Get Trending interests For a Social User", :strict => true do
+describe "USER FLOWS - Get Trending Interests for a Social User", :strict => true do
 
   class Interests_Helper
     @social = []; @social_tiles = []
@@ -163,7 +163,7 @@ describe "USER FLOWS - Get Trending interests For a Social User", :strict => tru
     Interests_Helper.social.length.should == 500
   end
 
-  it "should return at least one article for each 'social' interest (FAILS IN PRODUCTION RVB-6498)" do
+  it "should return at least one article for each social interest (FAILS IN PRODUCTION RVB-6498)" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.social.each do |interest|
