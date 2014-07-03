@@ -8,10 +8,10 @@ require 'time'
 
 include Token
 
-describe "USER FLOWS - Get Trending interests For an Anon User" do
+describe "USER FLOWS - Get Trending Interests For an Anon User" do
   class Interests_Helper
-    @me = []; @global = []; @global_interest_stream_tiles_count = 0;
-    class << self; attr_accessor :me, :global, :global_interest_stream_tiles_count; end
+    @me = []; @global = []; @news_interest_stream_tiles_count = 0; @news_interest_stream_tiles = []
+    class << self; attr_accessor :me, :global, :news_interest_stream_tiles_count, :news_interest_stream_tiles; end
   end
 
   before(:all) do
@@ -34,7 +34,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.me << i['value'] if i['score'] == 0}
+    interests.each {|i| Interests_Helper.me << i['value'] unless i['value'].downcase.match(/news/)}
     Interests_Helper.me.length.should == 24
   end
 
@@ -46,7 +46,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest' && i['score'] < 1} # 'score < 1' means not featured
+    interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest'}
     interests.count.should > 174
     Interests_Helper.global.length.should > 174
   end
@@ -59,7 +59,7 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
       raise StandardError.new(e.message+":\n"+url)
     end
     interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest' && i['score'] < 1} # 'score < 1' means not featured
+    interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest'} 
     interests.count.should > 99
     Interests_Helper.global.length.should > 99
   end
@@ -113,8 +113,9 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
-      Interests_Helper.global_interest_stream_tiles_count += data['tiles'].length
+      Interests_Helper.news_interest_stream_tiles_count += data['tiles'].length
       blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 2
+      Interests_Helper.news_interest_stream_tiles << data['tiles'] if data['tiles']
     end
 
     if blank_tiles.count < 1
@@ -127,8 +128,21 @@ describe "USER FLOWS - Get Trending interests For an Anon User" do
   end
 
   it 'should return at least 1500 tiles across all news interests' do
-    Interests_Helper.global_interest_stream_tiles_count.should > 1499
+    Interests_Helper.news_interest_stream_tiles_count.should > 1499
     # curretly returns 1700 in prod and 1900 in stage
+  end
+
+  it 'should sort news interest streams by publish date' do
+    interest_streams_checked = 0
+    Interests_Helper.news_interest_stream_tiles.each do |news_tiles|
+      tiles = []
+      news_tiles.each do |news_tile|
+        tiles << news_tile['publishDate']
+      end
+      interest_streams_checked += 1
+      tiles { |x,y| y <=> x }.should == tiles.sort
+    end
+    interest_streams_checked.should > 450
   end
 end
 
@@ -192,7 +206,7 @@ describe "USER FLOWS - Get Trending Interests for a Social User", :strict => tru
         tiles << social_tile['attribution'][0]['shareDate']
       end
       interest_streams_checked += 1
-      tiles.sort { |x,y| y <=> x }.should == tiles
+      tiles { |x,y| y <=> x }.should == tiles.sort
     end
     interest_streams_checked.should > 450
   end
