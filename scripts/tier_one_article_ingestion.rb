@@ -7,7 +7,7 @@ require 'net/smtp'
 contents = ""
 contents << Time.now.to_s+"\n"
 contents << "\n"
-contents << "The last tier one article showing in the followig app:\n"
+contents << "The last tier one article showing in the following app:\n"
 contents << "\n"
 
 %w(api.helloreverb.com basil-api.helloreverb.com anise-api.helloreverb.com 
