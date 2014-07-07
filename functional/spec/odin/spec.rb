@@ -1,6 +1,23 @@
 require 'bunny'
 require 'json'
+require 'pp'
+require 'rspec'
 
+urls = {'one'=>'1','two'=>'2'}
+
+urls.each do |x,y|
+describe "Odin article ingestion #{x}" do
+
+  before(:all) do
+
+  end
+
+  it "should" do
+
+  end
+end; end
+
+=begin
 conn = Bunny.new(:host => "localhost", :port => 5672)
 
 begin
@@ -8,9 +25,11 @@ begin
   ch = conn.create_channel
   q = ch.queue('', :exclusive => true)
   q.bind('online-messaging', :routing_key => 'global.urlIngestionResult')
+  puts ''
   q.subscribe(:ack => true) do |delivery_info, properties, payload|
     p = JSON.parse payload
-    puts p['requestId']
+    pp p
+    puts ''
   end
 
   message = {
@@ -22,13 +41,13 @@ begin
 
   ch.direct('online-messaging', :durable => true).publish(message, :routing_key => 'global.urlSubmission')
 
-  sleep 60
+  sleep 120
 rescue => e
   raise e
 ensure
   conn.close
 end
-
+=end
 # Receiving IngestionNotification messages from Odin:
 # create a queue with the name global.urlIngestionResult.itd-service
 # create a binding from the exchange online-messaging and the routing key global.urlIngestionResult
