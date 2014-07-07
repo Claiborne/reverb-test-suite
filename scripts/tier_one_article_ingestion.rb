@@ -38,7 +38,7 @@ end
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = ["qa@helloreverb.com","ops@helloreverb.com","marco@helloreverb.com"]
+TO_EMAIL = ["qa@helloreverb.com","marco@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA (Do not reply) <#{FROM_EMAIL}>
