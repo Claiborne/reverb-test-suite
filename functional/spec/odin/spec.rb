@@ -4,7 +4,7 @@ require 'pp'
 require 'rspec'
 
 urls = {
-  #'new article' => 'http://blogs.reuters.com/breakingviews/2014/06/13/review-house-of-debt-diagnosis-beats-remedies/',
+  'new article' => 'http://blogs.reuters.com/breakingviews/2014/06/13/review-house-of-debt-diagnosis-beats-remedies/',
   #'404 article' => 'http://www.ign.com/404',
   #'500 article' => 'https://api.helloreverb.com/v2/trending/interests/me/qa_needs_a_500_example',
   #'301 article' => 'http://uk.ign.com/articles/2014/07/07/googles-3d-mapping-phones-to-help-robots-on-the-international-space-station',
@@ -18,6 +18,57 @@ module OdinSpecHelper
       return n if n[notification]
     end
   end
+end
+
+shared_examples 'Shared all' do
+
+  it 'should submit article to Odin' do
+    @ch.direct('online-messaging', :durable => true).publish(@message, :routing_key => 'global.urlSubmission')
+  end
+
+  it "should recieve a notification from Odin" do
+    timeout = 40
+    notification_count_break = 6
+    timeout.times do 
+      break if @odin_notifications.count > notification_count_break
+      sleep 1
+    end
+    @odin_notifications.length.should > 0
+    # debug code todo delete:
+    @odin_notifications.each do |odin_notification|
+      puts odin_notification 
+      puts ''
+    end
+  end
+
+  it 'should recive only IngestionNotifications' do
+    errors = []
+    event_name = 'com.reverb.odin.model.IngestionNotification'
+    @odin_notifications.each do |odin_notification|
+      begin
+        odin_notification['eventName'].should == event_name
+      rescue
+        errors << "Expected the following Odin notification to contain eventName of #{event_name}:\n"+odin_notification+"\n"
+      end
+    end
+    errors.count.should == 0
+  end
+
+  it 'should recieve only notifications with a valid requestId' do
+    errors = []
+    @odin_notifications.each do |odin_notification|
+      begin
+        odin_notification['requestId'].should == @request_id
+      rescue
+        errors << "Expected the following Odin notification to contain requestId of #@request_id:\n"+odin_notification+"\n"
+      end
+    end
+    errors.count.should == 0
+  end
+end
+
+shared_examples 'Shared 200' do
+
 end
 
 urls.each do |x,y|
@@ -52,49 +103,7 @@ urls.each do |x,y|
 
     after(:all) {@conn.close}
 
-    it 'should submit article to Odin' do
-      @ch.direct('online-messaging', :durable => true).publish(@message, :routing_key => 'global.urlSubmission')
-    end
-
-    it "should recieve a notification from Odin" do
-      timeout = 40
-      notification_count_break = 6
-      timeout.times do 
-        break if @odin_notifications.count > notification_count_break
-        sleep 1
-      end
-      @odin_notifications.length.should > 0
-      # debug code todo delete:
-      @odin_notifications.each do |odin_notification|
-        puts odin_notification 
-        puts ''
-      end
-    end
-
-    it 'should recive only IngestionNotifications' do
-      errors = []
-      event_name = 'com.reverb.odin.model.IngestionNotification'
-      @odin_notifications.each do |odin_notification|
-        begin
-          odin_notification['eventName'].should == event_name
-        rescue
-          errors << "Expected the following Odin notification to contain eventName of #{event_name}:\n"+odin_notification+"\n"
-        end
-      end
-      errors.count.should == 0
-    end
-
-    it 'should recieve only notifications with a valid requestId' do
-      errors = []
-      @odin_notifications.each do |odin_notification|
-        begin
-          odin_notification['requestId'].should == @request_id
-        rescue
-          errors << "Expected the following Odin notification to contain requestId of #@request_id:\n"+odin_notification+"\n"
-        end
-      end
-      errors.count.should == 0
-    end
+    include_examples 'Shared all'
 
     %w(correlated parsed docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay conceptExtractionOkay).each do |notification_name|
       it "should recieve a #{notification_name} notification" do
