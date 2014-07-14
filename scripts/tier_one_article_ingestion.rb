@@ -43,7 +43,7 @@ TO_EMAIL = ["qa@helloreverb.com","marco@helloreverb.com"]
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA (Do not reply) <#{FROM_EMAIL}>
 To: QA <#{TO_EMAIL}>
-Subject: Tier One Aticle Ingestion Smoke Test
+Subject: Tier One Article Ingestion Smoke Test
 #{contents}
 END_OF_MESSAGE
 
