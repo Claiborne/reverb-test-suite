@@ -10,6 +10,12 @@ RSpec::Core::RakeTask.new('bifrost') do |t|
   t.pattern = 'spec/bifrost/**/*.rb'
 end
 
+desc "Run Odin tests"
+RSpec::Core::RakeTask.new('odin') do |t|
+  t.rspec_opts = ["-Ilib","--format documentation","--color"]
+  t.pattern = 'spec/odin/**/*.rb'
+end
+
 desc "Run Bifrost tests without format documentation"
 RSpec::Core::RakeTask.new('bifrost-nodoc') do |t|
   t.rspec_opts = ["-Ilib","--color"]
