@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "TRENDING - Get Me Interests For Anon User" do
+describe "TRENDING - Get Me Interests For Anon User", :test => true do
 
   before(:all) do
     # Get bifrost environment
@@ -31,7 +31,7 @@ describe "TRENDING - Get Me Interests For Anon User" do
   it "should get 24 me topics" do
     topics = []
     @data['interests'].each do |interest|
-      topics << interest if interest['score'] == 0
+      topics << interest unless interest['value'] == 'News'
     end
     topics.length.should == 24
   end
