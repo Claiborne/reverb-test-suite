@@ -5,7 +5,7 @@ require 'json'
 require 'bifrost/token.rb'
 require 'api_checker.rb'; include APIChecker
 
-describe "TRENDING - Get Me Interests For Anon User", :test => true do
+describe "TRENDING - Get Me Interests For Anon User" do
 
   before(:all) do
     # Get bifrost environment
