@@ -6,7 +6,7 @@ require 'securerandom'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - Duplicate", :test => true do
+describe "Article ingestion - duplicate" do
 
   class OdinDocHelper
     class << self; attr_accessor :doc; end
@@ -15,6 +15,10 @@ describe "Article ingestion - Duplicate", :test => true do
   context 'submit original document' do
 
     before(:all) do
+
+      #todo fix
+      @timeout = 15
+      @notification_count_break = 7
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/original_duplicate.html'
@@ -83,7 +87,7 @@ describe "Article ingestion - Duplicate", :test => true do
 
     include_examples 'Shared all'
 
-    include_examples 'Shared standard success'
+    include_examples 'Shared filtered'
 
   end # end context
 

@@ -3,5 +3,6 @@ module OdinSpecHelper
     notifications.each do |n|
       return n if n[notification]
     end
+    return nil
   end
 end

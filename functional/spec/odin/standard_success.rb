@@ -15,13 +15,18 @@ File.open(path_to_urls, "r") do |f|
   end
 end
 
-standard_success_urls.each do |x|
-  describe "Article ingestion - #{x}" do
+standard_success_urls.each do |url|
+  describe "Article ingestion - standard success" do
 
     before(:all) do
 
+      @timeout = 15
+      @notification_count_break = 7 
+      # correlated, parsed, docFilterOkay, docDedupOkay
+      # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay
+
       @request_id = SecureRandom.uuid.to_s
-      @url_submitted = x
+      @url_submitted = url
       @odin_notifications = []
 
       @conn = Bunny.new(:host => "localhost", :port => 5672)
@@ -45,9 +50,13 @@ standard_success_urls.each do |x|
 
     after(:all) {@conn.close}
 
-    include_examples 'Shared all'
+    context url do
 
-    include_examples 'Shared standard success'
+      include_examples 'Shared all'
+
+      include_examples 'Shared standard success'
+
+    end
 
   end # end describe 
 end # end iteration of describe

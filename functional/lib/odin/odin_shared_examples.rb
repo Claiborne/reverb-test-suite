@@ -6,10 +6,10 @@ shared_examples 'Shared all' do
   end
 
   it "should recieve a notification from Odin" do
-    timeout = 20
-    notification_count_break = 6
+    timeout = @timeout
+    notification_count_break = @notification_count_break
     timeout.times do 
-      break if @odin_notifications.count > notification_count_break
+      break if @odin_notifications.count >= notification_count_break
       sleep 1
     end
     @odin_notifications.length.should > 0
@@ -44,11 +44,37 @@ shared_examples 'Shared all' do
     end
     errors.count.should == 0
   end
+
+  %w(correlated parsed).each do |notification_name|
+    it "should recieve a #{notification_name} notification" do
+      notification = extractNotification @odin_notifications, notification_name
+      notification.should be_true
+    end
+  end
+
+end
+
+shared_examples 'Shared filtered' do
+
+  %w(filtered).each do |notification_name|
+    it "should recieve a #{notification_name} notification" do
+      notification = extractNotification @odin_notifications, notification_name
+      notification.should be_true
+    end
+  end
+
+  it 'should recieve these notifications in order: correlated parsed docFilterOkay docDedupOkay' do
+    expected_notifications = %w(correlated parsed filtered)
+    @odin_notifications.each_with_index do |notification, index|
+      break if index >= expected_notifications.count
+      notification[expected_notifications[index]].should be_true
+    end
+  end
 end
 
 shared_examples 'Shared standard success' do
 
-  %w(correlated parsed docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay conceptExtractionOkay).each do |notification_name|
+  %w(docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay conceptExtractionOkay).each do |notification_name|
     it "should recieve a #{notification_name} notification" do
       notification = extractNotification @odin_notifications, notification_name
       notification.should be_true
