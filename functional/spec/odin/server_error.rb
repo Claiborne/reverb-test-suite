@@ -6,15 +6,14 @@ require 'securerandom'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - image-only doc" do
-
+describe "Article ingestion - 500 doc" do
   before(:all) do
 
     @timeout = 15
-    @notification_count_break = 7
+    @notification_count_break = 3
 
     @request_id = SecureRandom.uuid.to_s
-    @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/image_only.html'
+    @url_submitted = 'https://stage-api.helloreverb.com/v2/trending/tiles/'
     @odin_notifications = []
 
     @conn = Bunny.new(:host => "localhost", :port => 5672)
@@ -38,8 +37,12 @@ describe "Article ingestion - image-only doc" do
 
   after(:all) {@conn.close}
 
-  include_examples 'Shared all'
+  context 'https://stage-api.helloreverb.com/v2/trending/tiles/' do 
 
-  include_examples 'Shared filtered'
+    include_examples 'Shared all'
+
+    include_examples 'Shared filtered'
+
+  end
 
 end

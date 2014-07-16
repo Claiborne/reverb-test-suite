@@ -6,15 +6,14 @@ require 'securerandom'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - image-only doc" do
-
+describe "Article ingestion - doc more than 1 million characters" do
   before(:all) do
 
-    @timeout = 15
-    @notification_count_break = 7
+    @timeout = 80
+    @notification_count_break = 3
 
     @request_id = SecureRandom.uuid.to_s
-    @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/image_only.html'
+    @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/too_long.html'
     @odin_notifications = []
 
     @conn = Bunny.new(:host => "localhost", :port => 5672)
