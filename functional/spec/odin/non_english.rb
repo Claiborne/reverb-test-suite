@@ -7,10 +7,11 @@ require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
 describe "Article ingestion - non-english doc" do
+
   before(:all) do
 
-    @timeout = 15
-    @notification_count_break = 3
+    $counter = 0
+    @timeout = 60
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/non_english.html'
@@ -37,8 +38,14 @@ describe "Article ingestion - non-english doc" do
 
   after(:all) {@conn.close}
 
-  include_examples 'Shared all'
+  include_examples 'Submit'
+
+  include_examples 'Shared correlated and parsed'
 
   include_examples 'Shared filtered'
+
+  include_examples 'Shared all'
+
+  include_examples 'Debug'  
 
 end
