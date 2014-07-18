@@ -9,8 +9,8 @@ require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 describe "Article ingestion - doc less than 500 characters" do
   before(:all) do
 
-    @timeout = 15
-    @notification_count_break = 3
+    $counter = 0
+    @timeout = 60
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/too_short.html'
@@ -37,8 +37,14 @@ describe "Article ingestion - doc less than 500 characters" do
 
   after(:all) {@conn.close}
 
-  include_examples 'Shared all'
+  include_examples 'Submit'
+
+  include_examples 'Shared correlated and parsed'
 
   include_examples 'Shared filtered'
+
+  include_examples 'Shared all'
+
+  include_examples 'Debug'
 
 end

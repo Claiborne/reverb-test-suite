@@ -10,8 +10,8 @@ describe "Article ingestion - image-only doc" do
 
   before(:all) do
 
-    @timeout = 15
-    @notification_count_break = 7
+    $counter = 0
+    @timeout = 60
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/image_only.html'
@@ -38,8 +38,14 @@ describe "Article ingestion - image-only doc" do
 
   after(:all) {@conn.close}
 
-  include_examples 'Shared all'
+  include_examples 'Submit'
+
+  include_examples 'Shared correlated and parsed'
 
   include_examples 'Shared filtered'
+
+  include_examples 'Shared all'   
+
+  include_examples 'Debug'
 
 end
