@@ -16,6 +16,8 @@ describe "Article ingestion - duplicate doc" do
 
     before(:all) do
 
+      tunnnel_odin_dev
+
       $counter = 0
       @timeout = 60
 
