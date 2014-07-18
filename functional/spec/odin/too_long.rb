@@ -9,6 +9,8 @@ require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 describe "Article ingestion - doc more than 1 million characters" do
   before(:all) do
 
+    tunnnel_odin_dev
+
     $counter = 0
     @timeout = 60
 
