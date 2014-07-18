@@ -16,9 +16,8 @@ describe "Article ingestion - duplicate doc" do
 
     before(:all) do
 
-      #todo fix
-      @timeout = 15
-      @notification_count_break = 7
+      $counter = 0
+      @timeout = 60
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/original_duplicate.html'
@@ -45,14 +44,20 @@ describe "Article ingestion - duplicate doc" do
 
   after(:all) {@conn.close}
 
-    include_examples 'Shared all'
+    include_examples 'Submit'
+
+    include_examples 'Shared correlated and parsed' 
 
     include_examples 'Shared standard success'
+
+    include_examples 'Shared all'
 
     it 'should get parsed.documentId.docId' do
       parsed = extractNotification @odin_notifications, 'parsed'
       OdinDocHelper.doc = parsed['parsed']['documentId']['docId']
     end
+
+   include_examples 'Debug'
 
   end # end context
 
@@ -60,9 +65,8 @@ describe "Article ingestion - duplicate doc" do
 
     before(:all) do
 
-      #todo fix
-      @timeout = 15
-      @notification_count_break = 7
+      $counter = 0
+      @timeout = 60
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/duplicate.html'
@@ -89,9 +93,20 @@ describe "Article ingestion - duplicate doc" do
 
     after(:all) {@conn.close}
 
+    include_examples 'Submit'
+
+    include_examples 'Shared correlated and parsed' 
+
+    include_examples 'Shared filtered with docFilterOkay'
+
     include_examples 'Shared all'
 
-    include_examples 'Shared filtered'
+    it 'should filter the document as a duplicate' do
+      filtered = extractNotification @odin_notifications, 'filtered'
+      filtered['filtered']['reasons'][0]['rule']['name'].should == 'Deduplication'
+    end
+
+    include_examples 'Debug'
 
   end # end context
 
@@ -99,9 +114,8 @@ describe "Article ingestion - duplicate doc" do
 
     before(:all) do
 
-      #todo fix
-      @timeout = 15
-      @notification_count_break = 7
+      $counter = 0
+      @timeout = 60
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/original_duplicate.html'
@@ -128,13 +142,20 @@ describe "Article ingestion - duplicate doc" do
 
     after(:all) {@conn.close}
 
-    include_examples 'Shared all'
+    include_examples 'Submit'
+
+    include_examples 'Shared correlated and parsed' 
 
     include_examples 'Shared standard success'
+
+    include_examples 'Shared all'
 
     it 'should return the same parsed.documentId.docId for a previously ingested URL' do
       parsed = extractNotification @odin_notifications, 'parsed'
       parsed['parsed']['documentId']['docId'].should == OdinDocHelper.doc
     end
+
+    include_examples 'Debug'
+
   end # end context
 end # end describe 

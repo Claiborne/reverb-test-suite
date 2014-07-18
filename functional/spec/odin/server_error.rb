@@ -7,10 +7,11 @@ require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
 describe "Article ingestion - 500 doc" do
+
   before(:all) do
 
-    @timeout = 15
-    @notification_count_break = 3
+    $counter = 0
+    @timeout = 60
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'https://stage-api.helloreverb.com/v2/trending/tiles/'
@@ -39,9 +40,13 @@ describe "Article ingestion - 500 doc" do
 
   context 'https://stage-api.helloreverb.com/v2/trending/tiles/' do 
 
+    include_examples 'Submit'
+
+    include_examples 'Shared failed'
+
     include_examples 'Shared all'
 
-    include_examples 'Shared filtered'
+    include_examples 'Debug'
 
   end
 
