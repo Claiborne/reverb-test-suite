@@ -73,7 +73,7 @@ shared_examples 'Shared filtered with docFilterOkay' do
   end
 
   it 'should recieve these notifications in order: correlated parsed docFilterOkay filtered' do
-    expected_notifications = %w(correlated parsed filtered)
+    expected_notifications = %w(correlated parsed docFilterOkay filtered)
     @odin_notifications.each_with_index do |notification, index|
       break if index >= expected_notifications.count
       notification[expected_notifications[index]].should be_true
@@ -131,7 +131,7 @@ shared_examples 'Shared standard success' do
     expected_notifications = %w(correlated parsed docFilterOkay docDedupOkay)
     @odin_notifications.each_with_index do |notification, index|
       break if index >= expected_notifications.count
-      notification[expected_notifications[index]].should be_true
+      notification[expected_notifications[index]].should be_true, "Expected:\ncorrelated parsed docDedupOkay docFilterOkay\nGot:\n#{@odin_notifications}"
     end
   end
 
