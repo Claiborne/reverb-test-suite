@@ -16,12 +16,13 @@ File.open(path_to_urls, "r") do |f|
 end
 
 standard_success_urls.each do |url|
-  describe "Article ingestion - standard success" do
+  describe "Article ingestion - standard success", :test => true do
 
     before(:all) do
 
-      @timeout = 15
-      @notification_count_break = 7 
+      $counter = 0
+      @timeout = 60
+
       # correlated, parsed, docFilterOkay, docDedupOkay
       # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay
 
@@ -52,9 +53,15 @@ standard_success_urls.each do |url|
 
     context url do
 
-      include_examples 'Shared all'
+      include_examples 'Submit'
+
+      include_examples 'Shared correlated and parsed'
 
       include_examples 'Shared standard success'
+
+      include_examples 'Shared all'
+
+      include_examples 'Debug'
 
     end
 
