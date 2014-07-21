@@ -100,7 +100,7 @@ shared_examples 'Shared failed' do
     end
   end
 
-  it 'should not recieve these notifications: correlated parsed filtered' do
+  it 'should not recieve these notifications: correlated, parsed, filtered' do
     %w(correlated parsed filtered).each do |notification_name|
       notification = extractNotification @odin_notifications, notification_name
       notification.should be_nil
@@ -165,6 +165,14 @@ shared_examples 'Shared standard success' do
       notification[notification_name]['value'].should == true
     end
   end
+
+  it 'should not recieve these notifications: failed, filtered' do
+    %w(failed filtered).each do |notification_name|
+      notification = extractNotification @odin_notifications, notification_name
+      notification.should be_nil
+    end
+  end
+
 end
 
 shared_examples 'Shared all' do
