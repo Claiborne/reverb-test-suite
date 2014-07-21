@@ -46,6 +46,11 @@ describe "Article ingestion - non-english doc" do
 
   include_examples 'Shared filtered'
 
+  it "should be filtered due to language" do
+    filtered_notification = extractNotification @odin_notifications, 'filtered'
+    filtered_notification['filtered']['reasons'][0]['rule']['name'].should == "Language"
+  end
+
   include_examples 'Shared all'
 
   include_examples 'Debug'  

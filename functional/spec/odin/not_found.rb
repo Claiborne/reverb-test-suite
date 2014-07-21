@@ -46,6 +46,11 @@ describe "Article ingestion - 404 doc" do
 
     include_examples 'Shared failed'
 
+    it "should fail because URI didn't expand to a 2xx statuscode" do
+      failed_notification = extractNotification @odin_notifications, 'failed'
+      failed_notification['failed']['errorMessage'].should == "URI didn't expand to a 2xx statuscode"
+    end
+
     include_examples 'Shared all'
 
     include_examples 'Debug'
