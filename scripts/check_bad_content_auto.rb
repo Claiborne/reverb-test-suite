@@ -19,9 +19,9 @@ end
 
 bad_words.each do |bad_word|
   sleep 1
-  %w(0 100 200 300 400 500).each do |skip|
+  %w(0 50 100 150 200 250 300 350 400).each do |skip|
     output << "--------------- #{bad_word} ---------------\n"
-    url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
+    url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=50&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
@@ -29,14 +29,14 @@ bad_words.each do |bad_word|
       begin
         res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
       rescue
-        output << "There was a corpus error: #{e.message}"
+        output << "There was a corpus error: #{e.message}]\n"
         break
       end
     end
     begin
       data = JSON.parse res
     rescue => e
-      output << "There was a corpus error: JSON not returned from Corpus. #{e.message}"
+      output << "There was a corpus error: JSON not returned from Corpus. #{e.message}\n"
       break
     end
     data.each do |d|
@@ -48,7 +48,7 @@ end
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = ["caitlin@helloreverb.com", "anushka@helloreverb.com"]
+TO_EMAIL = ["caitlin@helloreverb.com", "anushka@helloreverb.com", "wclaiborne@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
