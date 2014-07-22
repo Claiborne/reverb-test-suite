@@ -25,9 +25,13 @@ bad_words.each do |bad_word|
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
-      sleep 7 # wait for Corpus to recover
-      output << "There was a corpus error: #{e.message}"
-      break
+      sleep 20 # wait for Corpus to recover
+      begin
+        res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+      rescue
+        output << "There was a corpus error: #{e.message}"
+        break
+      end
     end
     begin
       data = JSON.parse res
