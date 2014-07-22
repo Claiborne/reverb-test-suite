@@ -44,7 +44,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     news_tiles = JSON.parse res
     @article_ids = []
     news_tiles['tiles'].each do |tile|
-      @article_ids << tile['contentId'].to_i unless tile['tileType'] == 'interest'
+      @article_ids << tile['contentId'].to_i if tile['tileType'] == 'article'
     end
   end
 
