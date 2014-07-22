@@ -23,6 +23,30 @@ shared_examples 'Shared correlated and parsed' do
       end # end timeout iteration
     end # end it
   end
+  
+  it 'should return the same correlated.originalUri value as submitted' do
+    correlated = extractNotification @odin_notifications, 'correlated'
+    correlated['correlated']['originalUri'].should == @url_submitted
+  end
+
+  it 'should return the same correlated.expandedUri value as submitted' do
+    correlated = extractNotification @odin_notifications, 'correlated'
+    correlated['correlated']['expandedUri'].should == @url_submitted
+  end
+
+  it 'should return a valid correlated.siteId value' do
+    correlated = extractNotification @odin_notifications, 'correlated'
+    correlated['correlated']['siteId']['value'].class.to_s.should == 'Fixnum'
+    correlated['correlated']['siteId']['value'].to_s.match(/^[0-9]/).should be_true
+    correlated['correlated']['siteId']['value'].to_s.downcase.match(/[a-z]/).should be_false
+  end
+
+  it 'should return a valid parsed.documentId value' do
+    parsed = extractNotification @odin_notifications, 'parsed'
+    parsed['parsed']['documentId']['docId'].class.to_s.should == 'Fixnum'
+    parsed['parsed']['documentId']['docId'].to_s.match(/^[0-9]/).should be_true
+    parsed['parsed']['documentId']['docId'].to_s.downcase.match(/[a-z]/).should be_false
+  end
 end
 
 shared_examples 'Shared filtered' do
@@ -133,30 +157,6 @@ shared_examples 'Shared standard success' do
       break if index >= expected_notifications.count
       notification[expected_notifications[index]].should be_true, "Expected:\ncorrelated parsed docDedupOkay docFilterOkay\nGot:\n#{@odin_notifications}"
     end
-  end
-
-  it 'should return the same correlated.originalUri value as submitted' do
-    correlated = extractNotification @odin_notifications, 'correlated'
-    correlated['correlated']['originalUri'].should == @url_submitted
-  end
-
-  it 'should return the same correlated.expandedUri value as submitted' do
-    correlated = extractNotification @odin_notifications, 'correlated'
-    correlated['correlated']['expandedUri'].should == @url_submitted
-  end
-
-  it 'should return a valid correlated.siteId value' do
-    correlated = extractNotification @odin_notifications, 'correlated'
-    correlated['correlated']['siteId']['value'].class.to_s.should == 'Fixnum'
-    correlated['correlated']['siteId']['value'].to_s.match(/^[0-9]/).should be_true
-    correlated['correlated']['siteId']['value'].to_s.downcase.match(/[a-z]/).should be_false
-  end
-
-  it 'should return a valid parsed.documentId value' do
-    parsed = extractNotification @odin_notifications, 'parsed'
-    parsed['parsed']['documentId']['docId'].class.to_s.should == 'Fixnum'
-    parsed['parsed']['documentId']['docId'].to_s.match(/^[0-9]/).should be_true
-    parsed['parsed']['documentId']['docId'].to_s.downcase.match(/[a-z]/).should be_false
   end
 
   %w(docDedupOkay mediaExtractionOkay topicExtractionOkay conceptExtractionOkay).each do |notification_name|

@@ -6,7 +6,17 @@ require 'securerandom'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - smoke success", :smoke_success => true do
+path_to_urls = File.dirname(__FILE__)+"/../../lib/odin/standard_success.txt"
+standard_success_urls =  []
+
+File.open(path_to_urls, "r") do |f|
+  f.each_line do |line|
+    standard_success_urls << line.strip
+  end
+end
+
+standard_success_urls.each do |url|
+describe "Article ingestion - successes", :standard_success => true do
 
   before(:all) do
 
@@ -19,7 +29,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay
 
     @request_id = SecureRandom.uuid.to_s
-    @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/standard.html'
+    @url_submitted = url
     @odin_notifications = []
 
     @conn = Bunny.new(:host => "localhost", :port => 5672)
@@ -43,7 +53,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
   after(:all) {@conn.close}
 
-  context 'http://odin-integration.helloreverb.com/smoke_articles/standard.html' do
+  context url do
 
     include_examples 'Submit'
 
@@ -57,31 +67,4 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
   end
 
-end # end describe 
-
-# https://wordnik.jira.com/wiki/display/DEV/Integration+Test+Specification
-
-# Receiving IngestionNotification messages from Odin:
-# create a queue with the name global.urlIngestionResult.itd-service
-# create a binding from the exchange online-messaging and the routing key global.urlIngestionResult
-# create a consumer for the queue
-
-# http://rubybunny.info/articles/getting_started.html
-
-=begin
-
-ssh -f -N -L 5672:localhost:5672 54.219.86.212
-ssh -f -N -L 15672:localhost:15672 54.219.86.212
-
-ps aux | grep rabbitmq
-
-ln -sfv /usr/local/opt/rabbitmq/*.plist ~/Library/LaunchAgents
-ps aux | grep ssh
-
-Receiving IngestionNotification messages from Odin through RabbitMQ is a little more complicated. 
-ITD needs to create a queue with the name global.urlIngestionResult.itd-service and create a 
-binding from the exchange online-messaging and the routing key global.urlIngestionResult. 
-The last step is to create a consumer for the queue. The schema of these message is outline 
-in the database model section.
-
-=end
+end; end
