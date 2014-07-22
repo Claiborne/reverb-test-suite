@@ -100,7 +100,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     CollectionFlowHelper.collection['summary'].should == 'this is the summary'
   end
 
-  it 'should create a collecion with a contentImage.url value' do
+  it 'should create a collection with a contentImage.url value' do
     CollectionFlowHelper.collection['contentImage']['url'].match(/images.helloreverb.com\/api\/image/).should be_true
   end
 
