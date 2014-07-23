@@ -44,6 +44,11 @@ describe "Article ingestion - non-english doc" do
 
   include_examples 'Shared correlated and parsed'
 
+  it 'should return the same correlated.expandedUri value as submitted' do
+    correlated = extractNotification @odin_notifications, 'correlated'
+    correlated['correlated']['expandedUri'].should == @url_submitted
+  end
+
   include_examples 'Shared filtered'
 
   it "should be filtered due to language" do

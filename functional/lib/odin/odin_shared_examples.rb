@@ -26,12 +26,15 @@ shared_examples 'Shared correlated and parsed' do
   
   it 'should return the same correlated.originalUri value as submitted' do
     correlated = extractNotification @odin_notifications, 'correlated'
-    correlated['correlated']['originalUri'].should == @url_submitted
+    correlated_url = correlated['correlated']['originalUri']
+    correlated_url.should == @url_submitted
   end
 
-  it 'should return the same correlated.expandedUri value as submitted' do
+  it 'should return a non-nil, non-blank correlated.expandedUri value' do
     correlated = extractNotification @odin_notifications, 'correlated'
-    correlated['correlated']['expandedUri'].should == @url_submitted
+    expanded_uri = correlated['correlated']['expandedUri']
+    expanded_uri.should_not be_nil
+    expanded_uri.delete("^a-zA-Z").length.should > 0
   end
 
   it 'should return a valid correlated.siteId value' do

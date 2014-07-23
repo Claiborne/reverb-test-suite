@@ -43,6 +43,11 @@ describe "Article ingestion - doc more than 1 million characters", :fails => tru
 
   include_examples 'Shared correlated and parsed'
 
+  it 'should return the same correlated.expandedUri value as submitted' do
+    correlated = extractNotification @odin_notifications, 'correlated'
+    correlated['correlated']['expandedUri'].should == @url_submitted
+  end
+
   include_examples 'Shared filtered'
 
   include_examples 'Shared all'
