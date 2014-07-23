@@ -21,15 +21,18 @@ bad_words.each do |bad_word|
   sleep 1
   %w(0 50 100 150 200 250 300 350 400).each do |skip|
     output << "--------------- #{bad_word} ---------------\n"
-    url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=50&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
+    url = URI::encode " http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=50&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
+      puts res
     rescue => e
       sleep 70 # wait for Corpus to recover
       begin
         res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
-      rescue
+        pus res
+      rescue => e
         output << "     There was a corpus error: #{e.message}\n"
+        puts e.message
         break
       end
     end
