@@ -14,11 +14,11 @@ end
 puts "BEFORE"
 
 bad_words.each do |bad_word|
-  sleep 0.4
-  %w(0 100 200 300 400 500).each do |skip|
+  %w(0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200).each do |skip|
+    sleep 1
     #puts "--------------- #{bad_word} ---------------\n"
     print "+"
-    url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
+    url = URI::encode "http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=10&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
@@ -34,7 +34,6 @@ bad_words.each do |bad_word|
     data.each do |d|
       ids << "#{d['id']} -- #{d['title']}"
     end
-    break unless data.count > 99
   end
 end
 
@@ -44,13 +43,13 @@ output << "IDs and titles:\n"
 
 ids.each do |id|
   id_num = id.match(/\A\d*/).to_s
-  sleep 0.5
-  url = "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/deleteDocById?id=#{id_num}"
+  sleep 1
+  url = "http://10.190.152.196:8000api/corpus.json/deleteDocById?id=#{id_num}"
   begin
     RestClient.delete url,  :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     output << "#{id}\n"
   rescue => e
-    sleep 7 # wait for Corpus to recover
+    sleep 35 # wait for Corpus to recover
     puts e.message.to_s
   end
   print '.'
@@ -62,9 +61,10 @@ output << "\n\n"
 output << "Articles returned after deletions:\n"
 
 bad_words.each do |bad_word|
-  %w(0 100 200 300 400 500).each do |skip|
+  %w(0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200).each do |skip|
+    sleep 1
     output << "--------------- #{bad_word} ---------------\n"
-    url = URI::encode "https://insights.helloreverb.com/proxy/corpus-service/api/corpus.json/searchDocs?skip=#{skip}&limit=100&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
+    url = URI::encode "http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=10&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
@@ -81,13 +81,12 @@ bad_words.each do |bad_word|
     data.each do |d|
       output << "#{d['id']} -- #{d['title']}\n"
     end
-    break unless data.count > 99
   end
 end
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = "caitlin@helloreverb.com"
+TO_EMAIL = ["caitlin@helloreverb.com","wclaiborne@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
