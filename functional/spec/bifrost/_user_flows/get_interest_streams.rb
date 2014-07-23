@@ -100,7 +100,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     less_than_30_articles.should == []
   end
 
-  it "should return at least two articles for each mews interest (FAILS IN PRODUCTION RVB-6619)" do
+  it "should return at least two articles for each news interest (FAILS IN PRODUCTION RVB-6619)" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
