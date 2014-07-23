@@ -134,7 +134,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['id'].should == id
   end
 
-  it 'should add three articles to a collection' do
+  it 'should add three articles to a collection and return them in the same order added' do
     id = CollectionFlowHelper.collection['id']
     article1 = @article_ids[2]
     article2 = @article_ids[1]
@@ -167,9 +167,13 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['tiles'].each do |tile|
       articles << tile['contentId']
     end
+
     articles.include?(article1.to_s).should be_true
     articles.include?(article2.to_s).should be_true
     articles.include?(article3.to_s).should be_true
+
+    articles.index(article1.to_s).should < articles.index(article2.to_s)
+    articles.index(article2.to_s).should < articles.index(article3.to_s)
   end
 
   it 'should remove an article from a collection' do
