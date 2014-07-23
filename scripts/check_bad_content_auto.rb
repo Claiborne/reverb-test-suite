@@ -18,21 +18,18 @@ File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
 end
 
 bad_words.each do |bad_word|
-  sleep 1
-  %w(0 50 100 150 200 250 300 350 400).each do |skip|
-    output << "--------------- #{bad_word} ---------------\n"
-    url = URI::encode " http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=50&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
+  output << "--------------- #{bad_word} ---------------\n"
+  %w(0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200).each do |skip|
+    sleep 1
+    url = URI::encode "http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=10&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
-      puts res
     rescue => e
-      sleep 70 # wait for Corpus to recover
+      sleep 35 # wait for Corpus to recover
       begin
         res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
-        pus res
-      rescue => e
+      rescue
         output << "     There was a corpus error: #{e.message}\n"
-        puts e.message
         break
       end
     end
@@ -45,7 +42,6 @@ bad_words.each do |bad_word|
     data.each do |d|
       output << "#{d['title']}\n" if d['createDate'].match(today)
     end
-    break unless data.count > 99
   end
 end
 
