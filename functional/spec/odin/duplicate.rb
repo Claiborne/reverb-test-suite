@@ -50,6 +50,11 @@ describe "Article ingestion - duplicate doc" do
 
     include_examples 'Shared correlated and parsed' 
 
+    it 'should return the same correlated.expandedUri value as submitted' do
+      correlated = extractNotification @odin_notifications, 'correlated'
+      correlated['correlated']['expandedUri'].should == @url_submitted
+    end
+
     include_examples 'Shared standard success'
 
     include_examples 'Shared all'
@@ -99,6 +104,11 @@ describe "Article ingestion - duplicate doc" do
 
     include_examples 'Shared correlated and parsed' 
 
+    it 'should return the same correlated.expandedUri value as submitted' do
+      correlated = extractNotification @odin_notifications, 'correlated'
+      correlated['correlated']['expandedUri'].should == @url_submitted
+    end
+
     include_examples 'Shared filtered with docFilterOkay'
 
     include_examples 'Shared all'
@@ -147,6 +157,11 @@ describe "Article ingestion - duplicate doc" do
     include_examples 'Submit'
 
     include_examples 'Shared correlated and parsed' 
+
+    it 'should return the same correlated.expandedUri value as submitted' do
+      correlated = extractNotification @odin_notifications, 'correlated'
+      correlated['correlated']['expandedUri'].should == @url_submitted
+    end
 
     include_examples 'Shared standard success'
 
