@@ -2,6 +2,7 @@ require 'rest-client'
 require 'colorize'
 require 'json'
 require 'date'
+require 'time'
 require 'net/smtp'
 
 # Search corpus for bad words in title
@@ -11,8 +12,7 @@ output << "for:\n"
 output << "#{Time.now}\n"
 bad_words = []
 flagged_content = []
-today = (Time.now.to_s.match /\d\d\d\d-\d\d\-\d\d/).to_s
-#time_now = Time.now.to_i
+time_now = Time.now.to_i
  
 File.open(File.dirname(__FILE__)+'/bad_words.txt', "r").each_line do |line|
   bad_words << line.to_s.downcase.strip
@@ -42,7 +42,7 @@ bad_words.each do |bad_word|
     end
     data.each do |d|
       puts d['createDate']
-      output << "#{d['title']}\n" if d['createDate'].match(today)
+      output << "#{d['title']}\n" if (time_now - Time.parse(d['createDate'].to_s).to_i) < 86400
     end
   end
 end
