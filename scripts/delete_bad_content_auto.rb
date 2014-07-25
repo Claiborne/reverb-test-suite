@@ -14,15 +14,15 @@ end
 puts "BEFORE"
 
 bad_words.each do |bad_word|
+  puts bad_word
   %w(0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200).each do |skip|
     sleep 1
-    #puts "--------------- #{bad_word} ---------------\n"
     print "+"
     url = URI::encode "http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=10&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
-      sleep 7 # wait for Corpus to recover
+      sleep 2 # wait for Corpus to recover
       puts "Could not search for #{bad_word}. There was a corpus error: #{e.message}"
       break
     end
@@ -49,7 +49,7 @@ ids.each do |id|
     RestClient.delete url,  :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     output << "#{id}\n"
   rescue => e
-    sleep 35 # wait for Corpus to recover
+    sleep 10 # wait for Corpus to recover
     puts e.message.to_s
   end
   print '.'
@@ -68,7 +68,7 @@ bad_words.each do |bad_word|
     begin
       res = RestClient.get url, :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     rescue => e
-      sleep 7 # wait for Corpus to recover
+      sleep 2 # wait for Corpus to recover
       output << "COULD NOT SEARCH FOR #{bad_word}. There was a corpus error: #{e.message}"
       break
     end
