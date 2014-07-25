@@ -44,7 +44,7 @@ output << "IDs and titles:\n"
 ids.each do |id|
   id_num = id.match(/\A\d*/).to_s
   sleep 1
-  url = "http://10.190.152.196:8000api/corpus.json/deleteDocById?id=#{id_num}"
+  url = "http://10.190.152.196:8000/api/corpus.json/deleteDocById?id=#{id_num}"
   begin
     RestClient.delete url,  :content_type => 'application/json', :Authorization => 'Basic d2NsYWlib3JuZTpyZXZlcmJ0ZXN0MTIz'
     output << "#{id}\n"
