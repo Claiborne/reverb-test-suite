@@ -15,7 +15,7 @@ puts "BEFORE"
 
 bad_words.each do |bad_word|
   puts bad_word
-  %w(0 20).each do |skip|
+  %w(0 20 40).each do |skip|
     sleep 1
     print "+"
     url = URI::encode "http://10.190.152.196:8000/api/corpus.json/searchDocs?skip=#{skip}&limit=20&searchType=prefix&searchField=title&searchString=#{bad_word}&excludeReviewedDocs=false"
@@ -54,7 +54,7 @@ ids.each do |id|
   end
   print '.'
 end
-
+=begin
 puts "AFTER"
 
 output << "\n\n"
@@ -83,7 +83,7 @@ bad_words.each do |bad_word|
     end
   end
 end
-
+=end
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
 TO_EMAIL = ["caitlin@helloreverb.com","wclaiborne@helloreverb.com"]
