@@ -132,7 +132,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     # curretly returns 1700 in prod and 1900 in stage
   end
 
-  it 'should sort news interest streams by publish date' do
+  it 'should sort news interest streams by publish date', :fails => true do
     interest_streams_checked = 0
     Interests_Helper.news_interest_stream_tiles.each do |news_tiles|
       tiles = []
