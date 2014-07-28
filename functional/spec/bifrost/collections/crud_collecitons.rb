@@ -33,6 +33,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     @interest_two = 'Cake'
     @interest_three = 'California'
     @interest_four = 'New York'
+    @interest_five = 'Apple'
 
     # Get an array of articles
     news_tiles_url = @bifrost_env+"/trending/tiles/global?skip=0&limit=24&api_key="+@session
@@ -79,7 +80,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     CollectionFlowHelper.collection['tiles'].each do |tile|
       tiles << tile['contentId']
     end
-    tiles.include?(@article_ids[0].to_s).should be_true
+    tiles.should include @article_ids[0].to_s
   end
 
   it 'should create a collection with the appropriate interest tiles' do
@@ -87,8 +88,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     CollectionFlowHelper.collection['tiles'].each do |tile|
       tiles << tile['contentId']
     end
-    tiles.include?(@interest_one).should be_true
-    tiles.include?(@interest_two).should be_true
+    tiles.should include @interest_one
+    tiles.should include @interest_two
   end
 
   it 'should create a collection with the appropriate pinnedConcepts' do
@@ -151,9 +152,9 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['tiles'].each do |tile|
       articles << tile['contentId']
     end
-    articles.include?(article1.to_s).should be_true
-    articles.include?(article2.to_s).should be_true
-    articles.include?(article3.to_s).should be_true
+    articles.should include article1.to_s
+    articles.should include article2.to_s
+    articles.should include article3.to_s
 
     # Now do a get and make same assertions
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -168,9 +169,9 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
       articles << tile['contentId']
     end
 
-    articles.include?(article1.to_s).should be_true
-    articles.include?(article2.to_s).should be_true
-    articles.include?(article3.to_s).should be_true
+    articles.should include article1.to_s
+    articles.should include article2.to_s
+    articles.should include article3.to_s
 
     articles.index(article1.to_s).should < articles.index(article2.to_s)
     articles.index(article2.to_s).should < articles.index(article3.to_s)
@@ -192,8 +193,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['tiles'].each do |tile|
       tiles << tile['contentId']
     end
-    tiles.include?(article1.to_s).should be_false
-    tiles.include?(article2.to_s).should be_false
+    tiles.should_not include article1.to_s
+    tiles.should_not include article2.to_s
 
     # Now do a get and make same assertions
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -207,8 +208,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['tiles'].each do |tile|
       tiles << tile['contentId']
     end
-    tiles.include?(article1.to_s).should be_false
-    tiles.include?(article2.to_s).should be_false
+    tiles.should_not include article1.to_s
+    tiles.should_not include article2.to_s
   end
 
   it 'should add more articles and order them by newest added first' do
@@ -268,8 +269,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['contentPreferences']['pinnedConcepts'].each do |interest|
       interests << interest
     end
-    interests.include?(interest1).should be_true
-    interests.include?(interest2).should be_true
+    interests.should include interest1
+    interests.should include interest2
 
     # Now do a get and make same assertions
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -283,8 +284,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['contentPreferences']['pinnedConcepts'].each do |interest|
       interests << interest
     end
-    interests.include?(interest1).should be_true
-    interests.include?(interest2).should be_true
+    interests.should include interest1
+    interests.should include interest2
   end
 
   it 'should remove an interest from a collection' do
@@ -303,8 +304,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['contentPreferences']['pinnedConcepts'].each do |interest|
       interests << interest
     end
-    interests.include?(interest1).should be_false
-    interests.include?(interest2).should be_false
+    interests.should_not include interest1
+    interests.should_not include interest2
 
     # Now do a get and make same assertions
     url = @bifrost_env+"/collections/#{id}?api_key="+@session
@@ -318,8 +319,8 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['contentPreferences']['pinnedConcepts'].each do |interest|
       interests << interest
     end
-    interests.include?(interest1).should be_false
-    interests.include?(interest2).should be_false
+    interests.should_not include interest1
+    interests.should_not include interest2
   end
 
   it 'should add more interests and order them by newest added first' do
@@ -385,6 +386,53 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['exists'].to_s.should == 'true'
   end
 
+  it 'should both add and remove items in a single put' do
+    # add concept Apple
+    # del concept Knitting
+    # add article @article_ids[6]
+    # del article @article_ids[5]
+
+    id = CollectionFlowHelper.collection['id']
+    body = {"articlesToRemove"=>[@article_ids[5]],"pinnedInterestsToRemove"=>['Knitting'],
+            "articlesToAdd"=>[@article_ids[6]],"pinnedInterestsToAdd"=>['Apple'],"enableRecommendations"=>true}.to_json
+    url = @bifrost_env+"/collections/#{id}/config?api_key="+@session
+    begin
+      response = RestClient.put url, body, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+    data = JSON.parse response
+
+    content_ids = []
+    data['tiles'].each do |tile|
+      content_ids << tile['contentId']
+    end
+
+    content_ids.should include 'Apple'
+    content_ids.should include @article_ids[6].to_s
+    content_ids.should_not include 'Knitting'
+    content_ids.should_not include @article_ids[5].to_s
+
+    # Now do a get and make same assertions
+    url = @bifrost_env+"/collections/#{id}?api_key="+@session
+    begin
+      response = RestClient.get url, @headers
+    rescue => e
+      raise StandardError.new(e.message+" "+url)
+    end
+
+    data = JSON.parse response
+    content_ids = []
+    data['tiles'].each do |tile|
+      content_ids << tile['contentId']
+    end
+
+    content_ids.should include 'Apple'
+    content_ids.should include @article_ids[6].to_s
+    content_ids.should_not include 'Knitting'
+    content_ids.should_not include @article_ids[5].to_s
+  end
+
   it "should modify a collection's name and summary" do
     id = CollectionFlowHelper.collection['id']
     modified_name = 'modified name'
@@ -430,7 +478,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
       raise StandardError.new(e.message+" "+url)
     end
     data = JSON.parse response
-    data['flags'].include?('recommendations-disabled').should be_true
+    data['flags'].should include 'recommendations-disabled'
   end
 
   it "should remove the 'recommendations-disabled' flag" do
@@ -450,7 +498,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
       raise StandardError.new(e.message+" "+url)
     end
     data = JSON.parse response
-    data['flags'].include?('recommendations-disabled').should be_false
+    data['flags'].should_not include 'recommendations-disabled'
   end
 
   it 'should prevent others from adding an article to a collection you created' do
@@ -472,7 +520,7 @@ describe "COLLECTIONS - CRUD Collections", :collections => true, :crud => true d
     data['tiles'].each do |tile|
       articles << tile['contentId']
     end
-    articles.include?(article.to_s).should be_false
+    articles.should_not include article.to_s
   end
 
   it 'should return true when asked if a colleciton with this name exists after name change' do
