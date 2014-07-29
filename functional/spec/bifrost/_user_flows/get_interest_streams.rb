@@ -100,7 +100,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     less_than_30_articles.should == []
   end
 
-  it "should return at least two articles for each news interest (FAILS IN PRODUCTION RVB-6619)" do
+  it "should return at least two articles for each news interest" do
     blank_tiles = []
     not_recent = []
     Interests_Helper.global.each do |interest|
@@ -132,7 +132,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     # curretly returns 1700 in prod and 1900 in stage
   end
 
-  it 'should sort news interest streams by publish date', :fails => true do
+  it 'should sort news interest streams by publish date' do
     interest_streams_checked = 0
     Interests_Helper.news_interest_stream_tiles.each do |news_tiles|
       tiles = []
