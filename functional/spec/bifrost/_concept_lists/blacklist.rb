@@ -67,7 +67,7 @@ describe "CONCEPT LISTS - Black-listed Concepts", :concept_lists => true do
       begin
         me_tiles_response = RestClient.get me_tiles_url, @headers
       rescue => e
-        raise StandardError.new(e.message+":\n"+url)
+        raise StandardError.new(e.message+":\n"+me_tiles_url)
       end
       me_tiles = JSON.parse me_tiles_response
 
@@ -86,7 +86,7 @@ describe "CONCEPT LISTS - Black-listed Concepts", :concept_lists => true do
     begin
       me_interests_response = RestClient.get me_interests_url, @headers
     rescue => e
-      raise StandardError.new(e.message+":\n"+url)
+      raise StandardError.new(e.message+":\n"+me_interests_url)
     end
     me_interests = JSON.parse me_interests_response
     me_inferred_concepts = []
