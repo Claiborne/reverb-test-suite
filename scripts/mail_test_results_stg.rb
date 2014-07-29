@@ -12,12 +12,12 @@ file.each {|line|
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = ["qa@helloreverb.com","marco@helloreverb.com"]
+TO_EMAIL = ["qa@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
 To: QA <#{TO_EMAIL}>
-Subject: #{name.capitalize} Results in Production
+Subject: #{name.capitalize} Results in Stage
 #{contents}
 END_OF_MESSAGE
 
