@@ -41,6 +41,7 @@ module ArticleDupChecker
     end
 
     def are_duplicates_or_near_duplicates(data1, data2, closeness = MAX_CLOSENESS)
+      return false if data1['contentId'] == data2['contentId']
       jaccard_similarity(data_to_set(data1), data_to_set(data2)) >= closeness
     end
     
