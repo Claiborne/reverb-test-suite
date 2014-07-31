@@ -113,6 +113,17 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
         raise StandardError.new(e.message+":\n"+url)
       end
       data = JSON.parse response
+=begin This tests new wordwall ranking
+      article_count = 0
+      publish_dates = []
+      next if data['tiles'].count < 1
+      data['tiles'].each do |tile|
+        publish_dates << Time.parse(tile['publishDate']).to_i
+        article_count+= 1
+        break if article_count >= 8
+      end
+      puts "#{(publish_dates.inject{|sum,x| sum + x })/publish_dates.length}"
+=end
       Interests_Helper.news_interest_stream_tiles_count += data['tiles'].length
       blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 2
       Interests_Helper.news_interest_stream_tiles << data['tiles'] if data['tiles']
