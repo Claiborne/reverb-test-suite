@@ -127,8 +127,8 @@ shared_examples 'Shared failed' do
     end
   end
 
-  it 'should not recieve these notifications: correlated, parsed, filtered' do
-    %w(correlated parsed filtered).each do |notification_name|
+  it 'should not recieve these notifications: correlated, parsed, filtered, docFilterOkay, docDedupOkay, mediaExtractionOkay, topicExtractionOkay, nlpPipelineOkay, conceptExtractionOkay' do
+    %w(correlated parsed filtered docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay nlpPipelineOkay conceptExtractionOkay).each do |notification_name|
       notification = extractNotification @odin_notifications, notification_name
       notification.should be_nil
     end
@@ -137,7 +137,7 @@ end
 
 shared_examples 'Shared standard success' do
 
-  %w(docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay conceptExtractionOkay).each do |notification_name|
+  %w(docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay nlpPipelineOkay conceptExtractionOkay).each do |notification_name|
     it "should recieve a #{notification_name} notification" do
       @timeout.times do 
         notification = extractNotification @odin_notifications, notification_name
@@ -162,7 +162,7 @@ shared_examples 'Shared standard success' do
     end
   end
 
-  %w(docDedupOkay mediaExtractionOkay topicExtractionOkay conceptExtractionOkay).each do |notification_name|
+  %w(docDedupOkay mediaExtractionOkay topicExtractionOkay nlpPipelineOkay conceptExtractionOkay).each do |notification_name|
     it "should return a #{notification_name}.value of true" do
       notification = extractNotification @odin_notifications, notification_name
       notification[notification_name]['value'].should == true
