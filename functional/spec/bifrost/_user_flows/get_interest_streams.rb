@@ -8,7 +8,7 @@ require 'time'
 
 include Token
 
-describe "USER FLOWS - Get Trending Interests For an Anon User" do
+describe "USER FLOWS - Get Trending Interests For an Anon User", :test => true do
   class Interests_Helper
     @me = []; @global = []; @news_interest_stream_tiles_count = 0; @news_interest_stream_tiles = []
     class << self; attr_accessor :me, :global, :news_interest_stream_tiles_count, :news_interest_stream_tiles; end
@@ -27,7 +27,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
   end
 
   it 'should return 24 me topics' do
-    url = @bifrost_env+"/trending/interests/me?skip=0&limit=100&api_key="+@session_token
+    url = @bifrost_env+"/trending/interests/me?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -39,7 +39,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
   end
 
   it 'should return at least 175 news interests', :strict => true do
-    url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
+    url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
     rescue => e
@@ -49,19 +49,6 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest'}
     interests.count.should > 174
     Interests_Helper.global.length.should > 174
-  end
-
-  it 'should return at least 100 news interests' do
-    url = @bifrost_env+"/trending/interests/global?limit=500&api_key="+@session_token
-    begin
-      response = RestClient.get url, @headers
-    rescue => e
-      raise StandardError.new(e.message+":\n"+url)
-    end
-    interests = (JSON.parse response)['interests']
-    interests.each {|i| Interests_Helper.global << i['value'] if i['interestType'] == 'interest'} 
-    interests.count.should > 99
-    Interests_Helper.global.length.should > 99
   end
 
   it "should return 24 articles for each me topic", :strict => true do
@@ -154,6 +141,12 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
       tiles.should == tiles.sort { |x,y| y <=> x }
     end
     interest_streams_checked.should > 450
+  end
+
+  it 'should return the first article in the first new interest with a publishDate no older than 2 hours old' do
+    first_article = Time.parse(Interests_Helper.news_interest_stream_tiles[0][0]['publishDate']).to_i
+    time_difference = Time.now.utc.to_i - first_article
+    time_difference.should < 60*60*2
   end
 end
 
