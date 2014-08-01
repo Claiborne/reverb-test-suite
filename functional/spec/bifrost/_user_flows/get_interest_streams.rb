@@ -38,7 +38,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     Interests_Helper.me.length.should == 24
   end
 
-  it 'should return at least 175 news interests', :strict => true do
+  it 'should return at least 175 news interests' do
     url = @bifrost_env+"/trending/interests/global?skip=0&api_key="+@session_token
     begin
       response = RestClient.get url, @headers
@@ -51,7 +51,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     Interests_Helper.global.length.should > 174
   end
 
-  it "should return 24 articles for each me topic", :strict => true do
+  it "should return 24 articles for each me topic" do
     errors = []
     Interests_Helper.me.each do |interest|
       url = @bifrost_env+"/interests/stream/me?interest=#{CGI::escape interest}&skip=0&limit=24&api_key="+@session_token
