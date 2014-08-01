@@ -8,7 +8,7 @@ require 'time'
 
 include Token
 
-describe "USER FLOWS - Get Trending Interests For an Anon User", :test => true do
+describe "USER FLOWS - Get Trending Interests For an Anon User" do
   class Interests_Helper
     @me = []; @global = []; @news_interest_stream_tiles_count = 0; @news_interest_stream_tiles = []
     class << self; attr_accessor :me, :global, :news_interest_stream_tiles_count, :news_interest_stream_tiles; end
@@ -113,7 +113,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User", :test => true d
 =end
       Interests_Helper.news_interest_stream_tiles_count += data['tiles'].length
       blank_tiles << interest+" (#{data['tiles'].length})" if data['tiles'].length < 2
-      Interests_Helper.news_interest_stream_tiles << data['tiles'] if data['tiles']
+      Interests_Helper.news_interest_stream_tiles << data['tiles'] if data['tiles'].length > 0
     end
 
     if blank_tiles.count < 1
