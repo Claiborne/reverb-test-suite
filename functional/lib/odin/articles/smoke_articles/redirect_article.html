@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <h1>Redirect Article</h1>
+      <div>
+        <p>
+Although the layout in Listing 5.1 serves its purpose, it’s getting a little cluttered. The HTML shim takes up three lines and uses weird IE-specific syntax, so it would be nice to tuck it away somewhere on its own. In addition, the header HTML forms a logical unit, so it should all be packaged up in one place. The way to achieve this in Rails is to use a facility called partials. Let’s first take a look at what the layout looks like after the partials are defined (Listing 5.9).
+After you’ve assembled your assets, Rails prepares them for the site template by running them through several preprocessing engines and using the manifest files to combine them for delivery to the browser. We tell Rails which processor to use using filename extensions; the three most common cases are .scss for Sass, .coffee for CoffeeScript, and .erb for embedded Ruby (ERb). We first covered ERb in Section 3.3.3, and cover Sass in Section 5.2.2. We won’t be needing CoffeeScript in this tutorial, but it’s an elegant little language that compiles to JavaScript. (The RailsCast on CoffeeScript basics is a good place to start.)
+As noted briefly in Section 5.1.2, Sass supports a format called SCSS (indicated with a .scss filename extension), which is a strict superset of CSS itself; that is, SCSS only adds features to CSS, rather than defining an entirely new syntax.9 This means that every valid CSS file is also a valid SCSS file, which is convenient for projects with existing style rules. In our case, we used SCSS from the start in order to take advantage of Bootstrap. Since the Rails asset pipeline automatically uses Sass to process files with the .scss extension, the custom.css.scss file will be run through the Sass preprocessor before being packaged up for delivery to the browser.Because variable names such as $lightGray are more descriptive than #999, it’s often useful to define variables even for values that aren’t repeated. Indeed, the Bootstrap framework defines a large number of variables for colors, available online on the Bootstrap page of LESS variables. That page defines variables using LESS, not Sass, but the bootstrap-sass gem provides the Sass equivalents. It is not difficult to guess the correspondence; where LESS uses an “at” sign, Sass uses a dollar sign $. Looking the Bootstrap variable page, we see that there is a variable for light gray.
+        </p>
+      </div>
+  </body>
+</html>
