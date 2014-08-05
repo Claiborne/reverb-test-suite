@@ -143,7 +143,7 @@ describe "USER FLOWS - Get Trending Interests For an Anon User" do
     interest_streams_checked.should > 450
   end
 
-  it 'should return the first article in the first new interest with a publishDate no older than 2 hours old' do
+  it 'should return the first article in the first news interest with a publishDate no older than 2 hours old' do
     first_article = Time.parse(Interests_Helper.news_interest_stream_tiles[0][0]['publishDate']).to_i
     time_difference = Time.now.utc.to_i - first_article
     time_difference.should < 60*60*2
