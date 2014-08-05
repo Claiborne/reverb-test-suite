@@ -80,6 +80,26 @@ shared_examples 'Shared filtered' do
   end
 end
 
+shared_examples 'Shared filtered without correlated and parsed' do
+
+  %w(filtered).each do |notification_name|
+    it "should recieve a #{notification_name} notification" do
+      @timeout.times do 
+        notification = extractNotification @odin_notifications, notification_name
+        begin
+          notification.should be_true
+          break
+        rescue
+          sleep 1
+          $counter += 1
+          notification.should be_true if $counter >= @timeout
+          next
+        end 
+      end # end timeout iteration
+    end
+  end
+end
+
 shared_examples 'Shared filtered with docFilterOkay' do
 
   %w(filtered docFilterOkay).each do |notification_name|

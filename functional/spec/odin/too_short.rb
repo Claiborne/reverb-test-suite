@@ -52,7 +52,7 @@ describe "Article ingestion - doc less than 500 characters" do
 
   it "should be filtered due to text length" do
     filtered_notification = extractNotification @odin_notifications, 'filtered'
-    filtered_notification['filtered']['reasons'][0]['rule']['name'].should == "TextLength"
+    filtered_notification['filtered']['reasons'][0]['rule']['name'].should == 'TextLength'
   end
 
   include_examples 'Shared all'

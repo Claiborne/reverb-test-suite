@@ -7,15 +7,17 @@ require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
 path_to_urls = File.dirname(__FILE__)+"/../../lib/odin/standard_fail.txt"
-standard_success_urls =  []
+standard_fail_urls =  []
 
 File.open(path_to_urls, "r") do |f|
   f.each_line do |line|
-    standard_success_urls << line.strip
+    standard_fail_urls << line.strip
   end
 end
 
-standard_success_urls.each do |url|
+raise RuntimeError, "No standard fail URLs" if standard_fail_urls.length == 0
+
+standard_fail_urls.each do |url|
 describe "Article ingestion - successes", :standard_fail => true do
 
   before(:all) do
