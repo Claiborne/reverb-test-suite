@@ -91,7 +91,7 @@ TO_EMAIL = ["caitlin@helloreverb.com","wclaiborne@helloreverb.com"]
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA <#{FROM_EMAIL}>
 To: Caitlin <#{TO_EMAIL}>
-Subject: Bad Articles After Deletion Script
+Subject: Deleted Articles from Deletion Script
 #{output}
 END_OF_MESSAGE
 
