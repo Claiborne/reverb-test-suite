@@ -11,7 +11,7 @@ contents << "The last tier one article showing in the following app:\n"
 contents << "\n"
 
 %w(api.helloreverb.com basil-api.helloreverb.com anise-api.helloreverb.com 
-thyme-api.helloreverb.com nutmeg-api.helloreverb.com).each do |bifrost_env|
+thyme-api.helloreverb.com).each do |bifrost_env|
 
   token = get_anon_token "#{bifrost_env}/v2"
   url = "https://"+bifrost_env+"/v2/trending/tiles/global?skip=0&limit=24&api_key="+token
