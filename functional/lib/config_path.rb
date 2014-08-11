@@ -9,10 +9,10 @@ class ConfigPath
 
   def initialize
     raise ConfigurationException, "Missing configuration file" unless File.exists?(@@config_path)
-    environment = ENV['env']
+    environment = ENV['env'] || ARGV[0]
     configs = YAML.load_file(@@config_path)
     @options = configs[environment]
-    raise "No base URL for '#{ENV['env']}' is defined in the test's YML file" unless @options && @options['baseurl']
+    raise "Please indicate either env= or an ARGV[0]; e.g, 'rake task env=dev' or 'ruby spec.rb dev'" unless @options
     
     case environment
     when 'stg'
