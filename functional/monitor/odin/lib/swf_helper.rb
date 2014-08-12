@@ -91,23 +91,28 @@ module SWFHelper
     end
   end
 
-  def get_failure_breakdown
-    next_page_token = nil
-    failed_workflows = []
-    response = @swf.list_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}
-    response.data['executionInfos'].each do |info|
-      failed_workflows << {:wid => info['execution']['workflowId'], :rid => info['execution']['runId']} if info['closeStatus'] == 'FAILED'
-    end
-    response.data['nextPagetoken']
-    next_page_token = response.data['nextPageToken']
+  def get_failures_details
+    failed_workflows = get_failures
 
-    until next_page_token.nil? 
-      response = @swf.list_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}, :next_page_token => next_page_token
-      response.data['executionInfos'].each do |info|
-        failed_workflows << {:wid => info['execution']['workflowId'], :rid => info['execution']['runId']} if info['closeStatus'] == 'FAILED'
-      end
-      next_page_token = response.data['nextPageToken']
-    end
+    failed_workflows.each do |s|
+      wid = s[:wid]
+      rid = s[:rid]
+
+      closed_workflow_options = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
+      response = @swf.get_workflow_execution_history closed_workflow_options
+
+      response.data['events'].each do |event|
+        if event['eventType'] == 'WorkflowExecutionFailed' && Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/expand to a 2xx statuscode/)
+          uri_info = response.data['events'][0]['workflowExecutionStartedEventAttributes']['input']
+          uri = (eval uri_info.gsub("\":\"","\"=>\""))['url']
+          puts uri
+        end
+      end # end response.data['events'].each
+    end # end failed_workflows.each do
+  end # end method
+
+  def get_failure_breakdown
+    failed_workflows = get_failures
 
     failures = []
 
@@ -120,7 +125,13 @@ module SWFHelper
 
       response.data['events'].each do |event|
         if event['eventType'] == 'WorkflowExecutionFailed'
-          failures << Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/errorMessage.{1,}/).to_s
+          failed_details = Base64.decode64(event['workflowExecutionFailedEventAttributes']['details'])
+          failed_details_cropped = failed_details.match(/errorMessage.{1,}/).to_s
+          if failed_details_cropped.length > 0
+            failures << failed_details_cropped
+          else
+            failures << "No 'errorMessage' string found in workflowExecutionFailedEventAttributes.details"
+          end
         end
       end
     end
@@ -144,4 +155,27 @@ module SWFHelper
     response = @swf.get_workflow_execution_history opts
     #File.open('/Users/wclaiborne/Desktop/something.json', 'w') { |file| file.write(response.data.to_json) }
   end
+
+  private
+
+    def get_failures
+      next_page_token = nil
+      failed_workflows = []
+      response = @swf.list_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}
+      response.data['executionInfos'].each do |info|
+        failed_workflows << {:wid => info['execution']['workflowId'], :rid => info['execution']['runId']} if info['closeStatus'] == 'FAILED'
+      end
+      response.data['nextPagetoken']
+      next_page_token = response.data['nextPageToken']
+
+      until next_page_token.nil? 
+        response = @swf.list_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}, :next_page_token => next_page_token
+        response.data['executionInfos'].each do |info|
+          failed_workflows << {:wid => info['execution']['workflowId'], :rid => info['execution']['runId']} if info['closeStatus'] == 'FAILED'
+        end
+        next_page_token = response.data['nextPageToken']
+      end
+      failed_workflows
+    end
+  # end private methods
 end
