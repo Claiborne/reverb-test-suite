@@ -91,26 +91,6 @@ module SWFHelper
     end
   end
 
-  def get_failures_details
-    failed_workflows = get_failures
-
-    failed_workflows.each do |s|
-      wid = s[:wid]
-      rid = s[:rid]
-
-      closed_workflow_options = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
-      response = @swf.get_workflow_execution_history closed_workflow_options
-
-      response.data['events'].each do |event|
-        if event['eventType'] == 'WorkflowExecutionFailed' && Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/expand to a 2xx statuscode/)
-          uri_info = response.data['events'][0]['workflowExecutionStartedEventAttributes']['input']
-          uri = (eval uri_info.gsub("\":\"","\"=>\""))['url']
-          puts uri
-        end
-      end # end response.data['events'].each
-    end # end failed_workflows.each do
-  end # end method
-
   def get_failure_breakdown
     failed_workflows = get_failures
 
@@ -155,6 +135,26 @@ module SWFHelper
     response = @swf.get_workflow_execution_history opts
     #File.open('/Users/wclaiborne/Desktop/something.json', 'w') { |file| file.write(response.data.to_json) }
   end
+
+  def get_uri_expand_failure_details
+    failed_workflows = get_failures
+
+    failed_workflows.each do |s|
+      wid = s[:wid]
+      rid = s[:rid]
+
+      closed_workflow_options = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
+      response = @swf.get_workflow_execution_history closed_workflow_options
+
+      response.data['events'].each do |event|
+        if event['eventType'] == 'WorkflowExecutionFailed' && Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/expand to a 2xx statuscode/)
+          uri_info = response.data['events'][0]['workflowExecutionStartedEventAttributes']['input']
+          uri = (eval uri_info.gsub("\":\"","\"=>\""))['url']
+          puts uri
+        end
+      end # end response.data['events'].each
+    end # end failed_workflows.each do
+  end # end method
 
   private
 

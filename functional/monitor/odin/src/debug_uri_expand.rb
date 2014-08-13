@@ -7,4 +7,4 @@ require 'swf_helper'; include SWFHelper
 
 set_up
 
-get_failures_details
+get_uri_expand_failure_details
