@@ -6,7 +6,7 @@ require 'swf_helper'; include SWFHelper
 
 set_up
 
-puts "\nThe following data is from the past #@hours hours".cyan
+puts "\nThe following data is from the past #@hours hours in #{ARGV[0]}".cyan
 
 puts "\nClosed Worflows Count".green
 get_count_closed_workflows.each do |i|
