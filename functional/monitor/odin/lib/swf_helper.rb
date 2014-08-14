@@ -130,12 +130,6 @@ module SWFHelper
 
   end
 
-  def get_a_spcific_workflow(wid, rid)
-    opts = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
-    response = @swf.get_workflow_execution_history opts
-    #File.open('/Users/wclaiborne/Desktop/something.json', 'w') { |file| file.write(response.data.to_json) }
-  end
-
   def get_uri_expand_failure_details
     failed_workflows = get_failures
 
@@ -155,6 +149,12 @@ module SWFHelper
       end # end response.data['events'].each
     end # end failed_workflows.each do
   end # end method
+
+  def get_a_spcific_workflow(wid, rid)
+    opts = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
+    response = @swf.get_workflow_execution_history opts
+    #File.open('/Users/wclaiborne/Desktop/something.json', 'w') { |file| file.write(response.data.to_json) }
+  end
 
   private
 
