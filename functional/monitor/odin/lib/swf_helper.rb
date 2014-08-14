@@ -160,7 +160,7 @@ module SWFHelper
         failed_workflow.data['events'].each do |event|
           if event['eventType'] == 'WorkflowExecutionFailed'
             if Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(fail_msg)
-              puts Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(fail_msg)
+              puts Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/errorMessage.{1,}/).to_s
               puts info['execution']['workflowId']
               puts "ENCODED: ".green
               puts event['workflowExecutionFailedEventAttributes']['details']
@@ -181,7 +181,7 @@ module SWFHelper
           failed_workflow.data['events'].each do |event|
             if event['eventType'] == 'WorkflowExecutionFailed'
               if Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(fail_msg)
-                puts Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(fail_msg)
+                puts Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/errorMessage.{1,}/).to_s
                 puts info['execution']['workflowId']
                 puts "ENCODED: ".green
                 puts event['workflowExecutionFailedEventAttributes']['details']
