@@ -7,7 +7,7 @@ require 'net/smtp'
 contents = ""
 contents << Time.now.to_s+"\n"
 contents << "\n"
-contents << "The last tier one article showing in the following app:\n"
+contents << "The last several tier-one articles showing in the following apps:\n"
 contents << "\n"
 
 %w(api.helloreverb.com basil-api.helloreverb.com thyme-api.helloreverb.com).each do |bifrost_env|
@@ -20,10 +20,16 @@ contents << "\n"
   rescue => e
     raise StandardError.new(e.message+":\n"+url)
   end
+  description = "#{bifrost_env} "
   news_tiles = JSON.parse r
-  first_article_publish_date = Time.parse(news_tiles['tiles'][0]['publishDate']).to_i
-  time_difference_in_hours = (Time.now.utc.to_i - first_article_publish_date)/(60*60)
-  contents << "#{bifrost_env} #{time_difference_in_hours} hours ago\n"
+  (0..10).each do |i|
+    next unless news_tiles['tiles'][i]['publishDate']
+    puts news_tiles['tiles'][i]['publishDate']
+    first_article_publish_date = Time.parse(news_tiles['tiles'][i]['publishDate']).to_i
+    time_difference_in_hours = (Time.now.utc.to_i - first_article_publish_date)/(60*60)
+    description << "#{time_difference_in_hours} " 
+  end
+  contents << description+"hours ago\n"
 end
 
 begin
@@ -38,6 +44,7 @@ end
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
 TO_EMAIL = ["qa@helloreverb.com", "caitlin@helloreverb.com", "marco@helloreverb.com"]
+
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA (Do not reply) <#{FROM_EMAIL}>
