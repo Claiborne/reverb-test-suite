@@ -24,7 +24,6 @@ contents << "\n"
   news_tiles = JSON.parse r
   (0..10).each do |i|
     next unless news_tiles['tiles'][i]['publishDate']
-    puts news_tiles['tiles'][i]['publishDate']
     first_article_publish_date = Time.parse(news_tiles['tiles'][i]['publishDate']).to_i
     time_difference_in_hours = (Time.now.utc.to_i - first_article_publish_date)/(60*60)
     description << "#{time_difference_in_hours} " 
