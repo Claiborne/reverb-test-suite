@@ -18,14 +18,14 @@ end
 raise RuntimeError, "No standard fail URLs" if standard_fail_urls.length == 0
 
 standard_fail_urls.each do |url|
-describe "Article ingestion - successes", :standard_fail => true do
+describe "Article ingestion - failures", :standard_fail => true do
 
   before(:all) do
 
     tunnnel_odin_dev
 
     $counter = 0
-    @timeout = 60
+    @timeout = 15
 
     # correlated, parsed, docFilterOkay, docDedupOkay
     # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay
