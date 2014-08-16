@@ -56,6 +56,26 @@ module SWFHelper
     response.data
   end
 
+  def get_pending_workflow_executions
+    tasks = []
+    pending_tasks = {:activities => 0, :decisions => 0}
+    activity_types = @swf.list_activity_types :domain => @domain, :registration_status => 'REGISTERED'
+    activity_types.data['typeInfos'].each do |info|
+      tasks << info['activityType']['name']
+    end
+    tasks.each do |task_list|
+
+      opts = {:domain => @domain, :task_list => {:name => task_list}}
+
+      response = @swf.count_pending_activity_tasks opts
+      pending_tasks[:activities]+= response.data['count']
+
+      response = @swf.count_pending_decision_tasks opts
+      pending_tasks[:decisions]+= response.data['count']
+    end
+    pending_tasks
+  end
+
   def debug_get_count_open_workflow_executions
     puts "\n"
     open = []
@@ -71,7 +91,6 @@ module SWFHelper
     puts "DEBUG: Breakdown of Open Workflows".yellow
     puts counts
 
-    # Call this if debug_get_count_open_workflow_executions returns a lot of stuff that you need to see a breakdown of
     tasks = []
     activity_types = @swf.list_activity_types :domain => @domain, :registration_status => 'REGISTERED'
     activity_types.data['typeInfos'].each do |info|
@@ -160,7 +179,7 @@ module SWFHelper
         failed_workflow.data['events'].each do |event|
           if event['eventType'] == 'WorkflowExecutionFailed'
             if Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(fail_msg)
-              puts Base64.decode64(event['workflowExecutionFailedEventAttributes']['details']).match(/errorMessage.{1,}/).to_s
+              puts Base64.decode64(event['workflowExecutionFailedEventAttributes']['details'])
               puts info['execution']['workflowId']
               puts "ENCODED: ".green
               puts event['workflowExecutionFailedEventAttributes']['details']
@@ -194,7 +213,6 @@ module SWFHelper
       next_page_token = response.data['nextPageToken']
     end # end until
   end # end method
-
 
   private
 
