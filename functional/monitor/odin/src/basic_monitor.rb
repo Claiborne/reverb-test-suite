@@ -66,8 +66,8 @@ msg = "There were #{current_open_workflows} open workflows\n"
 warning_contents << msg if current_open_workflows > CURRENT_OPEN_WORKFLOWS_COUNT_THRESHOLD
 
 pending_workflows = get_pending_workflow_executions
-pending_decisions = pending_workflows[:decisions]+2
-pending_activities = pending_workflows[:activities]+2
+pending_decisions = pending_workflows[:decisions]
+pending_activities = pending_workflows[:activities]
 msg = "There were #{pending_decisions} total pending decisions\n"
 warning_contents << msg if pending_decisions > TOTAL_PENDING_DECISION_TASKS_THRESHOLD
 msg = "There were #{pending_activities} total pending activities\n"
