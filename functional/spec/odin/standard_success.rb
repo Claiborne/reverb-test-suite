@@ -25,7 +25,7 @@ describe "Article ingestion - successes", :standard_success => true do
     tunnnel_odin_dev
 
     $counter = 0
-    @timeout = 15
+    @timeout = 60*3
 
     # correlated, parsed, docFilterOkay, docDedupOkay
     # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay

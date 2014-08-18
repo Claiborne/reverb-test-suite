@@ -13,7 +13,7 @@ describe "Article ingestion - 404 doc" do
     tunnnel_odin_dev
 
     $counter = 0
-    @timeout = 60
+    @timeout = 60*3
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'http://www.ign.com/404'
