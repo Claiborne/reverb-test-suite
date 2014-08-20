@@ -12,7 +12,7 @@ class ConfigPath
     environment = ENV['env'] || ARGV[0]
     configs = YAML.load_file(@@config_path)
     @options = configs[environment]
-    raise "Please indicate either env= or an ARGV[0]; e.g, 'rake task env=dev' or 'ruby spec.rb dev'" unless @options
+    raise "Please indicate either env= or an ARGV[0]; e.g, 'rake task env=dev' or 'ruby spec.rb dev' with a known evnironment in the spec's config yml" unless @options
     
     case environment
     when 'stg'
