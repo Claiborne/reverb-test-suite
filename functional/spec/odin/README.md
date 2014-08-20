@@ -8,7 +8,7 @@ Odin Functional and Acceptance Test Suite
 sudo gem install rspec -v 2.14.0
 ```
 ```
-sudo gem install rake bunny colorize json json_pure --no-rdoc --no-ri
+sudo gem install rake bunny colorize rest-client json_pure --no-rdoc --no-ri
 ```
 
 ## How to run

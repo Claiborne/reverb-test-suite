@@ -7,16 +7,17 @@ This framework will be the entry point for writing and running high-level test a
 Below are the required software and gems you need to install to run this framework. (Note: This framework has not yet been set up for iOS UI test automation; more about that to come shortly)
 
 ### Ruby
-All tests are developed in Ruby (version 2.0.0-p247). Highly recommended using RVM to install Ruby and manage Gemsets http://www.rvm.io/
+All tests are developed in Ruby (versions 2.0.0-p247 through 2.1.1 are supported). Highly recommended using RVM to install Ruby and manage Gemsets http://www.rvm.io/
 
 ### Ruby Gems
-- rspec (the test framework all tests are developed in https://www.relishapp.com/rspec)
+- rspec version 2.14.0 (the test framework all tests are developed in https://www.relishapp.com/rspec)
 - json_pure (a json parser, mainly used to parse APIs)
 - nokogiri (an HTML parser, maoinly used to parse webpages that don't require javascript testing)
 - rake (used to run tests)
 - rest-client (an HTTP client)
 - selenium-webdriver (browser automation tool http://docs.seleniumhq.org/projects/webdriver/)
 - colorize (easy way to make console output colorful, e.g.: "hello world".green)
+- bunny (for RabbitMQ)
 
 ### Git
 How to set up Github on a Mac - http://help.github.com/mac-set-up-git/
