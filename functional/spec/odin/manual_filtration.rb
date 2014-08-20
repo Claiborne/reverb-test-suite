@@ -16,7 +16,6 @@ File.open(path_to_urls, "r") do |f|
 end
 =end
 
-
 filtered_urls = ['http://www.christianitytoday.com/ct/2014/july-august/craftsmanship-manual-labor.html',
 'http://blogs.christianpost.com/already-am/10-reasons-daddys-should-date-their-daughters-22342/']
 
@@ -27,8 +26,8 @@ describe "Article ingestion - manually filtered docs" do
 
   before(:all) do
 
-    tunnnel_odin_dev
-
+    tunnnel_odin_bunny
+    
     $counter = 0
     @timeout = 60*3
 

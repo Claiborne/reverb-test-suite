@@ -22,8 +22,8 @@ describe "Article ingestion - failures", :standard_fail => true do
 
   before(:all) do
 
-    tunnnel_odin_dev
-
+    tunnnel_odin_bunny
+    
     $counter = 0
     @timeout = 60*3
 
