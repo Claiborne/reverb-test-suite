@@ -1,15 +1,19 @@
 Odin Functional and Acceptance Test Suite
 =================
 
-
 ## How to run
 
-Normal run:
+Run against dev:
 ```
-rake odin SPEC_OPTS='--tag ~debug'
+rake odin env=dev
 ```
 
-Debug run:
+Run against local:
 ```
-rake odin
+rake odin env=local
+```
+
+Without debug output:
+```
+SPEC_OPTS='--tag ~debug'
 ```
