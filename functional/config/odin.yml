@@ -1,0 +1,5 @@
+local:
+  baseurl: localhost
+
+dev:
+  baseurl: 54.219.250.54
