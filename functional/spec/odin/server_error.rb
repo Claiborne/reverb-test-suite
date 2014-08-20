@@ -10,8 +10,8 @@ describe "Article ingestion - 500 doc" do
 
   before(:all) do
 
-    tunnnel_odin_dev
-
+    tunnnel_odin_bunny
+    
     $counter = 0
     @timeout = 60*3
 
