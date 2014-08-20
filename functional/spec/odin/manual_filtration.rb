@@ -1,20 +1,13 @@
 require 'bunny'
 require 'json'
 require 'pp'
+require 'rest_client'
 require 'rspec'
+require 'colorize'
 require 'securerandom'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-#path_to_urls = File.dirname(__FILE__)+"/../../lib/odin/standard_fail.txt"
-#filtered_urls =  []
-=begin
-File.open(path_to_urls, "r") do |f|
-  f.each_line do |line|
-    filtered_urls << line.strip
-  end
-end
-=end
 
 filtered_urls = ['http://www.christianitytoday.com/ct/2014/july-august/craftsmanship-manual-labor.html',
 'http://blogs.christianpost.com/already-am/10-reasons-daddys-should-date-their-daughters-22342/']
@@ -22,9 +15,21 @@ filtered_urls = ['http://www.christianitytoday.com/ct/2014/july-august/craftsman
 raise RuntimeError, "No filtered URLs" if filtered_urls.length == 0
 
 filtered_urls.each do |url|
-describe "Article ingestion - manually filtered docs" do
+describe "Article ingestion - block list", :block_list => true do
 
   before(:all) do
+
+    tunnnel_odin
+
+    begin
+      # Block an exact domain
+      RestClient.post "http://localhost:8013/api/filtration/insert", {"domain"=>"domain://www.christianitytoday.com","source"=>"Other","filtrationType"=>"ExactDomain", "message"=>""}.to_json, :content_type => :json, :accept => :json
+      # Block a sub domain
+      RestClient.post "http://localhost:8013/api/filtration/insert", {"domain"=>"domain://blogs.christianpost.com","source"=>"Other","filtrationType"=>"SubDomain", "message"=>""}.to_json, :content_type => :json, :accept => :json
+      sleep 10 
+    rescue => e
+      puts "WARNING: An error occured when trying to use the filtration/insert endpoint: #{e.message}".yellow
+    end
 
     tunnnel_odin_bunny
     
