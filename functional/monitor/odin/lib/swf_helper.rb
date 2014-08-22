@@ -142,11 +142,12 @@ module SWFHelper
 
     #f = '/home/wclaiborne/temp/r.txt'
     #File.open(f, 'w') { |file| file.write(counts) }
-
+    fail_data = ''
     counts.each do |c|
       puts c
+      fail_data << c.to_s+"\n"
     end
-
+    fail_data
   end
 
   def get_uri_expand_failure_details
