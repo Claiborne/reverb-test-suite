@@ -23,9 +23,9 @@ describe "Article ingestion - block list", :block_list => true do
 
     begin
       # Block an exact domain
-      RestClient.post "http://localhost:8013/api/filtration/insert", {"domain"=>"domain://www.christianitytoday.com","source"=>"Other","filtrationType"=>"ExactDomain", "message"=>""}.to_json, :content_type => :json, :accept => :json
+      RestClient.post "http://localhost:8080/api/filtration/insert", {"domain"=>"domain://www.christianitytoday.com","source"=>"Other","filtrationType"=>"ExactDomain", "message"=>""}.to_json, :content_type => :json, :accept => :json
       # Block a sub domain
-      RestClient.post "http://localhost:8013/api/filtration/insert", {"domain"=>"domain://blogs.christianpost.com","source"=>"Other","filtrationType"=>"SubDomain", "message"=>""}.to_json, :content_type => :json, :accept => :json
+      RestClient.post "http://localhost:8080/api/filtration/insert", {"domain"=>"domain://blogs.christianpost.com","source"=>"Other","filtrationType"=>"SubDomain", "message"=>""}.to_json, :content_type => :json, :accept => :json
       sleep 10 
     rescue => e
       puts "WARNING: An error occured when trying to use the filtration/insert endpoint: #{e.message}".yellow

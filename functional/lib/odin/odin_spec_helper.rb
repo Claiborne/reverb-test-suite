@@ -13,7 +13,7 @@ module OdinSpecHelper
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/odin.yml"
     odin = "#{ConfigPath.new.options['baseurl']}"
     return if odin == 'localhost'
-    cmd = "ssh -f -N -L 8013:localhost:8000 #{odin}"
+    cmd = "ssh -f -N -L 8080:localhost:8000 #{odin}"
     ssh = `ps aux | grep ssh`
     system cmd unless ssh.match(cmd)
   end
