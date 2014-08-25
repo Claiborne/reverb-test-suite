@@ -19,7 +19,7 @@ puts "Total: #{get_count_open_workflow_executions['count']}"
 
 # Call the following method to see a breakdown of current open workflow counts
 # The puts are in the methods; no need to puts here
-#debug_get_count_open_workflow_executions
+debug_get_count_open_workflow_executions
 
 #puts "\nFailure Breakdown".green
 #get_failure_breakdown

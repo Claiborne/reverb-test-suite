@@ -88,7 +88,7 @@ module SWFHelper
     open.each do |i|
       counts[i] += 1
     end
-    puts "DEBUG: Breakdown of Open Workflows".yellow
+    puts "Breakdown of Open Workflows".green
     puts counts
 
     tasks = []
@@ -100,13 +100,15 @@ module SWFHelper
 
       opts = {:domain => @domain, :task_list => {:name => task_list}}
 
-      puts "DEBUG: Total Pending Activity Tasks for #{task_list}".yellow 
+      puts "Total Pending Activity Tasks for #{task_list}".green 
       response = @swf.count_pending_activity_tasks opts
-      puts response.data
+      puts response.data['count']
+      puts response.data['truncated'] if response.data['truncated'].to_s == 'true'
 
-      puts "DEBUG: Total Pending Decision Tasks for #{task_list}".yellow
+      puts "Total Pending Decision Tasks for #{task_list}".green
       response = @swf.count_pending_decision_tasks opts
-      puts response.data
+      puts response.data['count']
+      puts response.data['truncated'] if response.data['truncated'].to_s == 'true'
     end
   end
 
