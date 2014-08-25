@@ -1,8 +1,9 @@
 require 'rubygems'
 require 'rake'
+require 'colorize'
 require 'rspec/core/rake_task'
 
-ENV["env"] ||= 'stg'
+ENV["env"] ||= raise "\nYou must provide an env variable.\nFor example: $ rake odin env=dev\n\n".red
 
 desc "Run Bifrost tests"
 RSpec::Core::RakeTask.new('bifrost') do |t|
