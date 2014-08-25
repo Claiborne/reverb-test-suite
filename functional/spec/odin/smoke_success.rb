@@ -3,6 +3,7 @@ require 'json'
 require 'pp'
 require 'rspec'
 require 'securerandom'
+require 'rest_client'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
@@ -13,7 +14,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     tunnnel_odin_bunny
     
     $counter = 0
-    @timeout = 60*3
+    @timeout = 60
 
     # correlated, parsed, docFilterOkay, docDedupOkay
     # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay
@@ -61,7 +62,6 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     include_examples 'Debug'
 
   end
-
 end # end describe 
 
 # https://wordnik.jira.com/wiki/display/DEV/Integration+Test+Specification

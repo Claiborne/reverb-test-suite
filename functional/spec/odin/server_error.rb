@@ -13,7 +13,7 @@ describe "Article ingestion - 500 doc" do
     tunnnel_odin_bunny
     
     $counter = 0
-    @timeout = 60*3
+    @timeout = 60
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'https://stage-api.helloreverb.com/v2/trending/tiles/'
