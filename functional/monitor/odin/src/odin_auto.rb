@@ -34,7 +34,6 @@ contents << "\tTotal: #{get_count_open_workflow_executions['count']}\n\n"
 contents << "Failure Breakdown\n"
 contents << get_failure_breakdown
 
-
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
 TO_EMAIL = ["wclaiborne@helloreverb.com", "odin@helloreverb.com"]
