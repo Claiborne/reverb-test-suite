@@ -1,6 +1,10 @@
 require 'json'
 require 'colorize'
 
+# Chrome -> File -> Save page as -> metrics.json on your desktop
+# $ scripts
+# $ ruby print_bifrost_profile.rb metrics
+
 raise StandardError, "Need an ARGV[0] for name of .json file on your desktop" unless ARGV[0]
 file_name = ARGV[0]
 file = File.open("/Users/wclaiborne/Desktop/#{file_name}.json", "rb")
@@ -22,8 +26,6 @@ def interest_stream(t) begin; @contents['com.wordnik.bifrost.apis.InterestsApi']
 def interest_search(t) begin; @contents['com.wordnik.bifrost.apis.InterestsApi']['/interests/search']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
 def heimdall(t) begin; @contents['com.reverb.clients.heimdall.apis.AuthClient']['simpleTokenAuthentication']['duration'][t].to_s.match(/^\d{0,}/).to_s; rescue; 0; end; end
 
-
-
 puts 'News Wordwall'.yellow
 ['median','p75','p95'].each do |t|
   puts "\t#{news_wordwall(t)}".green+"\t#{t}"
@@ -40,22 +42,22 @@ puts 'Me Tiles'.yellow
 ['median','p75','p95'].each do |t|
   puts "\t#{me_tiles(t)}".green+"\t#{t}"
 end
-puts 'Article'.yellow
-['median','p75','p95'].each do |t|
-  puts "\t#{article(t)}".green+"\t#{t}"
-end
+#puts 'Article'.yellow
+#['median','p75','p95'].each do |t|
+  #puts "\t#{article(t)}".green+"\t#{t}"
+#end
 puts 'Aricle Recs'.yellow
 ['median','p75','p95'].each do |t|
   puts "\t#{article_recs(t)}".green+"\t#{t}"
 end
-puts 'Homescreen'.yellow
-['median','p75','p95'].each do |t|
-  puts "\t#{homescreen(t)}".green+"\t#{t}"
-end
-puts 'Chirp'.yellow
-['median','p75','p95'].each do |t|
-  puts "\t#{chirp(t)}".green+"\t#{t}"
-end
+#puts 'Homescreen'.yellow
+#['median','p75','p95'].each do |t|
+  #puts "\t#{homescreen(t)}".green+"\t#{t}"
+#end
+#puts 'Chirp'.yellow
+#['median','p75','p95'].each do |t|
+  #puts "\t#{chirp(t)}".green+"\t#{t}"
+#end
 puts 'Profile'.yellow
 ['median','p75','p95'].each do |t|
   puts "\t#{profile(t)}".green+"\t#{t}"
@@ -80,8 +82,8 @@ puts 'Interest Search' .yellow
 ['median','p75','p95'].each do |t|
   puts "\t#{interest_search(t)}".green+"\t#{t}"
 end
-puts 'Heimdall' .yellow
-['median','p75','p95'].each do |t|
-  puts "\t#{heimdall(t)}".green+"\t#{t}"
-end
+#puts 'Heimdall' .yellow
+#['median','p75','p95'].each do |t|
+#  puts "\t#{heimdall(t)}".green+"\t#{t}"
+#end
 
