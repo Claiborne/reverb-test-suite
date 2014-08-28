@@ -104,8 +104,8 @@ shared_examples 'Shared filtered with docFilterOkay' do
 
   %w(filtered docFilterOkay).each do |notification_name|
     it "should recieve a #{notification_name} notification" do
-      raise 'Doc submission failed' if extractNotification @odin_notifications, 'failed'
       @timeout.times do 
+        raise 'Doc submission failed' if extractNotification @odin_notifications, 'failed'
         notification = extractNotification @odin_notifications, notification_name
         begin
           notification.should be_true
