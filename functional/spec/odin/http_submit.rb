@@ -7,7 +7,7 @@ require 'rest_client'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - create workflow via HTTP", :test => true do
+describe "Article ingestion - create workflow via HTTP" do
 
   before(:all) do
     
@@ -47,7 +47,7 @@ describe "Article ingestion - create workflow via HTTP", :test => true do
 
   after(:all) {@conn.close}
 
-  context 'HTTP Submission' do
+  context 'HTTP submission' do
     it 'should be successful' do
       puts @request_id
       @data.should == {'success'=>{'value'=>true}}
