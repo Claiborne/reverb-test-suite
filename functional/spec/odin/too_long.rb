@@ -9,7 +9,7 @@ require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 describe "Article ingestion - doc more than 100,000 characters" do
   before(:all) do
 
-    tunnnel_odin_bunny
+    tunnel_odin_bunny
     
     $counter = 0
     @timeout = 60*3

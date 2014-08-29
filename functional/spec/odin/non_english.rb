@@ -10,7 +10,7 @@ describe "Article ingestion - non-english doc" do
 
   before(:all) do
 
-    tunnnel_odin_bunny
+    tunnel_odin_bunny
     
     $counter = 0
     @timeout = 60

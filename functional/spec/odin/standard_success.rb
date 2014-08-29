@@ -22,7 +22,7 @@ describe "Article ingestion - successes", :standard_success => true do
 
   before(:all) do
 
-    tunnnel_odin_bunny
+    tunnel_odin_bunny
     
     $counter = 0
     @timeout = 60*2

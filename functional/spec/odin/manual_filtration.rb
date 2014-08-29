@@ -19,7 +19,7 @@ describe "Article ingestion - block list", :block_list => true do
 
   before(:all) do
 
-    tunnnel_odin
+    tunnel_odin
 
     begin
       # Block an exact domain
@@ -31,7 +31,7 @@ describe "Article ingestion - block list", :block_list => true do
       puts "WARNING: An error occured when trying to use the filtration/insert endpoint: #{e.message}".yellow
     end
 
-    tunnnel_odin_bunny
+    tunnel_odin_bunny
     
     $counter = 0
     @timeout = 60*3
