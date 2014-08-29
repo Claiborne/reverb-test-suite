@@ -62,6 +62,63 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     include_examples 'Debug'
 
   end
+
+  context 'Doc rendering' do
+
+    before(:all) do
+      parsed_notification = extractNotification @odin_notifications, 'parsed'
+      @doc_id = parsed_notification['parsed']['documentId']['docId'].to_s
+      url = "http://localhost:8080/api/rendered/document/#{@doc_id}?format=json"
+      begin
+        @response = RestClient.get url, :content_type => 'application/json'
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      @doc = JSON.parse @response
+    end
+
+    it 'should a 200 code when requesting /api/rendered/document/ID' do      
+      @response.code.should == 200
+    end
+
+    %w(docId guid sourceUrl publishDate title authors topics articleMedia 
+      cleanText isClean isLicensed summary siteIcon siteName siteId).each do |key|
+      it "should return a #{key} key" do
+        @doc[key].should be_true
+      end
+    end
+
+    it 'should return the correct doc id' do
+      @doc['docId'].to_s.should == @doc_id.to_s
+    end
+
+    it 'should return the correct guid' do
+      @doc['guid'].should == 'http://odin-integration.helloreverb.com/smoke_articles/standard.html'
+    end
+
+    it 'should return the correct sourceUrl' do 
+      @doc['sourceUrl'].should == 'http://odin-integration.helloreverb.com/smoke_articles/standard.html'
+    end
+
+    it 'should return a publishDate' do
+      @doc['publishDate'].should match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/)
+    end
+
+    it 'should return the correct title' do
+      @doc['title'].should == 'Standard'
+    end
+
+    %w(Technology ofj Health).each do |topic|
+      it "should return the topic '#{topic}'" do
+        doc_topics = []
+        @doc['topics']['topics'].each do |t|
+          doc_topics << t['key']
+        end
+        doc_topics.should include topic
+      end
+    end
+
+  end # end context
 end # end describe 
 
 # https://wordnik.jira.com/wiki/display/DEV/Integration+Test+Specification
