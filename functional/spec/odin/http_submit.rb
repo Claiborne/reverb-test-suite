@@ -11,8 +11,8 @@ describe "Article ingestion - create workflow via HTTP" do
 
   before(:all) do
     
-    tunnnel_odin
-    tunnnel_odin_bunny
+    tunnel_odin
+    tunnel_odin_bunny
 
     $counter = 0
     @timeout = 60

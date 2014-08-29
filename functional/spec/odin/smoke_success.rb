@@ -11,7 +11,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
   before(:all) do
 
-    tunnnel_odin_bunny
+    tunnel_odin_bunny
     
     $counter = 0
     @timeout = 60
@@ -66,6 +66,9 @@ describe "Article ingestion - smoke success", :smoke_success => true do
   context 'Doc rendering' do
 
     before(:all) do
+
+      tunnel_odin
+
       parsed_notification = extractNotification @odin_notifications, 'parsed'
       @doc_id = parsed_notification['parsed']['documentId']['docId'].to_s
       url = "http://localhost:8080/api/rendered/document/#{@doc_id}?format=json"
@@ -101,14 +104,14 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     end
 
     it 'should return a publishDate' do
-      @doc['publishDate'].should match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/)
+      @doc['publishDate'].should match(/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ/)
     end
 
     it 'should return the correct title' do
       @doc['title'].should == 'Standard'
     end
 
-    %w(Technology ofj Health).each do |topic|
+    %w(Technology Health).each do |topic| # note Health is optional: it's value is 0.099
       it "should return the topic '#{topic}'" do
         doc_topics = []
         @doc['topics']['topics'].each do |t|
@@ -116,6 +119,28 @@ describe "Article ingestion - smoke success", :smoke_success => true do
         end
         doc_topics.should include topic
       end
+    end
+
+    ['Application software', 'Test-driven development', 'Source code', 'Computer programming', 'RSpec', 'User (computing)'].each do |concept|
+      it "should return the concept '#{concept}'" do
+        doc_concepts = []
+        @doc['topics']['concepts'].each do |t|
+          doc_concepts << t['key']
+        end
+        doc_concepts.should include concept
+      end
+    end
+
+    it 'should return a non-blank, non-nil value number for each topic' do
+      @doc['topics']['topics'].each do |t|
+        t['value'].class.to_s.should == 'Float'
+      end 
+    end
+
+    it 'should return a non-blank, non-nil value number for each concept' do
+      @doc['topics']['concepts'].each do |t|
+        t['value'].class.to_s.should == 'Float'
+      end 
     end
 
   end # end context

@@ -9,7 +9,7 @@ module OdinSpecHelper
     return nil
   end
 
-  def tunnnel_odin
+  def tunnel_odin
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/odin.yml"
     odin = "#{ConfigPath.new.options['baseurl']}"
     return if odin == 'localhost'
@@ -18,7 +18,7 @@ module OdinSpecHelper
     system cmd unless ssh.match(cmd)
   end
 
-  def tunnnel_odin_bunny
+  def tunnel_odin_bunny
     ConfigPath.config_path = File.dirname(__FILE__) + "/../../config/odin_bunny.yml"
     odin = "#{ConfigPath.new.options['baseurl']}"
     return if odin == 'localhost'
