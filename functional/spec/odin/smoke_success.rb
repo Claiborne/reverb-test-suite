@@ -143,6 +143,36 @@ describe "Article ingestion - smoke success", :smoke_success => true do
       end 
     end
 
+    it 'should return a cleanText string at least 3200 chars long' do
+      @doc['cleanText'].length.should >= 3200
+    end
+
+    it 'should return an isClean value of true' do
+      @doc['isClean'].to_s.should == 'true'
+    end
+
+    xit 'should return an isLicensed value of true' do
+      @doc['isLicensed'].to_s.should == 'true'
+    end
+
+    xit 'should return a summary at least 100 chars' do 
+      @doc['summary'].length.should >= 100
+    end
+
+    it 'should return the correct siteIcon value' do
+      icon = 'http://g.etfv.co/http://odin-integration.helloreverb.com/smoke_articles/standard.html'
+      @doc['siteIcon'].should == icon
+      RestClient.get icon
+    end
+
+    it 'should return the correct siteName value' do
+      @doc['siteName'].should == 'odin-integration.helloreverb.com'
+    end
+
+    it 'it should return a non-nil, non-blank siteId value' do
+      @doc['siteId'].class.to_s.should == 'Fixnum'
+    end
+
   end # end context
 end # end describe 
 
