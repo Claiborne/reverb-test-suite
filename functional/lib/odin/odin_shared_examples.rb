@@ -1,3 +1,5 @@
+# Odin Submit
+
 shared_examples 'Submit' do
 
   it 'should submit article to Odin' do
@@ -10,6 +12,8 @@ shared_examples 'Shared correlated and parsed' do
   %w(correlated parsed).each do |notification_name|
     it "should recieve a #{notification_name} notification" do
       @timeout.times do 
+        raise 'Doc was filtered' if extractNotification @odin_notifications, 'filtered'
+        raise 'Doc submission failed' if extractNotification @odin_notifications, 'failed'
         notification = extractNotification @odin_notifications, notification_name
         begin
           notification.should be_true
@@ -162,9 +166,9 @@ shared_examples 'Shared standard success' do
   %w(docFilterOkay docDedupOkay mediaExtractionOkay topicExtractionOkay nlpPipelineOkay conceptExtractionOkay).each do |notification_name|
     it "should recieve a #{notification_name} notification" do
       @timeout.times do 
-        notification = extractNotification @odin_notifications, notification_name
         raise 'Doc was filtered' if extractNotification @odin_notifications, 'filtered'
         raise 'Doc submission failed' if extractNotification @odin_notifications, 'failed'
+        notification = extractNotification @odin_notifications, notification_name
         begin
           notification.should be_true
           break
@@ -236,13 +240,95 @@ shared_examples 'Debug' do
   end
 end
 
-=begin
+# Odin Doc Rendering
 
-    # specific to submitting a 301
-    it 'should return the apporpriate correlated.originalUri and correlated.expandedUri when originalUri 301s' do
-      correlated = extractNotification @odin_notifications, 'correlated'
-      correlated['correlated']['originalUri'].should == @url_submitted
-      correlated['correlated']['expandedUri'].should == 'http://www.ign.com/articles/2014/07/07/googles-3d-mapping-phones-to-help-robots-on-the-international-space-station'
+shared_examples 'Smoke doc rendering' do
+
+  it 'should a 200 code when requesting /api/rendered/document/ID' do      
+    @response.code.should == 200
+  end
+
+  %w(docId guid sourceUrl publishDate title authors topics articleMedia 
+    cleanText isClean isLicensed summary siteIcon siteName siteId).each do |key|
+    it "should return a #{key} key" do
+      @doc[key].should be_true
     end
+  end
 
-=end
+  it 'should return the correct doc id' do
+   @doc['docId'].to_s.should == @doc_id.to_s
+  end
+
+  it 'should return a non-nil, non-blank guid' do
+    @doc['guid'].class.to_s.should == 'String'
+    @doc['guid'].length.should > 0
+  end
+
+  it 'should return a non-nil, non-blank sourceUrl' do 
+    @doc['sourceUrl'].class.to_s.should == 'String'
+    @doc['sourceUrl'].length.should > 0
+  end
+
+  it 'should return a publishDate' do
+    @doc['publishDate'].should match(/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ/)
+  end
+
+  it 'should return a non-nil, non-blank title' do
+    @doc['title'].class.to_s.should == 'String'
+    @doc['title'].length.should > 0
+  end
+
+  it 'should return at least one topic' do
+    @doc['topics']['topics'].length.should > 0
+    @doc['topics']['topics'][0]['key'].class.to_s.should == 'String'
+    @doc['topics']['topics'][0]['key'].length.should > 0
+    @doc['topics']['topics'][0]['value'].to_s.length.should > 0
+  end
+
+  it 'should return at least one concept' do
+    @doc['topics']['concepts'].length.should > 0
+    @doc['topics']['concepts'][0]['key'].class.to_s.should == 'String'
+    @doc['topics']['concepts'][0]['key'].length.should > 0
+    @doc['topics']['concepts'][0]['value'].to_s.length.should > 0
+  end
+
+  it 'should return a non-blank, non-nil value number for each topic' do
+    @doc['topics']['topics'].each do |t|
+      t['value'].class.to_s.should == 'Float'
+    end 
+  end
+
+  it 'should return a non-blank, non-nil value number for each concept' do
+    @doc['topics']['concepts'].each do |t|
+      t['value'].class.to_s.should == 'Float'
+    end 
+  end
+
+  it 'should return a cleanText string at least 50 chars long' do
+    @doc['cleanText'].length.should >= 50
+  end
+
+  it 'should return an isClean value of true' do
+    @doc['isClean'].to_s.should == 'true'
+  end
+
+  xit 'should return an isLicensed value of true' do
+    @doc['isLicensed'].to_s.should == 'true'
+  end
+
+  xit 'should return a summary at least 100 chars' do 
+    @doc['summary'].length.should >= 100
+  end
+
+  it 'should reutn a non-nil non-blank siteIcon value' do
+    @doc['siteIcon'].class.to_s.should == 'String'
+    @doc['siteIcon'].length.should > 0
+  end
+
+  it 'it should return a non-nil, non-blank siteId value' do
+    @doc['siteId'].class.to_s.should == 'Fixnum'
+    @doc['siteId'].should > 0
+  end
+
+end
+

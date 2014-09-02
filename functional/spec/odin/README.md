@@ -27,3 +27,8 @@ Without debug output:
 ```
 SPEC_OPTS='--tag ~debug'
 ```
+
+Without doc render specs:
+```
+SPEC_OPTS='--tag ~doc_render'
+```
