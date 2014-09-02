@@ -63,7 +63,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
   end
 
-  context 'Doc rendering' do
+  context 'Doc rendering', :doc_render => true do
 
     before(:all) do
 
@@ -80,20 +80,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
       @doc = JSON.parse @response
     end
 
-    it 'should a 200 code when requesting /api/rendered/document/ID' do      
-      @response.code.should == 200
-    end
-
-    %w(docId guid sourceUrl publishDate title authors topics articleMedia 
-      cleanText isClean isLicensed summary siteIcon siteName siteId).each do |key|
-      it "should return a #{key} key" do
-        @doc[key].should be_true
-      end
-    end
-
-    it 'should return the correct doc id' do
-      @doc['docId'].to_s.should == @doc_id.to_s
-    end
+    include_examples 'Smoke doc rendering'
 
     it 'should return the correct guid' do
       @doc['guid'].should == 'http://odin-integration.helloreverb.com/smoke_articles/standard.html'
@@ -101,10 +88,6 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
     it 'should return the correct sourceUrl' do 
       @doc['sourceUrl'].should == 'http://odin-integration.helloreverb.com/smoke_articles/standard.html'
-    end
-
-    it 'should return a publishDate' do
-      @doc['publishDate'].should match(/\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ/)
     end
 
     it 'should return the correct title' do
@@ -131,32 +114,8 @@ describe "Article ingestion - smoke success", :smoke_success => true do
       end
     end
 
-    it 'should return a non-blank, non-nil value number for each topic' do
-      @doc['topics']['topics'].each do |t|
-        t['value'].class.to_s.should == 'Float'
-      end 
-    end
-
-    it 'should return a non-blank, non-nil value number for each concept' do
-      @doc['topics']['concepts'].each do |t|
-        t['value'].class.to_s.should == 'Float'
-      end 
-    end
-
     it 'should return a cleanText string at least 3200 chars long' do
       @doc['cleanText'].length.should >= 3200
-    end
-
-    it 'should return an isClean value of true' do
-      @doc['isClean'].to_s.should == 'true'
-    end
-
-    xit 'should return an isLicensed value of true' do
-      @doc['isLicensed'].to_s.should == 'true'
-    end
-
-    xit 'should return a summary at least 100 chars' do 
-      @doc['summary'].length.should >= 100
     end
 
     it 'should return the correct siteIcon value' do
@@ -167,10 +126,6 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
     it 'should return the correct siteName value' do
       @doc['siteName'].should == 'odin-integration.helloreverb.com'
-    end
-
-    it 'it should return a non-nil, non-blank siteId value' do
-      @doc['siteId'].class.to_s.should == 'Fixnum'
     end
 
   end # end context

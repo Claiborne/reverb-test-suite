@@ -70,4 +70,25 @@ describe "Article ingestion - create workflow via HTTP" do
     include_examples 'Debug'
 
   end
+
+  context 'Doc rendering', :doc_render => true do
+
+    before(:all) do
+
+      tunnel_odin
+
+      parsed_notification = extractNotification @odin_notifications, 'parsed'
+      @doc_id = parsed_notification['parsed']['documentId']['docId'].to_s
+      url = "http://localhost:8080/api/rendered/document/#{@doc_id}?format=json"
+      begin
+        @response = RestClient.get url, :content_type => 'application/json'
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      @doc = JSON.parse @response
+    end
+
+    include_examples 'Smoke doc rendering'
+
+  end
 end 
