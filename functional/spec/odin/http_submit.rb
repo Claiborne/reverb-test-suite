@@ -7,7 +7,7 @@ require 'rest_client'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - create workflow via HTTP" do
+describe "Article ingestion - create workflow via HTTP", :http_submit => true do
 
   before(:all) do
     
@@ -33,12 +33,12 @@ describe "Article ingestion - create workflow via HTTP" do
     @request_id = SecureRandom.uuid.to_s
     http_submit_url = "http://localhost:8080/api/corpus/submitUri"
     @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/http_submit.html'
-    @body = {
+    @body = [{
       "requestId" => @request_id,
       "url" => @url_submitted,
       "source" => "ReverbTestSuite",
       "eventName"=>"com.reverb.events.odin.package$Submission"
-    }.to_json
+    }].to_json
 
     response = RestClient.post http_submit_url, @body, :content_type => 'application/json', :accept => 'json'
     @data = JSON.parse response
@@ -50,11 +50,13 @@ describe "Article ingestion - create workflow via HTTP" do
   context 'HTTP submission' do
     it 'should be successful' do
       puts @request_id
-      @data.should == {'success'=>{'value'=>true}}
+      @data.should ==  [{"requestId"=>@request_id, "url"=>"http://odin-integration.helloreverb.com/smoke_articles/http_submit.html"}]
     end
   end
 
   context 'http://odin-integration.helloreverb.com/smoke_articles/http_submit.html' do
+
+    include_examples 'Shared correlated and parsed without filter'
 
     include_examples 'Shared correlated and parsed'
 
@@ -74,6 +76,8 @@ describe "Article ingestion - create workflow via HTTP" do
   context 'Doc rendering', :doc_render => true do
 
     before(:all) do
+
+      sleep 2
 
       tunnel_odin
 

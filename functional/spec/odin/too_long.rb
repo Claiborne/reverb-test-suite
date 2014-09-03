@@ -41,6 +41,8 @@ describe "Article ingestion - doc more than 100,000 characters" do
 
   include_examples 'Submit'
 
+  include_examples 'Shared correlated and parsed with filter'
+
   include_examples 'Shared correlated and parsed'
 
   it 'should return the same correlated.expandedUri value as submitted' do

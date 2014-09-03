@@ -48,6 +48,8 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed without filter'
+
     include_examples 'Shared correlated and parsed' 
 
     it 'should return the same correlated.expandedUri value as submitted' do
@@ -101,6 +103,8 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     after(:all) {@conn.close}
 
     include_examples 'Submit'
+
+    include_examples 'Shared correlated and parsed with filter'
 
     include_examples 'Shared correlated and parsed' 
 
@@ -156,6 +160,8 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed with filter'
+
     include_examples 'Shared correlated and parsed' 
 
     it 'should return the same correlated.expandedUri value as submitted' do
@@ -209,6 +215,8 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     after(:all) {@conn.close}
 
     include_examples 'Submit'
+
+    include_examples 'Shared correlated and parsed with filter'
 
     include_examples 'Shared correlated and parsed' 
 
@@ -264,6 +272,8 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed with filter'
+
     include_examples 'Shared correlated and parsed' 
 
     it 'should return the same correlated.expandedUri value as submitted' do
@@ -317,6 +327,8 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     after(:all) {@conn.close}
 
     include_examples 'Submit'
+
+    include_examples 'Shared correlated and parsed without filter'
 
     include_examples 'Shared correlated and parsed' 
 

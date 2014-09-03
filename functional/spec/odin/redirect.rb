@@ -47,6 +47,8 @@ describe "Article ingestion - redirect doc" do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed without filter'
+
     include_examples 'Shared correlated and parsed'
 
     it 'should return the redirected correlated.expandedUri value' do

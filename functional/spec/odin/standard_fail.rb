@@ -59,6 +59,8 @@ describe "Article ingestion - failures", :standard_fail => true do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed with filter'
+
     include_examples 'Shared correlated and parsed'
 
     include_examples 'Shared filtered'
