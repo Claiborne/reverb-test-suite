@@ -36,8 +36,7 @@ describe "Article ingestion - create workflow via HTTP", :http_submit => true do
     @body = [{
       "requestId" => @request_id,
       "url" => @url_submitted,
-      "source" => "ReverbTestSuite",
-      "eventName"=>"com.reverb.events.odin.package$Submission"
+      "source" => "ReverbTestSuite"
     }].to_json
 
     response = RestClient.post http_submit_url, @body, :content_type => 'application/json', :accept => 'json'
