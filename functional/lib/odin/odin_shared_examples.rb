@@ -8,7 +8,7 @@ shared_examples 'Submit' do
 
 end
 
-shared_examples 'Shared correlated and parsed' do
+shared_examples 'Shared correlated and parsed without filter' do
   %w(correlated parsed).each do |notification_name|
     it "should recieve a #{notification_name} notification" do
       @timeout.times do 
@@ -27,7 +27,29 @@ shared_examples 'Shared correlated and parsed' do
       end # end timeout iteration
     end # end it
   end
+end
+
+shared_examples 'Shared correlated and parsed with filter' do
+  %w(correlated parsed).each do |notification_name|
+    it "should recieve a #{notification_name} notification" do
+      @timeout.times do 
+        raise 'Doc submission failed' if extractNotification @odin_notifications, 'failed'
+        notification = extractNotification @odin_notifications, notification_name
+        begin
+          notification.should be_true
+          break
+        rescue
+          sleep 1
+          $counter += 1
+          notification.should be_true if $counter >= @timeout
+          next
+        end 
+      end # end timeout iteration
+    end # end it
+  end
+end
   
+shared_examples 'Shared correlated and parsed' do
   it 'should return the same correlated.originalUri value as submitted' do
     correlated = extractNotification @odin_notifications, 'correlated'
     correlated_url = correlated['correlated']['originalUri']

@@ -59,6 +59,8 @@ describe "Article ingestion - shortened urls", :shortened_urls => true do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed without filter'
+
     include_examples 'Shared correlated and parsed'
 
     include_examples 'Shared standard success'
@@ -72,6 +74,8 @@ describe "Article ingestion - shortened urls", :shortened_urls => true do
   context 'Doc rendering', :doc_render => true do
 
     before(:all) do
+
+      sleep 2
 
       tunnel_odin
 

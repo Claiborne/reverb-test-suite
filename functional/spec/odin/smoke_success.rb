@@ -48,6 +48,8 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
     include_examples 'Submit'
 
+    include_examples 'Shared correlated and parsed with filter'
+
     include_examples 'Shared correlated and parsed'
 
     it 'should return the same correlated.expandedUri value as submitted' do
@@ -66,6 +68,8 @@ describe "Article ingestion - smoke success", :smoke_success => true do
   context 'Doc rendering', :doc_render => true do
 
     before(:all) do
+
+      sleep 2
 
       tunnel_odin
 
