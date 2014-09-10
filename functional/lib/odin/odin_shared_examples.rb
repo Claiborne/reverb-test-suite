@@ -334,11 +334,11 @@ shared_examples 'Smoke doc rendering' do
     @doc['isClean'].to_s.should == 'true'
   end
 
-  xit 'should return an isLicensed value of true' do
+  it 'should return an isLicensed value of true' do
     @doc['isLicensed'].to_s.should == 'true'
   end
 
-  xit 'should return a summary at least 100 chars' do 
+  it 'should return a summary at least 100 chars' do 
     @doc['summary'].length.should >= 100
   end
 
