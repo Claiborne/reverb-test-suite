@@ -257,7 +257,7 @@ shared_examples 'Shared all' do
 end
 
 shared_examples 'Debug' do
-  it 'should puts debug format above', :debug => true do
+  it 'should puts debug above', :debug => true do
     puts @odin_notifications
   end
 end
