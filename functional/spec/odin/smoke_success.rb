@@ -65,7 +65,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
 
   end
 
-  context 'Doc rendering', :doc_render => true do
+  context 'Get rendered doc using /rendered/document/docId' do
 
     before(:all) do
 
@@ -132,7 +132,28 @@ describe "Article ingestion - smoke success", :smoke_success => true do
       @doc['siteName'].should == 'odin-integration.helloreverb.com'
     end
 
-  end # end context
+  end 
+
+  context 'Get ingestion status by URL using /ingestion/status?url=url' do
+
+    before(:all) do
+
+      url = "http://localhost:8080/api/ingestion/status?url=#{@url_submitted}"
+      begin
+        response = RestClient.get url, :content_type => 'application/json', :accept => 'json'
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      @doc = JSON.parse response
+    end
+
+    it 'should return a close status of completed' do
+      sleep 10
+      @doc['activities'].count.should > 0
+      puts @doc['executionInfo']['closeStatus']['value'].should == 'Completed'
+    end
+
+  end
 end # end describe 
 
 # https://wordnik.jira.com/wiki/display/DEV/Integration+Test+Specification
