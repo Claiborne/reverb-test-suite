@@ -7,7 +7,7 @@ require 'rest_client'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Article ingestion - create workflow via HTTP", :http_submit => true do
+describe "Article ingestion - create one workflow via HTTP", :http_submit => true do
 
   before(:all) do
     
@@ -17,24 +17,9 @@ describe "Article ingestion - create workflow via HTTP", :http_submit => true do
     $counter = 0
     @timeout = 60
 
-    @request_id = SecureRandom.uuid.to_s
-
-    @odin_notifications = []
-    @conn = Bunny.new(:host => "localhost", :port => 5672)
-    @conn.start
-    @ch = @conn.create_channel
-    q = @ch.queue('', :exclusive => true)
-    q.bind('online-messaging', :routing_key => 'global.urlIngestionResult')
-      q.subscribe(:ack => true) do |delivery_info, properties, payload|
-      odin_notification = JSON.parse payload
-      @odin_notifications << odin_notification if odin_notification['requestId'] == @request_id
-    end
-
-    @request_id = SecureRandom.uuid.to_s
     http_submit_url = "http://localhost:8080/api/corpus/submitUri"
-    @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/http_submit.html'
+    @url_submitted = 'http://www.ign.com/articles/2014/09/11/the-legend-of-korra-book-four-premiere-date-announced'
     @body = [{
-      "requestId" => @request_id,
       "url" => @url_submitted,
       "source" => "ReverbTestSuite"
     }].to_json
@@ -44,44 +29,30 @@ describe "Article ingestion - create workflow via HTTP", :http_submit => true do
 
   end
 
-  after(:all) {@conn.close}
-
   context 'HTTP submission' do
     it 'should be successful' do
-      puts @request_id
-      @data.should ==  [{"requestId"=>@request_id, "url"=>"http://odin-integration.helloreverb.com/smoke_articles/http_submit.html"}]
+      @data[0]['requestId'].should match(/[a-z][0-9]|-/)
+      @data[0]['url'].should == @url_submitted
     end
-  end
-
-  context 'http://odin-integration.helloreverb.com/smoke_articles/http_submit.html' do
-
-    include_examples 'Shared correlated and parsed without filter'
-
-    include_examples 'Shared correlated and parsed'
-
-    it 'should return the same correlated.expandedUri value as submitted' do
-      correlated = extractNotification @odin_notifications, 'correlated'
-      correlated['correlated']['expandedUri'].should == @url_submitted
-    end
-
-    include_examples 'Shared standard success'
-
-    include_examples 'Shared all'
-
-    include_examples 'Debug'
-
   end
 
   context 'Doc rendering', :doc_render => true do
 
     before(:all) do
 
-      sleep 2
+      sleep 5
 
       tunnel_odin
 
-      parsed_notification = extractNotification @odin_notifications, 'parsed'
-      @doc_id = parsed_notification['parsed']['documentId']['docId'].to_s
+      # get doc id
+      5.times do 
+        doc_status_url = "http://localhost:8080/api/ingestion/status?url=#@url_submitted"
+        r = RestClient.get doc_status_url, :content_type => 'application/json', :accept => 'json'
+        @doc_id = JSON.parse(r)['activities'].to_s.match(/docId\\":[0-9]{0,}/).to_s.match(/[0-9]{1,}/).to_s
+        break if @doc_id.length > 0
+        sleep 6
+      end
+
       url = "http://localhost:8080/api/rendered/document/#{@doc_id}?format=json"
       begin
         @response = RestClient.get url, :content_type => 'application/json'
