@@ -13,6 +13,11 @@ sudo gem install rake bunny colorize rest-client json_pure --no-rdoc --no-ri
 
 ## How to run
 
+Main suite:
+```
+rake odin env=dev SPEC_OPTS='--tag ~standard_success --tag ~shortened_urls'
+```
+
 Run against dev:
 ```
 rake odin env=dev
