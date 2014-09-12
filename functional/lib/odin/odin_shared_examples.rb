@@ -1,3 +1,8 @@
+# TOC
+# Odin Submit
+# Odin Doc Rendering
+
+
 # Odin Submit
 
 shared_examples 'Submit' do
@@ -273,7 +278,7 @@ shared_examples 'Smoke doc rendering' do
   %w(docId guid sourceUrl publishDate title authors topics articleMedia 
     cleanText isClean isLicensed summary siteIcon siteName siteId).each do |key|
     it "should return a #{key} key" do
-      @doc[key].should be_true
+      @doc.has_key?(key).should be_true
     end
   end
 
