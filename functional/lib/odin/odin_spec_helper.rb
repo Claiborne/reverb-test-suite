@@ -16,6 +16,7 @@ module OdinSpecHelper
     cmd = "ssh -f -N -L 8080:localhost:8000 #{odin}"
     ssh = `ps aux | grep ssh`
     system cmd unless ssh.match(cmd)
+    sleep 3 if ssh.match(cmd)
   end
 
   def tunnel_odin_bunny
@@ -25,6 +26,7 @@ module OdinSpecHelper
     cmd = "ssh -f -N -L 5672:localhost:5672 #{odin}"
     ssh = `ps aux | grep ssh`
     system cmd unless ssh.match(cmd)
+    sleep 3 if ssh.match(cmd)
   end
 
 end
