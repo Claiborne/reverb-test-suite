@@ -397,6 +397,32 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     end
 
   end # end context
+
+  context "Document deletion" do
+
+    before(:all) do 
+      parsed_notification = extractNotification @odin_notifications, 'parsed'
+      @doc_id = parsed_notification['parsed']['documentId']['docId'].to_s
+    end
+
+    it 'should delete the document' do 
+      url = "http://localhost:8080/api/rendered/document/#@doc_id"
+      begin
+        r = RestClient.delete url
+      rescue => e
+        raise StandardError.new(e.message+":\n"+url)
+      end
+      r.code.should == 200
+      r.should == 'Document successfully removed'
+      sleep 10
+    end
+
+    xit 'should return a 404 when requesting the deleted doc by ID (FAILS: RVB-7578)' do
+      url = "http://localhost:8080/api/rendered/document/#@doc_id"
+      expect {RestClient.get url}.to raise_error(RestClient::Unauthorized) 
+    end
+
+  end # end context
 end # end describe 
 
 
