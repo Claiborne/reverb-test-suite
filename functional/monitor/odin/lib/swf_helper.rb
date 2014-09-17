@@ -122,7 +122,17 @@ module SWFHelper
       rid = s[:rid]
 
       closed_workflow_options = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
-      response = @swf.get_workflow_execution_history closed_workflow_options
+      begin
+        response = @swf.get_workflow_execution_history closed_workflow_options
+      rescue => e
+        case failures[e.message]
+        when nil
+          failures[e.message] = 1
+        else
+          failures[e.message]+= 1
+        end
+        next
+      end
 
       response.data['events'].each do |event|
         if event['eventType'] == 'WorkflowExecutionFailed'
