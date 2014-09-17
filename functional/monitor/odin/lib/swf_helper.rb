@@ -112,6 +112,51 @@ module SWFHelper
     end
   end
 
+  def get_failure_breakdown_improved
+    failed_workflows = get_failures
+
+    failures = {}
+
+    failed_workflows.each do |s|
+      wid = s[:wid]
+      rid = s[:rid]
+
+      closed_workflow_options = {:domain => @domain, :execution => {:workflow_id => wid, :run_id => rid}}
+      response = @swf.get_workflow_execution_history closed_workflow_options
+
+      response.data['events'].each do |event|
+        if event['eventType'] == 'WorkflowExecutionFailed'
+          failed_details = Base64.decode64(event['workflowExecutionFailedEventAttributes']['details'])
+          failed_details_cropped = failed_details.match(/errorMessage.{1,}/).to_s
+          if failed_details_cropped.length > 0
+            case failures[failed_details_cropped]
+            when nil
+              failures[failed_details_cropped] = 1
+            else
+              failures[failed_details_cropped]+= 1
+            end
+          else
+            no_msg = "No 'errorMessage' string found in workflowExecutionFailedEventAttributes.details"
+            case failures[no_msg]
+            when nil
+              failures[no_msg] = 1
+            else
+              failures[no_msg]+= 1
+            end
+          end
+        end
+      end
+    end
+
+    sorted = failures.sort_by {|_key, value| value}.reverse
+    fail_data = ''
+    sorted.each do |s|
+      fail_data << s.to_s+"\n"
+    end
+    puts fail_data
+    fail_data
+  end
+
   def get_failure_breakdown
     failed_workflows = get_failures
 
