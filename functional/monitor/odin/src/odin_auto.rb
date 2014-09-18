@@ -36,7 +36,7 @@ contents << get_failure_breakdown_improved
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = ["wclaiborne@helloreverb.com"]
+TO_EMAIL = ["wclaiborne@helloreverb.com", "odin@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA (Do not reply) <#{FROM_EMAIL}>
