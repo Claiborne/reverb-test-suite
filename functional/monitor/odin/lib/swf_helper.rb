@@ -180,7 +180,7 @@ module SWFHelper
 
     puts fail_data.to_s+"\n"+example_data
 
-    fail_data.to_s+example_data
+    fail_data.to_s+"\nSampling of failures:\n"+example_data
   end
 
   def get_failure_breakdown
