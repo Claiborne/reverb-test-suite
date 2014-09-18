@@ -2,6 +2,7 @@ module SWFHelper
 
   $LOAD_PATH << './../../../lib'
   require 'config_path'
+  require 'json'
 
   def set_up
 
@@ -116,6 +117,7 @@ module SWFHelper
     failed_workflows = get_failures
 
     failures = {}
+    examples = {}
 
     failed_workflows.each do |s|
       wid = s[:wid]
@@ -142,16 +144,20 @@ module SWFHelper
             case failures[failed_details_cropped]
             when nil
               failures[failed_details_cropped] = 1
+              examples[failed_details_cropped] = [wid]
             else
               failures[failed_details_cropped]+= 1
+              examples[failed_details_cropped] << wid if examples[failed_details_cropped].length < 11
             end
           else
             no_msg = "No 'errorMessage' string found in workflowExecutionFailedEventAttributes.details"
             case failures[no_msg]
             when nil
               failures[no_msg] = 1
+              examples[no_msg] = [wid]
             else
               failures[no_msg]+= 1
+              examples[no_msg] << wid if examples[no_msg].length < 11
             end
           end
         end
@@ -159,12 +165,22 @@ module SWFHelper
     end
 
     sorted = failures.sort_by {|_key, value| value}.reverse
-    fail_data = ''
+    fail_data = ""
     sorted.each do |s|
       fail_data << s.to_s+"\n"
     end
-    puts fail_data
-    fail_data
+
+    example_data = ""
+    examples.each do |example_failure_message, example_workflow_id|
+      example_data << example_failure_message.to_s.gsub(/errorMessageq........./,'')+"\n"
+      example_workflow_id.each do |id|
+        example_data << "      "+id+"\n"
+      end
+    end
+
+    puts fail_data.to_s+"\n"+example_data
+
+    fail_data.to_s+example_data
   end
 
   def get_failure_breakdown

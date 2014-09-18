@@ -36,14 +36,17 @@ contents << get_failure_breakdown_improved
 
 FROM_EMAIL = "reverbqualityassurance@gmail.com"
 PASSWORD = "testpassword"
-TO_EMAIL = ["wclaiborne@helloreverb.com", "odin@helloreverb.com"]
+TO_EMAIL = ["wclaiborne@helloreverb.com"]
 
 msgstr = <<END_OF_MESSAGE
 From: Reverb QA (Do not reply) <#{FROM_EMAIL}>
 To: QA <#{TO_EMAIL}>
 Subject: Odin SWF Basic Monitoring
 #{contents}
+
 END_OF_MESSAGE
+
+puts msgstr
 
 smtp = Net::SMTP.new 'smtp.gmail.com', 587
 smtp.enable_starttls
