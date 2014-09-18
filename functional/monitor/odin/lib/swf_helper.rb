@@ -147,7 +147,7 @@ module SWFHelper
               examples[failed_details_cropped] = [wid]
             else
               failures[failed_details_cropped]+= 1
-              examples[failed_details_cropped] << wid if examples[failed_details_cropped].length < 11
+              examples[failed_details_cropped] << wid if examples[failed_details_cropped].length < 10
             end
           else
             no_msg = "No 'errorMessage' string found in workflowExecutionFailedEventAttributes.details"
