@@ -6,7 +6,7 @@ def get_article_urls(approx_number_of_articles)
   urls = []
   skip = 0
   while skip < approx_number_of_articles
-    response = RestClient.get "https://api.helloreverb.com/v2/trending/tiles/me?format=json&skip=#{skip}&limit=24&api_key=f6dee50d0af730d126397bb60b094cbe9486aebf8a84bcd4"
+    response = RestClient.get "https://api.helloreverb.com/v2/trending/tiles/global?format=json&skip=#{skip}&limit=24&api_key=f6dee50d0af730d126397bb60b094cbe9486aebf8a84bcd4"
     data = JSON.parse(response)
     data['tiles'].each do |article|
       urls << article['shareUrl'] if article['tileType'] == 'article'
@@ -32,7 +32,7 @@ urls.each do |url|
     begin
       response = RestClient.get diffbot_endpoint+url
     rescue => e
-      errors << "#{e.message}"
+      errors << "#{url}\n#{e.message}\n"
       next
     end
     finish = Time.now
@@ -42,18 +42,18 @@ urls.each do |url|
 
     if doc['type'] == 'article' 
     else
-      errors << doc['type']
+      errors << "#{url}\ndoc['type']\n"
       next
     end
 
     if doc['text'].length > 49
       successes << (finish-start).floor
     else
-      errors << doc['text'].length
+      errors << "#{url}\ndoc['text'].length\n"
       next
     end
   rescue => e
-    errors << "uncaught error #{e.message}"
+    errors << "#{url}\nuncaught error #{e.message}\n"
   end # end catch all
 end # end url iteration
 
@@ -71,6 +71,9 @@ puts "URLS Checked: #{url_count}".yellow
 puts ''
 puts "Successes: #{successes.sort}".yellow
 puts ''
-puts "Errors: #{errors}".yellow
+puts "Errors\n".yellow
+errors.each do |error|
+  puts "#{error}".yellow
+end
 puts ''
 
