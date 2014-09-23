@@ -38,13 +38,13 @@ module SWFHelper
 
   def get_count_closed_workflows
     closed_workflow_counts = []
-    response = @swf.count_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}
+    response = @swf.count_closed_workflow_executions :domain => @domain, :close_time_filter => {:oldest_date => @timeframe}
     response.data['status'] = "Total"
     closed_workflow_counts << response.data
 
     %w(COMPLETED FAILED CANCELED TERMINATED CONTINUED_AS_NEW TIMED_OUT).each do |status|
       response = @swf.count_closed_workflow_executions({:domain => @domain, 
-        :start_time_filter => {:oldest_date => @timeframe},
+        :close_time_filter => {:oldest_date => @timeframe},
         :close_status_filter=>{:status=>status}})
       response.data['status'] = status.capitalize
       closed_workflow_counts << response.data
@@ -293,7 +293,7 @@ module SWFHelper
     def get_failures
       next_page_token = nil
       failed_workflows = []
-      response = @swf.list_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}
+      response = @swf.list_closed_workflow_executions :domain => @domain, :close_time_filter => {:oldest_date => @timeframe}
       response.data['executionInfos'].each do |info|
         failed_workflows << {:wid => info['execution']['workflowId'], :rid => info['execution']['runId']} if info['closeStatus'] == 'FAILED'
       end
@@ -301,7 +301,7 @@ module SWFHelper
       next_page_token = response.data['nextPageToken']
 
       until next_page_token.nil? 
-        response = @swf.list_closed_workflow_executions :domain => @domain, :start_time_filter => {:oldest_date => @timeframe}, :next_page_token => next_page_token
+        response = @swf.list_closed_workflow_executions :domain => @domain, :close_time_filter => {:oldest_date => @timeframe}, :next_page_token => next_page_token
         response.data['executionInfos'].each do |info|
           failed_workflows << {:wid => info['execution']['workflowId'], :rid => info['execution']['runId']} if info['closeStatus'] == 'FAILED'
         end
