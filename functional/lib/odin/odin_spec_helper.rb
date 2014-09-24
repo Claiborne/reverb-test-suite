@@ -29,4 +29,8 @@ module OdinSpecHelper
     sleep 3 if ssh.match(cmd)
   end
 
+  def url_array_for_http_submission
+    ['http://www.ign.com/articles/2014/09/24/blizzards-titan-was-a-sci-fi-mmo', 'http://www.ign.com/articles/2014/09/24/taken-3-now-titled-tak3n']
+  end
+
 end
