@@ -40,7 +40,7 @@ describe "Article ingestion - create one workflow via HTTP", :http_submit => tru
 
     before(:all) do
 
-      sleep 5
+      sleep 10
 
       tunnel_odin
 
