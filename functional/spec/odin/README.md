@@ -18,13 +18,9 @@ Main suite:
 rake odin env=dev SPEC_OPTS='--tag ~standard_success'
 ```
 
-Run against dev:
+Supported environments:
 ```
 rake odin env=dev
-```
-
-Run against local:
-```
 rake odin env=local
 ```
 
