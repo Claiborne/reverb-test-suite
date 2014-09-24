@@ -67,7 +67,7 @@ describe "Article ingestion - create one workflow via HTTP", :http_submit => tru
   end
 end 
 
-describe "Article ingestion - create multiple workflow via one HTTP post", :http_submit1 => true do
+describe "Article ingestion - create multiple workflow via one HTTP post", :http_submit => true do
 
   before(:all) do
     
