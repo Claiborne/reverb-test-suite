@@ -30,7 +30,7 @@ module OdinSpecHelper
   end
 
   def url_array_for_http_submission
-    ['http://www.ign.com/articles/2014/09/24/blizzards-titan-was-a-sci-fi-mmo', 'http://www.ign.com/articles/2014/09/24/taken-3-now-titled-tak3n']
+    ['http://odin-integration.helloreverb.com/smoke_articles/http_submit/http_submit_2.html', 'http://odin-integration.helloreverb.com/smoke_articles/http_submit/http_submit_3.html']
   end
 
 end

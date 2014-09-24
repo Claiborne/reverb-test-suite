@@ -18,7 +18,7 @@ describe "Article ingestion - create one workflow via HTTP", :http_submit => tru
     @timeout = 60
 
     http_submit_url = "http://localhost:8080/api/corpus/submitUri"
-    @url_submitted = 'http://www.ign.com/articles/2014/09/11/the-legend-of-korra-book-four-premiere-date-announced'
+    @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/http_submit/http_submit_1.html'
     @body = [{
       "url" => @url_submitted,
       "source" => "ReverbTestSuite"
