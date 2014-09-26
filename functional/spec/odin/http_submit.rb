@@ -1,4 +1,3 @@
-require 'bunny'
 require 'json'
 require 'pp'
 require 'rspec'
@@ -12,7 +11,6 @@ describe "Article ingestion - create one workflow via HTTP", :http_submit => tru
   before(:all) do
     
     tunnel_odin
-    tunnel_odin_bunny
 
     $counter = 0
     @timeout = 60
@@ -72,7 +70,6 @@ describe "Article ingestion - create multiple workflow via one HTTP post", :http
   before(:all) do
     
     tunnel_odin
-    tunnel_odin_bunny
 
     $counter = 0
     @timeout = 60
