@@ -75,7 +75,7 @@ describe "Article ingestion - successes", :standard_success => true do
 
     before(:all) do
 
-      sleep 2
+      sleep 7
 
       tunnel_odin
 
