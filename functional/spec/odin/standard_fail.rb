@@ -25,7 +25,7 @@ describe "Article ingestion - failures", :standard_fail => true do
     tunnel_odin_bunny
     
     $counter = 0
-    @timeout = 60
+    @timeout = 60*2
 
     # correlated, parsed, docFilterOkay, docDedupOkay
     # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay

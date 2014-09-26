@@ -29,4 +29,8 @@ module OdinSpecHelper
     sleep 3 if ssh.match(cmd)
   end
 
+  def url_array_for_http_submission
+    ['http://odin-integration.helloreverb.com/smoke_articles/http_submit/http_submit_2.html', 'http://odin-integration.helloreverb.com/smoke_articles/http_submit/http_submit_3.html']
+  end
+
 end

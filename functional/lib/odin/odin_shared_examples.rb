@@ -237,12 +237,12 @@ shared_examples 'Shared all' do
 
   it 'should recive only IngestionNotifications' do
     errors = []
-    event_name = 'com.reverb.odin.model.IngestionNotification'
+    event_name = 'com.reverb.events.odin.IngestionNotification'
     @odin_notifications.each do |odin_notification|
       begin
         odin_notification['eventName'].should == event_name
       rescue
-        errors << "Expected the following Odin notification to contain eventName of #{event_name}:\n"+odin_notification+"\n"
+        errors << "Expected the following Odin notification to contain eventName of #{event_name}:\n"+odin_notification.to_s+"\n"
       end
     end
     errors.count.should == 0
@@ -254,7 +254,7 @@ shared_examples 'Shared all' do
       begin
         odin_notification['requestId'].should == @request_id
       rescue
-        errors << "Expected the following Odin notification to contain requestId of #@request_id:\n"+odin_notification+"\n"
+        errors << "Expected the following Odin notification to contain requestId of #@request_id:\n"+odin_notification.to_s+"\n"
       end
     end
     errors.count.should == 0

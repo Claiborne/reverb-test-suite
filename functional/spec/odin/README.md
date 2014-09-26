@@ -15,25 +15,16 @@ sudo gem install rake bunny colorize rest-client json_pure --no-rdoc --no-ri
 
 Main suite:
 ```
-rake odin env=dev SPEC_OPTS='--tag ~standard_success --tag ~shortened_urls'
+rake odin env=dev SPEC_OPTS='--tag ~standard_success'
 ```
 
-Run against dev:
+Supported environments:
 ```
 rake odin env=dev
-```
-
-Run against local:
-```
 rake odin env=local
 ```
 
 Without debug output:
 ```
 SPEC_OPTS='--tag ~debug'
-```
-
-Without doc render specs:
-```
-SPEC_OPTS='--tag ~doc_render'
 ```
