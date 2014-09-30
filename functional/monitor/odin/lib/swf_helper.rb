@@ -12,6 +12,9 @@ module SWFHelper
     raise "\n\nPlese indicate an ARGV[1] for past X hours.\n"+
     "For example, 1 or 24\n\n".red unless ARGV[1]
 
+
+    yml_file = File.dirname(__FILE__) + "/../config/odin.yml"
+    raise ConfigurationException, "\n\nFile 'functional/monitor/odin/config/odin.yml' must exist\n\n" unless File.exists?(yml_file)
     ConfigPath.config_path = File.dirname(__FILE__) + "/../config/odin.yml"
     config = ConfigPath.new.options
 
