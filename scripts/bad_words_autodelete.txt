@@ -1,10 +1,8 @@
-<<<<<<< HEAD
-Your Top Plays for Today
+Photojouranlism daily
+our Top Plays for Today
 Pictures in the news
-=======
 biggest news you missed this weekend
 share tweet
->>>>>>> ed75bab08f3d820ce2a16e6522c92ff7e9a34765
 the morning download
 morning moneybeat
 today in history
