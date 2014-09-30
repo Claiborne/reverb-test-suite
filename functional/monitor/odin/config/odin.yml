@@ -1,9 +1,0 @@
-dev:
-  domain: development
-  id: AKIAIPFMEQ3GYHDTKESQ
-  secret: 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
-
-prd:
-  domain: prod
-  id: AKIAISEPX7YSUUCSRZ4A
-  secret: 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
