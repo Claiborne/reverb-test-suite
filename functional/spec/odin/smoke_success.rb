@@ -14,7 +14,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
     tunnel_odin_bunny
     
     $counter = 0
-    @timeout = 60
+    @timeout = 60*2
 
     # correlated, parsed, docFilterOkay, docDedupOkay
     # mediaExtractionOkay, topicExtractionOkay, conceptExtractionOkay

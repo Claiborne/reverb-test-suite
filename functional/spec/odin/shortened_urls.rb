@@ -18,7 +18,7 @@ end
 raise RuntimeError, "No standard success URLs" if shortened_urls.length == 0
 
 shortened_urls.each do |url|
-describe "Article ingestion - shortened urls" do
+describe "Article ingestion - shortened urls", :standard_success => true, :shortened_urls => true do
 
   before(:all) do
 

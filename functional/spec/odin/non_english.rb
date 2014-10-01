@@ -13,7 +13,7 @@ describe "Article ingestion - non-english doc" do
     tunnel_odin_bunny
     
     $counter = 0
-    @timeout = 60
+    @timeout = 60*2
 
     @request_id = SecureRandom.uuid.to_s
     @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/non_english.html'

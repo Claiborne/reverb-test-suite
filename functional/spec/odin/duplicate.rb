@@ -19,7 +19,7 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
       tunnel_odin_bunny
       
       $counter = 0
-      @timeout = 60
+      @timeout = 60*2
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/original_duplicate.html'
@@ -75,7 +75,7 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     before(:all) do
 
       $counter = 0
-      @timeout = 60
+      @timeout = 60*2
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/duplicate.html'
@@ -131,7 +131,7 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     before(:all) do
 
       $counter = 0
-      @timeout = 60
+      @timeout = 60*2
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/duplicate_at_beginning.html'
@@ -187,7 +187,7 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     before(:all) do
 
       $counter = 0
-      @timeout = 60
+      @timeout = 60*2
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/duplicate_but_shorter.html'
@@ -243,7 +243,7 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     before(:all) do
 
       $counter = 0
-      @timeout = 60
+      @timeout = 60*2
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/exact_dupe.html'
@@ -299,7 +299,7 @@ describe "Article ingestion - duplicate doc", :duplicate => true do
     before(:all) do
 
       $counter = 0
-      @timeout = 60
+      @timeout = 60*2
 
       @request_id = SecureRandom.uuid.to_s
       @url_submitted = 'http://odin-integration.helloreverb.com/smoke_articles/original_duplicate.html'
