@@ -3,3 +3,6 @@ local:
 
 dev:
   baseurl: 54.219.250.54
+
+stg: 
+  baseurl: 54.241.73.238
