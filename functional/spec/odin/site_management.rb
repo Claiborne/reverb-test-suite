@@ -7,11 +7,12 @@ require 'rest_client'
 require 'odin/odin_shared_examples.rb'
 require 'odin/odin_spec_helper.rb'; include OdinSpecHelper
 
-describe "Site Management API", :test => true do
+describe "Site Management API" do
 
   before(:all) do
 
     tunnel_odin_bunny
+    tunnel_odin
     
     $counter = 0
     @timeout = 60
