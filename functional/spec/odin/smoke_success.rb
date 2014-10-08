@@ -98,13 +98,14 @@ describe "Article ingestion - smoke success", :smoke_success => true do
       @doc['title'].should == 'Standard'
     end
 
-    %w(Technology Health).each do |topic| # note Health is optional: it's value is 0.099
-      it "should return the topic '#{topic}'" do
+    %w(Technology).each do |topic|
+      it "should return the topic '#{topic}' and not include 'Health'" do
         doc_topics = []
         @doc['topics']['topics'].each do |t|
           doc_topics << t['key']
         end
         doc_topics.should include topic
+        doc_topics.should_not include 'Health' # Health score too low: 0.099
       end
     end
 
@@ -260,7 +261,7 @@ describe "Article ingestion - smoke success", :smoke_success => true do
           :title => "One two three" # modified
         },
         :setWebView => {
-          :isWebView => false # modified
+          :isWebView => true # modified (and remember this is inverse so isClean will be false)
         }
       }
       begin
